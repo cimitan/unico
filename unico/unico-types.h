@@ -24,19 +24,30 @@ typedef unsigned char boolean;
 typedef unsigned char uint8;
 typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 
+typedef enum
+{
+	UNICO_STYLE_DEFAULT = 0,
+	UNICO_NUM_STYLES = 1
+} UnicoStyles;
+
+typedef struct
+{
+	boolean horizontal;
+} ButtonParameters;
+
 struct _UnicoStyleFunctions
 {
+#if 0
 	void (*draw_arrow) (cairo_t *cr,
 	                    GtkThemingEngine *engine,
 	                    const ArrowParameters  *arrow,
 	                    int x, int y, int width, int height);
-
+#endif
 	void (*draw_button) (cairo_t *cr,
 	                     GtkThemingEngine *engine,
-	                     const ButtonParameters *button,
 	                     int x, int y, int width, int height,
-	                     boolean vertical);
-
+	                     ButtonParameters *button);
+#if 0
 	void (*draw_checkbox) (cairo_t *cr,
 	                       GtkThemingEngine *engine,
 	                       const CheckboxParameters *checkbox,
@@ -197,6 +208,7 @@ struct _UnicoStyleFunctions
 	void (*draw_tooltip) (cairo_t *cr,
 	                      GtkThemingEngine *engine,
 	                      int x, int y, int width, int height);
+#endif
 };
 
 #endif /* UNICO_TYPES_H */

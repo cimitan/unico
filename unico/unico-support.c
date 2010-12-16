@@ -17,24 +17,15 @@
  * MA 02110-1301, USA.
  */
 
-#include <cairo.h>
+#include <gtk/gtk.h>
 
-#include "unico-draw.h"
+#include "unico-engine.h"
 #include "unico-types.h"
 
-static void
-unico_draw_button (cairo_t *cr,
-                   GtkThemingEngine *engine,
-                   int x, int y, int width, int height,
-                   ButtonParameters *button)
-{
-}
-
 void
-unico_register_style_default (UnicoStyleFunctions *functions)
+unico_lookup_functions (UnicoEngine *engine,
+                        UnicoStyleFunctions **functions)
 {
-	g_assert (functions);
-
-	functions->draw_button = unico_draw_button;
+	if (functions)
+		*functions = &engine->style_functions[UNICO_STYLE_DEFAULT];
 }
-

@@ -91,7 +91,22 @@ unico_engine_render_frame (GtkThemingEngine *engine,
                            gdouble width,
                            gdouble height)
 {
-	GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame (engine, cr, x, y, width, height);
+	UnicoStyleFunctions *style_functions;
+
+	unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+
+	if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
+	{
+		ButtonParameters *button;
+
+		button->horizontal = TRUE;
+
+		style_functions->draw_button (cr, engine, x, y, width, height, button);
+	}
+	else
+	{
+		GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame (engine, cr, x, y, width, height);
+	}
 }
 
 static void
@@ -167,8 +182,9 @@ unico_engine_register_types (GTypeModule *module)
 }
 
 static void
-unico_engine_init (UnicoEngine *unico_engine)
+unico_engine_init (UnicoEngine *engine)
 {
+	unico_register_style_default (&engine->style_functions[UNICO_STYLE_DEFAULT]);
 }
 
 static void

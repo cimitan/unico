@@ -22,6 +22,8 @@
 
 #include <gtk/gtk.h>
 
+#include "unico-types.h"
+
 G_BEGIN_DECLS
 
 #define UNICO_TYPE_ENGINE              (unico_engine_get_type ())
@@ -37,11 +39,17 @@ typedef struct _UnicoEngineClass UnicoEngineClass;
 struct _UnicoEngine
 {
 	GtkThemingEngine parent_instance;
+
+	UnicoStyleFunctions style_functions[UNICO_NUM_STYLES];
+
+	UnicoStyles style;
 };
 
 struct _UnicoEngineClass
 {
 	GtkThemingEngineClass parent_class;
+
+	UnicoStyleFunctions style_functions[UNICO_NUM_STYLES];
 };
 
 G_GNUC_INTERNAL void  null_engine_register_types (GTypeModule *module);

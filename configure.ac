@@ -57,5 +57,4 @@ echo "
 	prefix:                   ${prefix}
 	compiler:                 ${CC}
 	cflags:                   ${CFLAGS}
-
 "

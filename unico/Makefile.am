@@ -10,6 +10,8 @@ libunico_la_SOURCES = \
 	unico-draw.c \
 	unico-engine.h \
 	unico-engine.c \
+	unico-support.c \
+	unico-support.h \
 	unico-theme.c \
 	unico-types.h
 
