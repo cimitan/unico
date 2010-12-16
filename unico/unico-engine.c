@@ -139,7 +139,63 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
                                  const GtkIconSource *source,
                                  GtkIconSize size)
 {
-	GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_icon_pixbuf (engine, source, size);
+	GdkPixbuf *scaled;
+	GdkPixbuf *stated;
+	GdkPixbuf *base_pixbuf;
+	GdkScreen *screen;
+	GtkSettings *settings;
+	GtkStateFlags state;
+	int width = 1;
+	int height = 1;
+
+	base_pixbuf = gtk_icon_source_get_pixbuf (source);
+	screen = gtk_theming_engine_get_screen (engine);
+	settings = gtk_settings_get_for_screen (screen);
+	state = gtk_theming_engine_get_state (engine);
+
+	g_return_val_if_fail (base_pixbuf != NULL, NULL);
+
+	if (size != (GtkIconSize) -1 && !gtk_icon_size_lookup_for_settings (settings, size, &width, &height))
+	{
+		g_warning (G_STRLOC ": invalid icon size '%d'", size);
+		return NULL;
+	}
+
+	/* If the size was wildcarded, and we're allowed to scale, then scale; otherwise,
+	 * leave it alone.
+	 */
+	if (size != (GtkIconSize)-1 && gtk_icon_source_get_size_wildcarded (source))
+		scaled = scale_or_ref (base_pixbuf, width, height);
+	else
+		scaled = g_object_ref (base_pixbuf);
+
+	/* If the state was wildcarded, then generate a state. */
+	if (gtk_icon_source_get_state_wildcarded (source))
+	{
+		if (state & GTK_STATE_FLAG_INSENSITIVE)
+		{
+			stated = set_transparency (scaled, 0.3);
+			gdk_pixbuf_saturate_and_pixelate (stated, stated, 0.1, FALSE);
+
+			g_object_unref (scaled);
+		}
+		else if (state & GTK_STATE_FLAG_PRELIGHT)
+		{
+			stated = gdk_pixbuf_copy (scaled);
+
+			gdk_pixbuf_saturate_and_pixelate (scaled, stated, 1.2, FALSE);
+
+			g_object_unref (scaled);
+		}
+		else
+		{
+			stated = scaled;
+		}
+	}
+	else
+		stated = scaled;
+
+	return stated;
 }
 
 static void
