@@ -6,9 +6,12 @@ engine_LTLIBRARIES = libunico.la
 
 libunico_la_SOURCES = \
 	unico.h \
-	unico-theme.c \
+	unico-draw.h \
+	unico-draw.c \
 	unico-engine.h \
-	unico-engine.c
+	unico-engine.c \
+	unico-theme.c \
+	unico-types.h
 
 libunico_la_LDFLAGS = -module -avoid-version
 
