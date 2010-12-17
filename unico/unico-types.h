@@ -29,7 +29,7 @@ typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 typedef struct
 {
   boolean horizontal;
-} ButtonParameters;
+} UnicoButtonParameters;
 
 typedef enum
 {
@@ -47,6 +47,11 @@ typedef enum
   UNICO_NUM_STYLES = 1
 } UnicoStyles;
 
+typedef struct
+{
+	GtkPositionType gap_side;
+} UnicoTabParameters;
+
 struct _UnicoStyleFunctions
 {
 #if 0
@@ -57,13 +62,19 @@ struct _UnicoStyleFunctions
 #endif
   void (*draw_button_background) (cairo_t *cr,
                                   GtkThemingEngine *engine,
-                                  int x, int y, int width, int height,
-                                  ButtonParameters *button);
+                                  int x,
+                                  int y,
+                                  int width,
+                                  int height,
+                                  UnicoButtonParameters *button);
 
   void (*draw_button_frame) (cairo_t *cr,
                              GtkThemingEngine *engine,
-                             int x, int y, int width, int height,
-                             ButtonParameters *button);
+                             int x,
+                             int y,
+                             int width,
+                             int height,
+                             UnicoButtonParameters *button);
 #if 0
   void (*draw_checkbox) (cairo_t *cr,
                          GtkThemingEngine *engine,
@@ -211,12 +222,15 @@ struct _UnicoStyleFunctions
   void (*draw_statusbar) (cairo_t *cr,
                           GtkThemingEngine *engine,
                           int x, int y, int width, int height);
-
+#endif
   void (*draw_tab) (cairo_t *cr,
                     GtkThemingEngine *engine,
-                    const TabParameters    *tab,
-                    int x, int y, int width, int height);
-
+                    int x,
+                    int y,
+                    int width,
+                    int height,
+                    UnicoTabParameters *tab);
+#if 0
   void (*draw_toolbar) (cairo_t *cr,
                         GtkThemingEngine *engine,
                         const ToolbarParameters *toolbar,

@@ -30,6 +30,8 @@ G_BEGIN_DECLS
 G_GNUC_INTERNAL void unico_lookup_functions (UnicoEngine *engine,
                                              UnicoStyleFunctions **functions);
 
+G_GNUC_INTERNAL UnicoCorners unico_get_corners (GtkThemingEngine *engine);
+
 G_END_DECLS
 
 #endif /* UNICO_SUPPORT_H */

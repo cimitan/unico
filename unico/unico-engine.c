@@ -23,6 +23,7 @@
 
 #include "unico.h"
 #include "unico-engine.h"
+#include "unico-types.h"
 
 #define UNICO_NAMESPACE "unico"
 
@@ -60,7 +61,7 @@ unico_engine_render_background (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
-      ButtonParameters *button;
+      UnicoButtonParameters *button;
 
       button->horizontal = TRUE;
 
@@ -90,7 +91,23 @@ unico_engine_render_extension (GtkThemingEngine *engine,
                                gdouble height,
                                GtkPositionType gap_side)
 {
-  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_extension (engine, cr, x, y, width, height, gap_side);
+  UnicoStyleFunctions  *style_functions;
+
+  UNICO_CAIRO_INIT
+
+  unico_lookup_functions (UNICO_ENGINE (engine),
+                          &style_functions, NULL);
+
+  if (gtk_theming_engine_has_region (engine, GTK_STYLE_REGION_TAB, NULL))
+    {
+      UnicoTabParameters tab;
+
+      tab.gap_side = gap_side;
+
+      style_functions->draw_tab (cr, engine, x, y, width, height, &tab);
+    }
+  else
+    GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_extension (engine, cr, x, y, width, height, gap_side);
 }
 
 static void
@@ -120,7 +137,7 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
-      ButtonParameters *button;
+      UnicoButtonParameters *button;
 
       button->horizontal = TRUE;
 

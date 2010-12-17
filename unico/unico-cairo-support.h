@@ -48,6 +48,14 @@ G_GNUC_INTERNAL void unico_rounded_rectangle (cairo_t *cr,
                                               int radius,
                                               UnicoCorners corners);
 
+G_GNUC_INTERNAL void unico_rounded_rectangle_inner (cairo_t *cr,
+                                                    double x,
+                                                    double y,
+                                                    double width,
+                                                    double height,
+                                                    int radius,
+                                                    UnicoCorners corners);
+
 G_GNUC_INTERNAL void unico_set_source_color (cairo_t *cr,
                                              GdkRGBA *color);
 
