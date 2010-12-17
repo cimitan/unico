@@ -25,19 +25,29 @@
 #include "unico-types.h"
 
 static void
-unico_draw_button (cairo_t *cr,
-                   GtkThemingEngine *engine,
-                   int x, int y, int width, int height,
-                   ButtonParameters *button)
+unico_draw_button_background (cairo_t *cr,
+                              GtkThemingEngine *engine,
+                              int x, int y, int width, int height,
+                              ButtonParameters *button)
 {
-	unico_draw_frame (cr, engine, x, y, width, height);
+  unico_draw_background (cr, engine, x, y, width, height);
+}
+
+static void
+unico_draw_button_frame (cairo_t *cr,
+                         GtkThemingEngine *engine,
+                         int x, int y, int width, int height,
+                         ButtonParameters *button)
+{
+  unico_draw_frame (cr, engine, x, y, width, height);
 }
 
 void
 unico_register_style_default (UnicoStyleFunctions *functions)
 {
-	g_assert (functions);
+  g_assert (functions);
 
-	functions->draw_button = unico_draw_button;
+  functions->draw_button_background = unico_draw_button_background;
+  functions->draw_button_frame      = unico_draw_button_frame;
 }
 

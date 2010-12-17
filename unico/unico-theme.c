@@ -25,7 +25,7 @@
 G_MODULE_EXPORT void 
 theme_init (GTypeModule *module)
 {
-	unico_engine_register_types (module);
+  unico_engine_register_types (module);
 }
 
 G_MODULE_EXPORT void 
@@ -36,7 +36,7 @@ theme_exit (void)
 G_MODULE_EXPORT GtkThemingEngine*
 create_engine (void)
 {
-	return GTK_THEMING_ENGINE (g_object_new (UNICO_TYPE_ENGINE,
-	                                         "name", "unico",
-	                                         NULL));
+  return GTK_THEMING_ENGINE (g_object_new (UNICO_TYPE_ENGINE,
+                                           "name", "unico",
+                                           NULL));
 }

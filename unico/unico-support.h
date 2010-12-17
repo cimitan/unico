@@ -25,6 +25,11 @@
 #include "unico-engine.h"
 #include "unico-types.h"
 
-G_GNUC_INTERNAL void unico_lookup_functions (UnicoEngine *engine, UnicoStyleFunctions **functions);
+G_BEGIN_DECLS
+
+G_GNUC_INTERNAL void unico_lookup_functions (UnicoEngine *engine,
+                                             UnicoStyleFunctions **functions);
+
+G_END_DECLS
 
 #endif /* UNICO_SUPPORT_H */

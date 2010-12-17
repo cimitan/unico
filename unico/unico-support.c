@@ -26,6 +26,6 @@ void
 unico_lookup_functions (UnicoEngine *engine,
                         UnicoStyleFunctions **functions)
 {
-	if (functions)
-		*functions = &engine->style_functions[UNICO_STYLE_DEFAULT];
+  if (functions)
+    *functions = &engine->style_functions[UNICO_STYLE_DEFAULT];
 }

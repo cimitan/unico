@@ -51,10 +51,10 @@ unico/Makefile
 AC_OUTPUT
 
 echo "
-	unico $VERSION
-	====================================
+        unico $VERSION
+        ====================================
 
-	prefix:                   ${prefix}
-	compiler:                 ${CC}
-	cflags:                   ${CFLAGS}
+        prefix:                   ${prefix}
+        compiler:                 ${CC}
+        cflags:                   ${CFLAGS}
 "

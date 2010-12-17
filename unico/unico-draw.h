@@ -20,6 +20,8 @@
 #ifndef UNICO_DRAW_H
 #define UNICO_DRAW_H
 
+G_BEGIN_DECLS
+
 #include <cairo.h>
 #include <gtk/gtk.h>
 
@@ -27,5 +29,7 @@
 #include "unico-engine.h"
 
 G_GNUC_INTERNAL void unico_register_style_default (UnicoStyleFunctions *functions);
+
+G_END_DECLS
 
 #endif /* UNICO_DRAW_H */
