@@ -1,5 +1,5 @@
 /* The Unico Theme Engine for Gtk+.
- * Copyright (C) 2010 Andrea Cimitan <andrea.cimitan@canonical.com>
+ * Copyright (C) 2011 Andrea Cimitan <andrea.cimitan@canonical.com>
  *
  * This  library is free  software; you can  redistribute it and/or
  * modify it  under  the terms  of the  GNU Lesser  General  Public
@@ -24,16 +24,26 @@ typedef unsigned char boolean;
 typedef unsigned char uint8;
 typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 
+typedef struct
+{
+	boolean horizontal;
+} ButtonParameters;
+
+typedef enum
+{
+	UNICO_CORNER_NONE        = 0,
+	UNICO_CORNER_TOPLEFT     = 1,
+	UNICO_CORNER_TOPRIGHT    = 2,
+	UNICO_CORNER_BOTTOMLEFT  = 4,
+	UNICO_CORNER_BOTTOMRIGHT = 8,
+	UNICO_CORNER_ALL         = 15
+} UnicoCorners;
+
 typedef enum
 {
 	UNICO_STYLE_DEFAULT = 0,
 	UNICO_NUM_STYLES = 1
 } UnicoStyles;
-
-typedef struct
-{
-	boolean horizontal;
-} ButtonParameters;
 
 struct _UnicoStyleFunctions
 {

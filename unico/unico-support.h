@@ -1,5 +1,5 @@
 /* The Unico Theme Engine for Gtk+.
- * Copyright (C) 2010 Andrea Cimitan <andrea.cimitan@canonical.com>
+ * Copyright (C) 2011 Andrea Cimitan <andrea.cimitan@canonical.com>
  *
  * This  library is free  software; you can  redistribute it and/or
  * modify it  under  the terms  of the  GNU Lesser  General  Public

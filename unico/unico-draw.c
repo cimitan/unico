@@ -1,5 +1,5 @@
 /* The Unico Theme Engine for Gtk+.
- * Copyright (C) 2010 Andrea Cimitan <andrea.cimitan@canonical.com>
+ * Copyright (C) 2011 Andrea Cimitan <andrea.cimitan@canonical.com>
  *
  * This  library is free  software; you can  redistribute it and/or
  * modify it  under  the terms  of the  GNU Lesser  General  Public
@@ -17,8 +17,10 @@
  * MA 02110-1301, USA.
  */
 
+#include <gtk/gtk.h>
 #include <cairo.h>
 
+#include "unico-cairo-support.h"
 #include "unico-draw.h"
 #include "unico-types.h"
 
@@ -28,6 +30,7 @@ unico_draw_button (cairo_t *cr,
                    int x, int y, int width, int height,
                    ButtonParameters *button)
 {
+	unico_draw_frame (cr, engine, x, y, width, height);
 }
 
 void

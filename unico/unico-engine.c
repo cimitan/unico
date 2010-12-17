@@ -1,5 +1,5 @@
 /* The Unico Theme Engine for Gtk+.
- * Copyright (C) 2010 Andrea Cimitan <andrea.cimitan@canonical.com>
+ * Copyright (C) 2011 Andrea Cimitan <andrea.cimitan@canonical.com>
  *
  * This  library is free  software; you can  redistribute it and/or
  * modify it  under  the terms  of the  GNU Lesser  General  Public
@@ -18,12 +18,18 @@
  */
  
 #include <cairo.h>
+#include <cairo-gobject.h>
 #include <gtk/gtk.h>
 
 #include "unico.h"
 #include "unico-engine.h"
 
 #define UNICO_NAMESPACE "unico"
+
+#define UNICO_CAIRO_INIT \
+        cairo_set_line_width (cr, 1.0); \
+        cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE); \
+        cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
 
 G_DEFINE_DYNAMIC_TYPE (UnicoEngine, unico_engine, GTK_TYPE_THEMING_ENGINE)
 
@@ -92,6 +98,8 @@ unico_engine_render_frame (GtkThemingEngine *engine,
                            gdouble height)
 {
 	UnicoStyleFunctions *style_functions;
+
+	UNICO_CAIRO_INIT
 
 	unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
 
@@ -174,7 +182,7 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
 	{
 		if (state & GTK_STATE_FLAG_INSENSITIVE)
 		{
-			stated = set_transparency (scaled, 0.3);
+			stated = set_transparency (&scaled, 0.3);
 			gdk_pixbuf_saturate_and_pixelate (stated, stated, 0.1, FALSE);
 
 			g_object_unref (scaled);
@@ -266,6 +274,36 @@ unico_engine_class_init (UnicoEngineClass * klass)
 	                                                          "Focus color",
 	                                                          "Focus color",
 	                                                          GDK_TYPE_RGBA, 0));
+
+	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+	                                      g_param_spec_boxed ("border-gradient",
+	                                                          "Border gradient",
+	                                                          "Border gradient",
+	                                                          CAIRO_GOBJECT_TYPE_PATTERN, 0));
+
+	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+	                                      g_param_spec_boxed ("stroke-inner-color",
+	                                                          "Stroke inner color",
+	                                                          "Stroke inner color",
+	                                                          GDK_TYPE_RGBA, 0));
+
+	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+	                                      g_param_spec_boxed ("stroke-inner-gradient",
+	                                                          "Stroke inner gradient",
+	                                                          "Stroke inner gradient",
+	                                                          CAIRO_GOBJECT_TYPE_PATTERN, 0));
+
+	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+	                                      g_param_spec_boxed ("stroke-outer-color",
+	                                                          "Stroke outer color",
+	                                                          "Stroke outer color",
+	                                                          GDK_TYPE_RGBA, 0));
+
+	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+	                                      g_param_spec_boxed ("stroke-outer-gradient",
+	                                                          "Stroke outer gradient",
+	                                                          "Stroke outer gradient",
+	                                                          CAIRO_GOBJECT_TYPE_PATTERN, 0));
 }
 
 static void

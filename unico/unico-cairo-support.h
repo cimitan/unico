@@ -17,15 +17,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef UNICO_DRAW_H
-#define UNICO_DRAW_H
-
-#include <cairo.h>
 #include <gtk/gtk.h>
 
 #include "unico-types.h"
-#include "unico-engine.h"
 
-G_GNUC_INTERNAL void unico_register_style_default (UnicoStyleFunctions *functions);
+G_GNUC_INTERNAL void unico_draw_frame (cairo_t *cr,
+                                       GtkThemingEngine *engine,
+                                       int x,
+                                       int y,
+                                       int w,
+                                       int h);
 
-#endif /* UNICO_DRAW_H */
+G_GNUC_INTERNAL void unico_rounded_rectangle (cairo_t *cr,
+                                              double x,
+                                              double y,
+                                              double w,
+                                              double h,
+                                              int radius,
+                                              UnicoCorners corners);
+
+G_GNUC_INTERNAL void unico_set_source_color (cairo_t *cr,
+                                             GdkRGBA *color);

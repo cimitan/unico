@@ -6,6 +6,8 @@ engine_LTLIBRARIES = libunico.la
 
 libunico_la_SOURCES = \
 	unico.h \
+	unico-cairo-support.h \
+	unico-cairo-support.c \
 	unico-draw.h \
 	unico-draw.c \
 	unico-engine.h \
