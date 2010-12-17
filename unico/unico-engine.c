@@ -142,6 +142,64 @@ unico_engine_render_handle (GtkThemingEngine *engine,
 	GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_handle (engine, cr, x, y, width, height);
 }
 
+static GdkPixbuf *
+unico_pixbuf_set_transparency (GdkPixbuf *pixbuf,
+                               gdouble alpha_percent)
+{
+	GdkPixbuf *target;
+	guchar *data, *current;
+	guint x, y, rowstride, height, width;
+
+	g_return_val_if_fail (pixbuf != NULL, NULL);
+	g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+
+	/* Returns a copy of pixbuf with it's non-completely-transparent pixels to
+	   have an alpha level "alpha_percent" of their original value. */
+
+	target = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
+
+	if (alpha_percent == 1.0)
+	{
+		return target;
+	}
+
+	width = gdk_pixbuf_get_width (target);
+	height = gdk_pixbuf_get_height (target);
+	rowstride = gdk_pixbuf_get_rowstride (target);
+	data = gdk_pixbuf_get_pixels (target);
+
+	for (y = 0; y < height; y++)
+	{
+		for (x = 0; x < width; x++)
+		{
+			/* The "4" is the number of chars per pixel, in this case, RGBA,
+			   the 3 means "skip to the alpha" */
+			current = data + (y * rowstride) + (x * 4) + 3;
+			*(current) = (guchar) (*(current) * alpha_percent);
+		}
+	}
+
+	return target;
+}
+
+static GdkPixbuf*
+unico_pixbuf_scale_or_ref (GdkPixbuf *src,
+                           int width,
+                           int height)
+{
+	if (width == gdk_pixbuf_get_width (src) &&
+	    height == gdk_pixbuf_get_height (src))
+	{
+		return g_object_ref (src);
+	}
+	else
+	{
+		return gdk_pixbuf_scale_simple (src,
+		                                width, height,
+		                                GDK_INTERP_BILINEAR);
+	}
+}
+
 static GdkPixbuf*
 unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
                                  const GtkIconSource *source,
@@ -173,16 +231,20 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
 	 * leave it alone.
 	 */
 	if (size != (GtkIconSize)-1 && gtk_icon_source_get_size_wildcarded (source))
-		scaled = scale_or_ref (base_pixbuf, width, height);
+	{
+		scaled = unico_pixbuf_scale_or_ref (base_pixbuf, width, height);
+	}
 	else
+	{
 		scaled = g_object_ref (base_pixbuf);
+	}
 
 	/* If the state was wildcarded, then generate a state. */
 	if (gtk_icon_source_get_state_wildcarded (source))
 	{
 		if (state & GTK_STATE_FLAG_INSENSITIVE)
 		{
-			stated = set_transparency (&scaled, 0.3);
+			stated = unico_pixbuf_set_transparency (scaled, 0.3);
 			gdk_pixbuf_saturate_and_pixelate (stated, stated, 0.1, FALSE);
 
 			g_object_unref (scaled);
@@ -201,7 +263,9 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
 		}
 	}
 	else
+	{
 		stated = scaled;
+	}
 
 	return stated;
 }
@@ -270,16 +334,16 @@ unico_engine_class_init (UnicoEngineClass * klass)
 	engine_class->render_slider      = unico_engine_render_slider;
 
 	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
-	                                      g_param_spec_boxed ("focus-color",
-	                                                          "Focus color",
-	                                                          "Focus color",
-	                                                          GDK_TYPE_RGBA, 0));
-
-	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
 	                                      g_param_spec_boxed ("border-gradient",
 	                                                          "Border gradient",
 	                                                          "Border gradient",
 	                                                          CAIRO_GOBJECT_TYPE_PATTERN, 0));
+
+	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+	                                      g_param_spec_boxed ("focus-color",
+	                                                          "Focus color",
+	                                                          "Focus color",
+	                                                          GDK_TYPE_RGBA, 0));
 
 	gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
 	                                      g_param_spec_boxed ("stroke-inner-color",
