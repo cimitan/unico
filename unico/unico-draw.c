@@ -267,19 +267,19 @@ unico_draw_slider_button (cairo_t *cr,
 
   cairo_translate (cr, x, y);
 
-  unico_draw_slider_button_path (cr, 0, 1, width, height-1, radius);
-  unico_cairo_draw_background_from_path (cr, engine, 0, 1, width, height-1, radius, corners);
+  unico_draw_slider_button_path (cr, 0, 0, width, height, radius);
+  unico_cairo_draw_background_from_path (cr, engine, 0, 0, width, height);
 
-  cairo_translate (cr, 0.5, 0.5);
+  cairo_translate (cr, 0.5, 0.5); width--; /* XXX: redo with line_width */
 
-  unico_draw_slider_button_path (cr, 0, 1, width, height-1, radius);
-  unico_cairo_draw_stroke_outer_from_path (cr, engine, 0, 1, width, height-1, radius, corners);
+  unico_draw_slider_button_path (cr, 0, 0, width, height, radius);
+  unico_cairo_draw_stroke_outer_from_path (cr, engine, 0, 0, width, height);
 
-  unico_draw_slider_button_path (cr, line_width*2, 1+line_width*2, width-line_width*4, height-1-line_width*4, radius);
-  unico_cairo_draw_stroke_inner_from_path (cr, engine, line_width*2, 1+line_width*2, width-line_width*4, height-1-line_width*4, radius, corners);
+  unico_draw_slider_button_path (cr, line_width*2, line_width*2, width-line_width*4, height-line_width*4, radius);
+  unico_cairo_draw_stroke_inner_from_path (cr, engine, line_width*2, line_width*2, width-line_width*4, height-line_width*4);
 
-  unico_draw_slider_button_path (cr, line_width, 1+line_width, width-line_width*2, height-1-line_width*2, radius);
-  unico_cairo_draw_border_from_path (cr, engine, line_width*2, 1+line_width*2, width-line_width*2, height-1-line_width*2, radius, corners);
+  unico_draw_slider_button_path (cr, line_width, line_width, width-line_width*2, height-line_width*2, radius);
+  unico_cairo_draw_border_from_path (cr, engine, line_width*2, line_width*2, width-line_width*2, height-line_width*2);
 
   cairo_restore (cr);
 

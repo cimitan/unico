@@ -59,9 +59,7 @@ unico_cairo_draw_background_from_path (cairo_t *cr,
                                        double x,
                                        double y,
                                        double width,
-                                       double height,
-                                       int radius,
-                                       UnicoCorners corners)
+                                       double height)
 {
   GtkStateFlags state;
   GdkRGBA *background_color;
@@ -109,7 +107,7 @@ unico_cairo_draw_background_rect (cairo_t *cr,
                                   UnicoCorners corners)
 {
   unico_cairo_rounded_rect (cr, x, y, width, height, radius, corners);
-  unico_cairo_draw_background_from_path (cr, engine, x, y, width, height, radius, corners);
+  unico_cairo_draw_background_from_path (cr, engine, x, y, width, height);
 }
 
 void
@@ -161,9 +159,7 @@ unico_cairo_draw_border_from_path (cairo_t *cr,
                                    double x,
                                    double y,
                                    double width,
-                                   double height,
-                                   int radius,
-                                   UnicoCorners corners)
+                                   double height)
 {
   GtkBorder *border;
   GtkStateFlags state;
@@ -219,7 +215,7 @@ unico_cairo_draw_border_rect (cairo_t *cr,
                               UnicoCorners corners)
 {
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
-  unico_cairo_draw_border_from_path (cr, engine, x, y, width, height, radius, corners);
+  unico_cairo_draw_border_from_path (cr, engine, x, y, width, height);
 }
 
 void
@@ -228,9 +224,7 @@ unico_cairo_draw_stroke_inner_from_path (cairo_t *cr,
                                          double x,
                                          double y,
                                          double width,
-                                         double height,
-                                         int radius,
-                                         UnicoCorners corners)
+                                         double height)
 {
   GtkBorder *border;
   GtkStateFlags state;
@@ -286,7 +280,7 @@ unico_cairo_draw_stroke_inner_rect (cairo_t *cr,
                                     UnicoCorners corners)
 {
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
-  unico_cairo_draw_stroke_inner_from_path (cr, engine, x, y, width, height, radius, corners);
+  unico_cairo_draw_stroke_inner_from_path (cr, engine, x, y, width, height);
 }
 
 void
@@ -295,9 +289,7 @@ unico_cairo_draw_stroke_outer_from_path (cairo_t *cr,
                                          double x,
                                          double y,
                                          double width,
-                                         double height,
-                                         int radius,
-                                         UnicoCorners corners)
+                                         double height)
 {
   GtkBorder *border;
   GtkStateFlags state;
@@ -322,8 +314,6 @@ unico_cairo_draw_stroke_outer_from_path (cairo_t *cr,
 
   if (stroke_outer_pat || stroke_outer_color)
     {
-      unico_cairo_rounded_rect_inner (cr, 0, 0, width, height, radius, corners);
-
       if (stroke_outer_pat)
         {
           cairo_matrix_t matrix;
@@ -356,7 +346,7 @@ unico_cairo_draw_stroke_outer_rect (cairo_t *cr,
                                     UnicoCorners corners)
 {
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
-  unico_cairo_draw_stroke_outer_from_path (cr, engine, x, y, width, height, radius, corners);
+  unico_cairo_draw_stroke_outer_from_path (cr, engine, x, y, width, height);
 }
 
 void
