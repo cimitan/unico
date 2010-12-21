@@ -331,6 +331,12 @@ unico_engine_render_option (GtkThemingEngine *engine,
                             gdouble width,
                             gdouble height)
 {
+/*  UnicoStyleFunctions *style_functions;*/
+
+/*  UNICO_CAIRO_INIT*/
+
+/*  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);*/
+
   GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_option (engine, cr, x, y, width, height);
 }
 
@@ -343,7 +349,27 @@ unico_engine_render_slider (GtkThemingEngine *engine,
                             gdouble height,
                             GtkOrientation orientation)
 {
-  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_slider (engine, cr, x, y, width, height, orientation);
+  UnicoStyleFunctions *style_functions;
+
+  UNICO_CAIRO_INIT
+
+  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+
+  if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SLIDER) &&
+      gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
+    {
+      GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_slider (engine, cr, x, y, width, height, orientation);
+    }
+  else
+    {
+      UnicoSliderParameters slider;
+
+      slider.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
+      slider.lower = FALSE;
+      slider.fill_level = FALSE;
+
+      style_functions->draw_slider_button (cr, engine, x, y, width, height, &slider);
+    }
 }
 
 void

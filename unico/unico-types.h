@@ -49,6 +49,13 @@ typedef struct
 	int             gap_width;
 } UnicoFrameParameters;
 
+typedef struct
+{
+  boolean lower;
+  boolean horizontal;
+  boolean fill_level;
+} UnicoSliderParameters;
+
 typedef enum
 {
   UNICO_STYLE_DEFAULT = 0,
@@ -217,12 +224,16 @@ struct _UnicoStyleFunctions
                           GtkThemingEngine *engine,
                           const SeparatorParameters *separator,
                           int x, int y, int width, int height);
+#endif
 
-  void (*draw_slider) (cairo_t *cr,
-                       GtkThemingEngine *engine,
-                       const SliderParameters *slider,
-                       int x, int y, int width, int height);
-
+  void (*draw_slider_button) (cairo_t *cr,
+                              GtkThemingEngine *engine,
+                              int x,
+                              int y,
+                              int width,
+                              int height,
+                              UnicoSliderParameters *slider);
+#if 0
   void (*draw_slider_handle) (cairo_t *cr,
                               GtkThemingEngine *engine,
                               const HandleParameters *handle,
