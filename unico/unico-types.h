@@ -41,6 +41,14 @@ typedef enum
   UNICO_CORNER_ALL         = 15
 } UnicoCorners;
 
+typedef struct
+{
+	GtkShadowType   shadow;
+	GtkPositionType gap_side;
+	int             gap_x;
+	int             gap_width;
+} UnicoFrameParameters;
+
 typedef enum
 {
   UNICO_STYLE_DEFAULT = 0,
@@ -111,12 +119,24 @@ struct _UnicoStyleFunctions
                       GtkThemingEngine *engine,
                       const FocusParameters  *focus,
                       int x, int y, int width, int height);
-
+#endif
   void (*draw_frame) (cairo_t *cr,
                       GtkThemingEngine *engine,
-                      const FrameParameters  *frame,
-                      int x, int y, int width, int height);
+                      int x,
+                      int y,
+                      int width,
+                      int height,
+                      UnicoFrameParameters *frame);
 
+  void (*draw_notebook) (cairo_t *cr,
+                         GtkThemingEngine *engine,
+                         int x,
+                         int y,
+                         int width,
+                         int height,
+                         UnicoFrameParameters *frame);
+
+#if 0
   void (*draw_handle) (cairo_t *cr,
                        GtkThemingEngine *engine,
                        const HandleParameters *handle,

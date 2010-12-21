@@ -158,7 +158,34 @@ unico_engine_render_frame_gap (GtkThemingEngine *engine,
                                gdouble xy0_gap,
                                gdouble xy1_gap)
 {
-  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
+  UnicoStyleFunctions *style_functions;
+
+  UNICO_CAIRO_INIT
+
+  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+
+  if (gtk_theming_engine_has_class (engine, "notebook"))
+    {
+      UnicoFrameParameters frame;
+
+      frame.gap_side = gap_side;
+      frame.gap_x = xy0_gap;
+      frame.gap_width = xy1_gap-xy0_gap;
+
+      style_functions->draw_notebook (cr, engine, x, y, width, height, &frame);
+    }
+  else if (gtk_theming_engine_has_class (engine, "frame"))
+    {
+      UnicoFrameParameters frame;
+
+      frame.gap_side = gap_side;
+      frame.gap_x = xy0_gap;
+      frame.gap_width = xy1_gap-xy0_gap;
+
+      style_functions->draw_frame (cr, engine, x, y, width, height, &frame);
+    }
+  else
+    GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
 }
 
 static void
@@ -172,7 +199,7 @@ unico_engine_render_handle (GtkThemingEngine *engine,
   GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_handle (engine, cr, x, y, width, height);
 }
 
-static GdkPixbuf *
+static GdkPixbuf*
 unico_pixbuf_set_transparency (GdkPixbuf *pixbuf,
                                gdouble alpha_percent)
 {
@@ -332,7 +359,7 @@ unico_engine_init (UnicoEngine *engine)
 }
 
 static void
-unico_engine_class_init (UnicoEngineClass * klass)
+unico_engine_class_init (UnicoEngineClass *klass)
 {
   GtkThemingEngineClass *engine_class = GTK_THEMING_ENGINE_CLASS (klass);
 
