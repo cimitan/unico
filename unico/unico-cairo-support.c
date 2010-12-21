@@ -214,8 +214,28 @@ unico_cairo_draw_border_rect (cairo_t *cr,
                               int radius,
                               UnicoCorners corners)
 {
+  GtkBorder *border;
+  GtkStateFlags state;
+  double line_width;
+
+  state = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, state,
+                          "border-width", &border,
+                          NULL);
+
+  line_width = MIN (MIN (border->top, border->bottom),
+                    MIN (border->left, border->right));
+
+  cairo_save (cr);
+
+  cairo_set_line_width (cr, line_width);
+
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
   unico_cairo_draw_border_from_path (cr, engine, x, y, width, height);
+
+  cairo_restore (cr);
+
+  gtk_border_free (border);
 }
 
 void
@@ -279,8 +299,28 @@ unico_cairo_draw_stroke_inner_rect (cairo_t *cr,
                                     int radius,
                                     UnicoCorners corners)
 {
+  GtkBorder *border;
+  GtkStateFlags state;
+  double line_width;
+
+  state = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, state,
+                          "border-width", &border,
+                          NULL);
+
+  line_width = MIN (MIN (border->top, border->bottom),
+                    MIN (border->left, border->right));
+
+  cairo_save (cr);
+
+  cairo_set_line_width (cr, line_width);
+
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
   unico_cairo_draw_stroke_inner_from_path (cr, engine, x, y, width, height);
+
+  cairo_restore (cr);
+
+  gtk_border_free (border);
 }
 
 void
@@ -345,8 +385,28 @@ unico_cairo_draw_stroke_outer_rect (cairo_t *cr,
                                     int radius,
                                     UnicoCorners corners)
 {
+  GtkBorder *border;
+  GtkStateFlags state;
+  double line_width;
+
+  state = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, state,
+                          "border-width", &border,
+                          NULL);
+
+  line_width = MIN (MIN (border->top, border->bottom),
+                    MIN (border->left, border->right));
+
+  cairo_save (cr);
+
+  cairo_set_line_width (cr, line_width);
+
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
   unico_cairo_draw_stroke_outer_from_path (cr, engine, x, y, width, height);
+
+  cairo_restore (cr);
+
+  gtk_border_free (border);
 }
 
 void
