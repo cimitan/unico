@@ -95,6 +95,20 @@ struct _UnicoStyleFunctions
                               gint y,
                               gint width,
                               gint height);
+
+  void (*draw_toolbar_background) (cairo_t *cr,
+                                   GtkThemingEngine *engine,
+                                   gint x,
+                                   gint y,
+                                   gint width,
+                                   gint height);
+
+  void (*draw_toolbar_frame) (cairo_t *cr,
+                              GtkThemingEngine *engine,
+                              gint x,
+                              gint y,
+                              gint width,
+                              gint height);
 #if 0
   void (*draw_checkbox) (cairo_t *cr,
                          GtkThemingEngine *engine,

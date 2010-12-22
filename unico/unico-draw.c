@@ -609,6 +609,50 @@ unico_draw_tab (cairo_t *cr,
   cairo_restore (cr);
 }
 
+static void
+unico_draw_toolbar_background (cairo_t *cr,
+                               GtkThemingEngine *engine,
+                               gint x,
+                               gint y,
+                               gint width,
+                               gint height)
+{
+  UnicoCorners corners = UNICO_CORNER_NONE;
+  gdouble line_width;
+
+  unico_get_line_width (engine, &line_width);
+
+  unico_cairo_draw_background_rect (cr, engine,
+                                        x, y,
+                                        width, height,
+                                        0, corners);
+}
+
+static void
+unico_draw_toolbar_frame (cairo_t *cr,
+                          GtkThemingEngine *engine,
+                          gint x,
+                          gint y,
+                          gint width,
+                          gint height)
+{
+  UnicoCorners corners = UNICO_CORNER_NONE;
+  gdouble line_width;
+
+  unico_get_line_width (engine, &line_width);
+
+  unico_cairo_draw_stroke_inner_rect (cr, engine,
+                                          x+line_width, y+line_width,
+                                          width-line_width*2, height-line_width*2,
+                                          0, corners);
+
+  unico_cairo_draw_border_rect (cr, engine,
+                                    x, y,
+                                    width, height,
+                                    0, corners);
+}
+
+
 void
 unico_register_style_default (UnicoStyleFunctions *functions)
 {
@@ -629,4 +673,6 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_scrollbar_trough_frame        = unico_draw_scrollbar_trough_frame;
   functions->draw_slider_button                 = unico_draw_slider_button;
   functions->draw_tab                           = unico_draw_tab;
+  functions->draw_toolbar_background            = unico_draw_toolbar_background;
+  functions->draw_toolbar_frame                 = unico_draw_toolbar_frame;
 }

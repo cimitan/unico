@@ -65,6 +65,11 @@ unico_engine_render_background (GtkThemingEngine *engine,
     {
       style_functions->draw_menubar_background (cr, engine, x, y, width, height);
     }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR) ||
+           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
+    {
+      style_functions->draw_toolbar_background (cr, engine, x, y, width, height);
+    }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
     {
@@ -156,6 +161,11 @@ unico_engine_render_frame (GtkThemingEngine *engine,
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     {
       style_functions->draw_menubar_frame (cr, engine, x, y, width, height);
+    }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR) ||
+           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
+    {
+      style_functions->draw_toolbar_frame (cr, engine, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
