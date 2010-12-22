@@ -249,8 +249,8 @@ unico_pixbuf_set_transparency (GdkPixbuf *pixbuf,
 
 static GdkPixbuf*
 unico_pixbuf_scale_or_ref (GdkPixbuf *src,
-                           int width,
-                           int height)
+                           gint width,
+                           gint height)
 {
   if (width == gdk_pixbuf_get_width (src) &&
       height == gdk_pixbuf_get_height (src))
@@ -272,8 +272,8 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
   GdkScreen *screen;
   GtkSettings *settings;
   GtkStateFlags state;
-  int width = 1;
-  int height = 1;
+  gint width = 1;
+  gint height = 1;
 
   base_pixbuf = gtk_icon_source_get_pixbuf (source);
   screen = gtk_theming_engine_get_screen (engine);

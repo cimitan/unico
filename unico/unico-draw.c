@@ -24,10 +24,10 @@
 #include "unico-draw.h"
 #include "unico-types.h"
 
-#define UNICO_RECTANGLE_SET(rect, _x, _y, _w, _h) (rect).x      = (_x); \
-                                                  (rect).y      = (_y); \
-                                                  (rect).width  = (_w); \
-                                                  (rect).height = (_h);
+#define UNICO_RECT_SET(rect, _x, _y, _w, _h) (rect).x      = (_x); \
+                                             (rect).y      = (_y); \
+                                             (rect).width  = (_w); \
+                                             (rect).height = (_h);
 
 static void
 unico_draw_button_background (cairo_t *cr,
@@ -66,34 +66,34 @@ unico_get_frame_gap_clip (gint x,
     {
       case GTK_POS_TOP:
         {
-          UNICO_RECTANGLE_SET (*bevel, 2.0+frame->gap_x, 0.0,
-                               frame->gap_width-3, frame->gap_width);
-          UNICO_RECTANGLE_SET (*border, 1.0+frame->gap_x, 0.0,
-                               frame->gap_width-2, frame->gap_width);
+          UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, 0.0,
+                          frame->gap_width-3, frame->gap_width);
+          UNICO_RECT_SET (*border, 1.0+frame->gap_x, 0.0,
+                          frame->gap_width-2, frame->gap_width);
           break;
         }
       case GTK_POS_BOTTOM:
         {
-          UNICO_RECTANGLE_SET (*bevel, 2.0+frame->gap_x, height-2.0,
-                               frame->gap_width-3, frame->gap_width);
-          UNICO_RECTANGLE_SET (*border, 1.0+frame->gap_x, height-1.0,
-                               frame->gap_width-2, frame->gap_width);
+          UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, height-2.0,
+                          frame->gap_width-3, frame->gap_width);
+          UNICO_RECT_SET (*border, 1.0+frame->gap_x, height-1.0,
+                          frame->gap_width-2, frame->gap_width);
           break;
         }
       case GTK_POS_LEFT:
         {
-          UNICO_RECTANGLE_SET (*bevel, 0.0, 2.0+frame->gap_x,
-                               frame->gap_width, frame->gap_width-3);
-          UNICO_RECTANGLE_SET (*border, 0.0, 1.0+frame->gap_x,
-                               frame->gap_width, frame->gap_width-2);
+          UNICO_RECT_SET (*bevel, 0.0, 2.0+frame->gap_x,
+                          frame->gap_width, frame->gap_width-3);
+          UNICO_RECT_SET (*border, 0.0, 1.0+frame->gap_x,
+                          frame->gap_width, frame->gap_width-2);
           break;
         }
       case GTK_POS_RIGHT:
         {
-          UNICO_RECTANGLE_SET (*bevel, width-2.0, 2.0+frame->gap_x,
-                               frame->gap_width, frame->gap_width-3);
-          UNICO_RECTANGLE_SET (*border, width-1.0, 1.0+frame->gap_x,
-                               frame->gap_width, frame->gap_width-2);
+          UNICO_RECT_SET (*bevel, width-2.0, 2.0+frame->gap_x,
+                          frame->gap_width, frame->gap_width-3);
+          UNICO_RECT_SET (*border, width-1.0, 1.0+frame->gap_x,
+                          frame->gap_width, frame->gap_width-2);
           break;
         }
     }
