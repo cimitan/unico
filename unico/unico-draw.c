@@ -110,22 +110,13 @@ unico_draw_frame (cairo_t *cr,
 {
   GdkRectangle bevel_clip = {0, 0, 0, 0};
   GdkRectangle frame_clip = {0, 0, 0, 0};
-  GtkBorder *border;
   UnicoCorners corners;
   double line_width;
   int radius;
 
   corners = unico_get_corners (engine);
-
-  gtk_theming_engine_get (engine, 0,
-                          "border-radius", &radius,
-                          "border-width", &border,
-                          NULL);
-
-  radius = MIN (radius, MIN ((width-2.0)/2.0, (height-2.0)/2.0));
-
-  line_width = MIN (MIN (border->top, border->bottom),
-                    MIN (border->left, border->right));
+  line_width = unico_get_line_width (engine);
+  radius = unico_get_border_radius (engine);
 
   if (frame->gap_x != -1)
     unico_get_frame_gap_clip (x, y, width, height,
@@ -198,8 +189,6 @@ unico_draw_frame (cairo_t *cr,
     }
 
   cairo_restore (cr);
-
-  gtk_border_free (border);
 }
 
 static void
@@ -240,32 +229,23 @@ unico_draw_slider_button (cairo_t *cr,
                           int height,
                           UnicoSliderParameters *slider)
 {
-  GtkBorder *border;
-  GtkStateFlags state;
   UnicoCorners corners;
   double line_width;
   int radius;
 
   corners = unico_get_corners (engine);
-
-  state = gtk_theming_engine_get_state (engine);
-
-  gtk_theming_engine_get (engine, state,
-                          "border-radius", &radius,
-                          "border-width", &border,
-                          NULL);
-
+  line_width = unico_get_line_width (engine);
+  radius = unico_get_border_radius (engine);
   radius = MIN (radius, MIN (width/2.0, height/2.0));
 
-  line_width = MIN (MIN (border->top, border->bottom),
-                    MIN (border->left, border->right));
+  cairo_set_line_width (cr, line_width);
 
   if (!slider->horizontal) /* XXX: could be broken, need to test */
     unico_cairo_exchange_axis (cr, &x, &y, &width, &height);
 
   cairo_save (cr);
 
-  cairo_translate (cr, x+0.5, y+0.5);
+  cairo_translate (cr, x, y);
 
   unico_draw_slider_button_path (cr, 0, 0, width, height, radius);
   unico_cairo_draw_background_from_path (cr, engine, 0, 0, width, height);
@@ -292,8 +272,6 @@ unico_draw_slider_button (cairo_t *cr,
                                          width-line_width-line_width*2, height-line_width-line_width*2);
 
   cairo_restore (cr);
-
-  gtk_border_free (border);
 }
 
 static void
@@ -305,17 +283,12 @@ unico_draw_tab (cairo_t *cr,
                 int height,
                 UnicoTabParameters *tab)
 {
-  GtkBorder *border;
-  GtkStateFlags state;
   UnicoCorners corners;
   double line_width;
   int radius;
 
-  state = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, state,
-                          "border-radius", &radius,
-                          "border-width", &border,
-                          NULL);
+  line_width = unico_get_line_width (engine);
+  radius = unico_get_border_radius (engine);
 
   cairo_save (cr);
 
@@ -340,9 +313,6 @@ unico_draw_tab (cairo_t *cr,
       if (tab->gap_side == GTK_POS_LEFT)
         cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
     }
-
-  line_width = MIN (MIN (border->top, border->bottom),
-                    MIN (border->left, border->right));
 
   switch (tab->gap_side)
     {
@@ -388,8 +358,6 @@ unico_draw_tab (cairo_t *cr,
                                     radius, corners);
 
   cairo_restore (cr);
-
-  gtk_border_free (border);
 }
 
 void
@@ -404,4 +372,3 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_slider_button     = unico_draw_slider_button;
   functions->draw_tab               = unico_draw_tab;
 }
-
