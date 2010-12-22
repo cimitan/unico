@@ -63,31 +63,31 @@ unico_engine_render_background (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     {
-      style_functions->draw_menubar_background (cr, engine, x, y, width, height);
+      style_functions->draw_menubar_background (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR) ||
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
     {
-      style_functions->draw_toolbar_background (cr, engine, x, y, width, height);
+      style_functions->draw_toolbar_background (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
     {
-      style_functions->draw_scrollbar_stepper_background (cr, engine, x, y, width, height);
+      style_functions->draw_scrollbar_stepper_background (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
-      style_functions->draw_button_background (cr, engine, x, y, width, height);
+      style_functions->draw_button_background (engine, cr, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
     {
-      style_functions->draw_progressbar_trough_background (cr, engine, x, y, width, height);
+      style_functions->draw_progressbar_trough_background (engine, cr, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_SCROLLBAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
     {
-      style_functions->draw_scrollbar_trough_background (cr, engine, x, y, width, height);
+      style_functions->draw_scrollbar_trough_background (engine, cr, x, y, width, height);
     }
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_background (engine, cr, x, y, width, height);
@@ -125,7 +125,7 @@ unico_engine_render_extension (GtkThemingEngine *engine,
 
       tab.gap_side = gap_side;
 
-      style_functions->draw_tab (cr, engine, x, y, width, height, &tab);
+      style_functions->draw_tab (engine, cr, x, y, width, height, &tab);
     }
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_extension (engine, cr, x, y, width, height, gap_side);
@@ -160,31 +160,31 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     {
-      style_functions->draw_menubar_frame (cr, engine, x, y, width, height);
+      style_functions->draw_menubar_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR) ||
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
     {
-      style_functions->draw_toolbar_frame (cr, engine, x, y, width, height);
+      style_functions->draw_toolbar_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
     {
-      style_functions->draw_scrollbar_stepper_frame (cr, engine, x, y, width, height);
+      style_functions->draw_scrollbar_stepper_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
-      style_functions->draw_button_frame (cr, engine, x, y, width, height);
+      style_functions->draw_button_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
     {
-      style_functions->draw_progressbar_trough_frame (cr, engine, x, y, width, height);
+      style_functions->draw_progressbar_trough_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_SCROLLBAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
     {
-      style_functions->draw_scrollbar_trough_frame (cr, engine, x, y, width, height);
+      style_functions->draw_scrollbar_trough_frame (engine, cr, x, y, width, height);
     }
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame (engine, cr, x, y, width, height);
@@ -215,7 +215,7 @@ unico_engine_render_frame_gap (GtkThemingEngine *engine,
       frame.gap_x = xy0_gap;
       frame.gap_width = xy1_gap-xy0_gap;
 
-      style_functions->draw_notebook (cr, engine, x, y, width, height, &frame);
+      style_functions->draw_notebook (engine, cr, x, y, width, height, &frame);
     }
   else if (gtk_theming_engine_has_class (engine, "frame"))
     {
@@ -225,7 +225,7 @@ unico_engine_render_frame_gap (GtkThemingEngine *engine,
       frame.gap_x = xy0_gap;
       frame.gap_width = xy1_gap-xy0_gap;
 
-      style_functions->draw_frame (cr, engine, x, y, width, height, &frame);
+      style_functions->draw_frame (engine, cr, x, y, width, height, &frame);
     }
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
@@ -401,7 +401,7 @@ unico_engine_render_slider (GtkThemingEngine *engine,
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SLIDER) &&
       gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
     {
-      style_functions->draw_scrollbar_slider (cr, engine, x, y, width, height);
+      style_functions->draw_scrollbar_slider (engine, cr, x, y, width, height);
     }
   else
     {
@@ -411,7 +411,7 @@ unico_engine_render_slider (GtkThemingEngine *engine,
       slider.lower = FALSE;
       slider.fill_level = FALSE;
 
-      style_functions->draw_slider_button (cr, engine, x, y, width, height, &slider);
+      style_functions->draw_slider_button (engine, cr, x, y, width, height, &slider);
     }
 }
 

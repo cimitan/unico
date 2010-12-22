@@ -68,43 +68,43 @@ struct _UnicoStyleFunctions
                       const ArrowParameters  *arrow,
                       gint x, gint y, gint width, gint height);
 #endif
-  void (*draw_button_background) (cairo_t *cr,
-                                  GtkThemingEngine *engine,
+  void (*draw_button_background) (GtkThemingEngine *engine,
+                                  cairo_t *cr,
                                   gint x,
                                   gint y,
                                   gint width,
                                   gint height);
 
-  void (*draw_button_frame) (cairo_t *cr,
-                             GtkThemingEngine *engine,
+  void (*draw_button_frame) (GtkThemingEngine *engine,
+                             cairo_t *cr,
                              gint x,
                              gint y,
                              gint width,
                              gint height);
 
-  void (*draw_menubar_background) (cairo_t *cr,
-                                   GtkThemingEngine *engine,
+  void (*draw_menubar_background) (GtkThemingEngine *engine,
+                                   cairo_t *cr,
                                    gint x,
                                    gint y,
                                    gint width,
                                    gint height);
 
-  void (*draw_menubar_frame) (cairo_t *cr,
-                              GtkThemingEngine *engine,
+  void (*draw_menubar_frame) (GtkThemingEngine *engine,
+                              cairo_t *cr,
                               gint x,
                               gint y,
                               gint width,
                               gint height);
 
-  void (*draw_toolbar_background) (cairo_t *cr,
-                                   GtkThemingEngine *engine,
+  void (*draw_toolbar_background) (GtkThemingEngine *engine,
+                                   cairo_t *cr,
                                    gint x,
                                    gint y,
                                    gint width,
                                    gint height);
 
-  void (*draw_toolbar_frame) (cairo_t *cr,
-                              GtkThemingEngine *engine,
+  void (*draw_toolbar_frame) (GtkThemingEngine *engine,
+                              cairo_t *cr,
                               gint x,
                               gint y,
                               gint width,
@@ -146,16 +146,16 @@ struct _UnicoStyleFunctions
                       const FocusParameters  *focus,
                       gint x, gint y, gint width, gint height);
 #endif
-  void (*draw_frame) (cairo_t *cr,
-                      GtkThemingEngine *engine,
+  void (*draw_frame) (GtkThemingEngine *engine,
+                      cairo_t *cr,
                       gint x,
                       gint y,
                       gint width,
                       gint height,
                       UnicoFrameParameters *frame);
 
-  void (*draw_notebook) (cairo_t *cr,
-                         GtkThemingEngine *engine,
+  void (*draw_notebook) (GtkThemingEngine *engine,
+                         cairo_t *cr,
                          gint x,
                          gint y,
                          gint width,
@@ -192,50 +192,50 @@ struct _UnicoStyleFunctions
                          gint x, gint y, gint width, gint height,
                          gint menuitemstyle);
 #endif
-  void (*draw_progressbar_trough_background) (cairo_t *cr,
-                                              GtkThemingEngine *engine,
+  void (*draw_progressbar_trough_background) (GtkThemingEngine *engine,
+                                              cairo_t *cr,
                                               gint x,
                                               gint y,
                                               gint width,
                                               gint height);
 
-  void (*draw_progressbar_trough_frame) (cairo_t *cr,
-                                         GtkThemingEngine *engine,
+  void (*draw_progressbar_trough_frame) (GtkThemingEngine *engine,
+                                         cairo_t *cr,
                                          gint x,
                                          gint y,
                                          gint width,
                                          gint height);
 
-  void (*draw_scrollbar_slider) (cairo_t *cr,
-                                 GtkThemingEngine *engine,
+  void (*draw_scrollbar_slider) (GtkThemingEngine *engine,
+                                 cairo_t *cr,
                                  gint x,
                                  gint y,
                                  gint width,
                                  gint height);
 
-  void (*draw_scrollbar_stepper_background) (cairo_t *cr,
-                                             GtkThemingEngine *engine,
+  void (*draw_scrollbar_stepper_background) (GtkThemingEngine *engine,
+                                             cairo_t *cr,
                                              gint x,
                                              gint y,
                                              gint width,
                                              gint height);
 
-  void (*draw_scrollbar_stepper_frame) (cairo_t *cr,
-                                        GtkThemingEngine *engine,
+  void (*draw_scrollbar_stepper_frame) (GtkThemingEngine *engine,
+                                        cairo_t *cr,
                                         gint x,
                                         gint y,
                                         gint width,
                                         gint height);
 
-  void (*draw_scrollbar_trough_background) (cairo_t *cr,
-                                            GtkThemingEngine *engine,
+  void (*draw_scrollbar_trough_background) (GtkThemingEngine *engine,
+                                            cairo_t *cr,
                                             gint x,
                                             gint y,
                                             gint width,
                                             gint height);
 
-  void (*draw_scrollbar_trough_frame) (cairo_t *cr,
-                                       GtkThemingEngine *engine,
+  void (*draw_scrollbar_trough_frame) (GtkThemingEngine *engine,
+                                       cairo_t *cr,
                                        gint x,
                                        gint y,
                                        gint width,
@@ -289,8 +289,8 @@ struct _UnicoStyleFunctions
                           gint x, gint y, gint width, gint height);
 #endif
 
-  void (*draw_slider_button) (cairo_t *cr,
-                              GtkThemingEngine *engine,
+  void (*draw_slider_button) (GtkThemingEngine *engine,
+                              cairo_t *cr,
                               gint x,
                               gint y,
                               gint width,
@@ -317,8 +317,8 @@ struct _UnicoStyleFunctions
                           GtkThemingEngine *engine,
                           gint x, gint y, gint width, gint height);
 #endif
-  void (*draw_tab) (cairo_t *cr,
-                    GtkThemingEngine *engine,
+  void (*draw_tab) (GtkThemingEngine *engine,
+                    cairo_t *cr,
                     gint x,
                     gint y,
                     gint width,

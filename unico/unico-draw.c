@@ -30,8 +30,8 @@
                                              (rect).height = (_h);
 
 static void
-unico_draw_button_background (cairo_t *cr,
-                              GtkThemingEngine *engine,
+unico_draw_button_background (GtkThemingEngine *engine,
+                              cairo_t *cr,
                               gint x,
                               gint y,
                               gint width,
@@ -43,15 +43,15 @@ unico_draw_button_background (cairo_t *cr,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x+line_width*2, y+line_width*2,
-                                        width-line_width*4, height-line_width*4,
-                                        radius, unico_get_corners (engine));
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width*2, y+line_width*2,
+                                    width-line_width*4, height-line_width*4,
+                                    radius, unico_get_corners (engine));
 }
 
 static void
-unico_draw_button_frame (cairo_t *cr,
-                         GtkThemingEngine *engine,
+unico_draw_button_frame (GtkThemingEngine *engine,
+                         cairo_t *cr,
                          gint x,
                          gint y,
                          gint width,
@@ -65,20 +65,20 @@ unico_draw_button_frame (cairo_t *cr,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_stroke_outer_rect (cr, engine,
-                                          x, y,
-                                          width, height,
-                                          radius+line_width, corners);
+  unico_cairo_draw_stroke_outer_rect (engine, cr,
+                                      x, y,
+                                      width, height,
+                                      radius+line_width, corners);
 
-  unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+line_width*2, y+line_width*2,
-                                          width-line_width*4, height-line_width*4,
-                                          radius-line_width, corners);
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width*2, y+line_width*2,
+                                      width-line_width*4, height-line_width*4,
+                                      radius-line_width, corners);
 
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x+line_width, y+line_width,
-                                    width-line_width*2, height-line_width*2,
-                                    radius, corners);
+  unico_cairo_draw_border_rect (engine, cr,
+                                x+line_width, y+line_width,
+                                width-line_width*2, height-line_width*2,
+                                radius, corners);
 }
 
 static void
@@ -128,8 +128,8 @@ unico_get_frame_gap_clip (gint x,
 }
 
 static void
-unico_draw_frame (cairo_t *cr,
-                  GtkThemingEngine *engine,
+unico_draw_frame (GtkThemingEngine *engine,
+                  cairo_t *cr,
                   gint x,
                   gint y,
                   gint width,
@@ -171,21 +171,21 @@ unico_draw_frame (cairo_t *cr,
       frame->shadow == GTK_SHADOW_ETCHED_OUT)
     {
       if (frame->shadow == GTK_SHADOW_ETCHED_IN)
-        unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                                line_width, line_width,
-                                                width-line_width*2, height-line_width*2,
-                                                radius-line_width, corners);
-      else
-        unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                                0, 0,
-                                                width-line_width*2, height-line_width*2,
-                                                radius-line_width, corners);
-    }
-  else if (frame->shadow != GTK_SHADOW_NONE)
-    unico_cairo_draw_stroke_inner_rect (cr, engine,
+        unico_cairo_draw_stroke_inner_rect (engine, cr,
                                             line_width, line_width,
                                             width-line_width*2, height-line_width*2,
                                             radius-line_width, corners);
+      else
+        unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                            0, 0,
+                                            width-line_width*2, height-line_width*2,
+                                            radius-line_width, corners);
+    }
+  else if (frame->shadow != GTK_SHADOW_NONE)
+    unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                        line_width, line_width,
+                                        width-line_width*2, height-line_width*2,
+                                        radius-line_width, corners);
 
   /* restore the previous clip region */
   cairo_restore    (cr);
@@ -205,19 +205,19 @@ unico_draw_frame (cairo_t *cr,
       frame->shadow == GTK_SHADOW_ETCHED_OUT)
     {
       if (frame->shadow == GTK_SHADOW_ETCHED_OUT)
-        unico_cairo_draw_border_rect (cr, engine,
-                                          line_width, line_width,
-                                          width-line_width*2, height-line_width*2,
-                                          radius-line_width, corners);
+        unico_cairo_draw_border_rect (engine, cr,
+                                      line_width, line_width,
+                                      width-line_width*2, height-line_width*2,
+                                      radius-line_width, corners);
       else
-        unico_cairo_draw_border_rect (cr, engine,
-                                          0, 0,
-                                          width-line_width*2, height-line_width*2,
-                                          radius-line_width, corners);
+        unico_cairo_draw_border_rect (engine, cr,
+                                      0, 0,
+                                      width-line_width*2, height-line_width*2,
+                                      radius-line_width, corners);
     }
   else
     {
-      unico_cairo_draw_border_rect (cr, engine, 0, 0, width, height, radius, corners);
+      unico_cairo_draw_border_rect (engine, cr, 0, 0, width, height, radius, corners);
     }
 
   cairo_restore (cr);
@@ -226,8 +226,8 @@ unico_draw_frame (cairo_t *cr,
 }
 
 static void
-unico_draw_menubar_background (cairo_t *cr,
-                               GtkThemingEngine *engine,
+unico_draw_menubar_background (GtkThemingEngine *engine,
+                               cairo_t *cr,
                                gint x,
                                gint y,
                                gint width,
@@ -238,15 +238,15 @@ unico_draw_menubar_background (cairo_t *cr,
 
   unico_get_line_width (engine, &line_width);
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x, y,
-                                        width, height,
-                                        0, corners);
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x, y,
+                                    width, height,
+                                    0, corners);
 }
 
 static void
-unico_draw_menubar_frame (cairo_t *cr,
-                          GtkThemingEngine *engine,
+unico_draw_menubar_frame (GtkThemingEngine *engine,
+                          cairo_t *cr,
                           gint x,
                           gint y,
                           gint width,
@@ -257,33 +257,33 @@ unico_draw_menubar_frame (cairo_t *cr,
 
   unico_get_line_width (engine, &line_width);
 
-  unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+line_width, y+line_width,
-                                          width-line_width*2, height-line_width*2,
-                                          0, corners);
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-line_width*2, height-line_width*2,
+                                      0, corners);
 
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x, y,
-                                    width, height,
-                                    0, corners);
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height,
+                                0, corners);
 }
 
 static void
-unico_draw_notebook (cairo_t *cr,
-                     GtkThemingEngine *engine,
+unico_draw_notebook (GtkThemingEngine *engine,
+                     cairo_t *cr,
                      gint x,
                      gint y,
                      gint width,
                      gint height,
                      UnicoFrameParameters *frame)
 {
-  unico_cairo_draw_background (cr, engine, x, y, width, height);
-  unico_draw_frame (cr, engine, x, y, width, height, frame);
+  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_draw_frame (engine, cr, x, y, width, height, frame);
 }
 
 static void
-unico_draw_progressbar_trough_background (cairo_t *cr,
-                                          GtkThemingEngine *engine,
+unico_draw_progressbar_trough_background (GtkThemingEngine *engine,
+                                          cairo_t *cr,
                                           gint x,
                                           gint y,
                                           gint width,
@@ -295,15 +295,15 @@ unico_draw_progressbar_trough_background (cairo_t *cr,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x+line_width, y+line_width,
-                                        width-line_width*2, height-line_width*2,
-                                        radius, unico_get_corners (engine));
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width, y+line_width,
+                                    width-line_width*2, height-line_width*2,
+                                    radius, unico_get_corners (engine));
 }
 
 static void
-unico_draw_progressbar_trough_frame (cairo_t *cr,
-                                     GtkThemingEngine *engine,
+unico_draw_progressbar_trough_frame (GtkThemingEngine *engine,
+                                     cairo_t *cr,
                                      gint x,
                                      gint y,
                                      gint width,
@@ -313,15 +313,15 @@ unico_draw_progressbar_trough_frame (cairo_t *cr,
 
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x, y,
-                                    width, height,
-                                    radius, unico_get_corners (engine));
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height,
+                                radius, unico_get_corners (engine));
 }
 
 static void
-unico_draw_scrollbar_stepper_background (cairo_t *cr,
-                                         GtkThemingEngine *engine,
+unico_draw_scrollbar_stepper_background (GtkThemingEngine *engine,
+                                         cairo_t *cr,
                                          gint x,
                                          gint y,
                                          gint width,
@@ -333,15 +333,15 @@ unico_draw_scrollbar_stepper_background (cairo_t *cr,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x+line_width, y+line_width,
-                                        width-line_width*2, height-line_width*2,
-                                        radius, unico_get_corners (engine));
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width, y+line_width,
+                                    width-line_width*2, height-line_width*2,
+                                    radius, unico_get_corners (engine));
 }
 
 static void
-unico_draw_scrollbar_stepper_frame (cairo_t *cr,
-                                    GtkThemingEngine *engine,
+unico_draw_scrollbar_stepper_frame (GtkThemingEngine *engine,
+                                    cairo_t *cr,
                                     gint x,
                                     gint y,
                                     gint width,
@@ -355,20 +355,20 @@ unico_draw_scrollbar_stepper_frame (cairo_t *cr,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+line_width, y+line_width,
-                                          width-line_width*2, height-line_width*2,
-                                          radius, corners);
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-line_width*2, height-line_width*2,
+                                      radius, corners);
 
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x, y,
-                                    width, height,
-                                    radius, corners);
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height,
+                                radius, corners);
 }
 
 static void
-unico_draw_scrollbar_slider (cairo_t *cr,
-                             GtkThemingEngine *engine,
+unico_draw_scrollbar_slider (GtkThemingEngine *engine,
+                             cairo_t *cr,
                              gint x,
                              gint y,
                              gint width,
@@ -382,25 +382,25 @@ unico_draw_scrollbar_slider (cairo_t *cr,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x+line_width, y+line_width,
-                                        width-line_width*2, height-line_width*2,
-                                        radius, corners);
-
-  unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+line_width, y+line_width,
-                                          width-line_width*2, height-line_width*2,
-                                          radius, corners);
-
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x, y,
-                                    width, height,
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width, y+line_width,
+                                    width-line_width*2, height-line_width*2,
                                     radius, corners);
+
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-line_width*2, height-line_width*2,
+                                      radius, corners);
+
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height,
+                                radius, corners);
 }
 
 static void
-unico_draw_scrollbar_trough_background (cairo_t *cr,
-                                        GtkThemingEngine *engine,
+unico_draw_scrollbar_trough_background (GtkThemingEngine *engine,
+                                        cairo_t *cr,
                                         gint x,
                                         gint y,
                                         gint width,
@@ -421,15 +421,15 @@ unico_draw_scrollbar_trough_background (cairo_t *cr,
   else
     voffset = 1;
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x+line_width+hoffset, y+line_width+voffset,
-                                        width-line_width*2-hoffset*2, height-line_width*2-voffset*2,
-                                        radius, unico_get_corners (engine));
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width+hoffset, y+line_width+voffset,
+                                    width-line_width*2-hoffset*2, height-line_width*2-voffset*2,
+                                    radius, unico_get_corners (engine));
 }
 
 static void
-unico_draw_scrollbar_trough_frame (cairo_t *cr,
-                                   GtkThemingEngine *engine,
+unico_draw_scrollbar_trough_frame (GtkThemingEngine *engine,
+                                   cairo_t *cr,
                                    gint x,
                                    gint y,
                                    gint width,
@@ -448,10 +448,10 @@ unico_draw_scrollbar_trough_frame (cairo_t *cr,
   else
     voffset = 1;
 
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x+hoffset, y+voffset,
-                                    width-hoffset*2, height-voffset*2,
-                                    radius, unico_get_corners (engine));
+  unico_cairo_draw_border_rect (engine, cr,
+                                x+hoffset, y+voffset,
+                                width-hoffset*2, height-voffset*2,
+                                radius, unico_get_corners (engine));
 }
 
 static void
@@ -471,8 +471,8 @@ unico_draw_slider_button_path (cairo_t *cr,
 }
 
 static void
-unico_draw_slider_button (cairo_t *cr,
-                          GtkThemingEngine *engine,
+unico_draw_slider_button (GtkThemingEngine *engine,
+                          cairo_t *cr,
                           gint x,
                           gint y,
                           gint width,
@@ -498,35 +498,35 @@ unico_draw_slider_button (cairo_t *cr,
   cairo_translate (cr, x, y);
 
   unico_draw_slider_button_path (cr, 0, 0, width, height, radius);
-  unico_cairo_draw_background_from_path (cr, engine, 0, 0, width, height);
+  unico_cairo_draw_background_from_path (engine, cr, 0, 0, width, height);
 
   unico_draw_slider_button_path (cr, line_width/2.0, line_width/2.0,
                                      width-line_width, height-line_width,
                                      radius);
-  unico_cairo_draw_stroke_outer_from_path (cr, engine,
-                                               line_width/2.0, line_width/2.0,
-                                               width-line_width, height-line_width);
+  unico_cairo_draw_stroke_outer_from_path (engine, cr,
+                                           line_width/2.0, line_width/2.0,
+                                           width-line_width, height-line_width);
 
   unico_draw_slider_button_path (cr, line_width/2.0+line_width*2, line_width/2.0+line_width*2,
                                      width-line_width-line_width*4, height-line_width-line_width*4,
                                      radius);
-  unico_cairo_draw_stroke_inner_from_path (cr, engine,
-                                               line_width/2.0+line_width*2, line_width/2.0+line_width*2,
-                                               width-line_width-line_width*4, height-line_width-line_width*4);
+  unico_cairo_draw_stroke_inner_from_path (engine, cr,
+                                           line_width/2.0+line_width*2, line_width/2.0+line_width*2,
+                                           width-line_width-line_width*4, height-line_width-line_width*4);
 
   unico_draw_slider_button_path (cr, line_width/2.0+line_width, line_width/2.0+line_width,
                                      width-line_width-line_width*2, height-line_width-line_width*2,
                                      radius);
-  unico_cairo_draw_border_from_path (cr, engine,
-                                         line_width/2.0+line_width, line_width/2.0+line_width,
-                                         width-line_width-line_width*2, height-line_width-line_width*2);
+  unico_cairo_draw_border_from_path (engine, cr,
+                                     line_width/2.0+line_width, line_width/2.0+line_width,
+                                     width-line_width-line_width*2, height-line_width-line_width*2);
 
   cairo_restore (cr);
 }
 
 static void
-unico_draw_tab (cairo_t *cr,
-                GtkThemingEngine* engine,
+unico_draw_tab (GtkThemingEngine* engine,
+                cairo_t *cr,
                 gint x,
                 gint y,
                 gint width,
@@ -591,27 +591,27 @@ unico_draw_tab (cairo_t *cr,
         }
     }
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x+line_width, y+line_width,
-                                        width-1-line_width*2, height-1-line_width*2,
-                                        radius, corners);
-
-  unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+line_width, y+line_width,
-                                          width-1-line_width*2, height-1-line_width*2,
-                                          radius-line_width, corners);
-
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x, y,
-                                    width-1, height-1,
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width, y+line_width,
+                                    width-1-line_width*2, height-1-line_width*2,
                                     radius, corners);
+
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-1-line_width*2, height-1-line_width*2,
+                                      radius-line_width, corners);
+
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width-1, height-1,
+                                radius, corners);
 
   cairo_restore (cr);
 }
 
 static void
-unico_draw_toolbar_background (cairo_t *cr,
-                               GtkThemingEngine *engine,
+unico_draw_toolbar_background (GtkThemingEngine *engine,
+                               cairo_t *cr,
                                gint x,
                                gint y,
                                gint width,
@@ -622,15 +622,15 @@ unico_draw_toolbar_background (cairo_t *cr,
 
   unico_get_line_width (engine, &line_width);
 
-  unico_cairo_draw_background_rect (cr, engine,
-                                        x, y,
-                                        width, height,
-                                        0, corners);
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x, y,
+                                    width, height,
+                                    0, corners);
 }
 
 static void
-unico_draw_toolbar_frame (cairo_t *cr,
-                          GtkThemingEngine *engine,
+unico_draw_toolbar_frame (GtkThemingEngine *engine,
+                          cairo_t *cr,
                           gint x,
                           gint y,
                           gint width,
@@ -641,15 +641,15 @@ unico_draw_toolbar_frame (cairo_t *cr,
 
   unico_get_line_width (engine, &line_width);
 
-  unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+line_width, y+line_width,
-                                          width-line_width*2, height-line_width*2,
-                                          0, corners);
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-line_width*2, height-line_width*2,
+                                      0, corners);
 
-  unico_cairo_draw_border_rect (cr, engine,
-                                    x, y,
-                                    width, height,
-                                    0, corners);
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height,
+                                0, corners);
 }
 
 

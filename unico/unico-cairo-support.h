@@ -26,22 +26,22 @@
 
 G_BEGIN_DECLS
 
-G_GNUC_INTERNAL void unico_cairo_draw_background (cairo_t *cr,
-                                                  GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_background (GtkThemingEngine *engine,
+                                                  cairo_t *cr,
                                                   gint x,
                                                   gint y,
                                                   gint width,
                                                   gint height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_background_from_path (cairo_t *cr,
-                                                            GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_background_from_path (GtkThemingEngine *engine,
+                                                            cairo_t *cr,
                                                             gdouble x,
                                                             gdouble y,
                                                             gdouble width,
                                                             gdouble height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_background_rect (cairo_t *cr,
-                                                       GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_background_rect (GtkThemingEngine *engine,
+                                                       cairo_t *cr,
                                                        gdouble x,
                                                        gdouble y,
                                                        gdouble width,
@@ -49,15 +49,15 @@ G_GNUC_INTERNAL void unico_cairo_draw_background_rect (cairo_t *cr,
                                                        gint radius,
                                                        UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_draw_border_from_path (cairo_t *cr,
-                                                        GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
+                                                        cairo_t *cr,
                                                         gdouble x,
                                                         gdouble y,
                                                         gdouble width,
                                                         gdouble height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_border_rect (cairo_t *cr,
-                                                   GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_border_rect (GtkThemingEngine *engine,
+                                                   cairo_t *cr,
                                                    gdouble x,
                                                    gdouble y,
                                                    gdouble width,
@@ -65,22 +65,22 @@ G_GNUC_INTERNAL void unico_cairo_draw_border_rect (cairo_t *cr,
                                                    gint radius,
                                                    UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_draw_frame (cairo_t *cr,
-                                             GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_frame (GtkThemingEngine *engine,
+                                             cairo_t *cr,
                                              gint x,
                                              gint y,
                                              gint width,
                                              gint height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_from_path (cairo_t *cr,
-                                                              GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
+                                                              cairo_t *cr,
                                                               gdouble x,
                                                               gdouble y,
                                                               gdouble width,
                                                               gdouble height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_rect (cairo_t *cr,
-                                                         GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
+                                                         cairo_t *cr,
                                                          gdouble x,
                                                          gdouble y,
                                                          gdouble width,
@@ -88,15 +88,15 @@ G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_rect (cairo_t *cr,
                                                          gint radius,
                                                          UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_from_path (cairo_t *cr,
-                                                              GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
+                                                              cairo_t *cr,
                                                               gdouble x,
                                                               gdouble y,
                                                               gdouble width,
                                                               gdouble height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_rect (cairo_t *cr,
-                                                         GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
+                                                         cairo_t *cr,
                                                          gdouble x,
                                                          gdouble y,
                                                          gdouble width,
