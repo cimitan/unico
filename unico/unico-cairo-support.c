@@ -446,34 +446,34 @@ unico_rounded_rect_inverted (cairo_t *cr,
 
   radius = MIN (radius, MIN (width/2.0, height/2.0));
 
-  cairo_translate(cr, x, y);
+  cairo_translate (cr, x, y);
 
   if (corners & UNICO_CORNER_TOPLEFT)
-    cairo_move_to(cr, 0, -radius);
+    cairo_move_to (cr, 0, -radius);
   else
-    cairo_move_to(cr, 0, 0);
+    cairo_move_to (cr, 0, 0);
 
   if (corners & UNICO_CORNER_BOTTOMLEFT)
-    cairo_arc(cr, radius, height+radius, radius, G_PI, G_PI*1.5);
+    cairo_arc (cr, radius, height+radius, radius, G_PI, G_PI*1.5);
   else
-    cairo_line_to(cr, 0, height);
+    cairo_line_to (cr, 0, height);
 
   if (corners & UNICO_CORNER_BOTTOMRIGHT)
-    cairo_arc(cr, width-radius, height+radius, radius, G_PI*1.5, G_PI*2.0);
+    cairo_arc (cr, width-radius, height+radius, radius, G_PI*1.5, G_PI*2.0);
   else
-    cairo_line_to(cr, width, height);
+    cairo_line_to (cr, width, height);
 
   if (corners & UNICO_CORNER_TOPRIGHT)
-    cairo_arc(cr, width-radius, -radius, radius, 0.0, G_PI*0.5);
+    cairo_arc (cr, width-radius, -radius, radius, 0.0, G_PI*0.5);
   else
-    cairo_line_to(cr, width, 0);
+    cairo_line_to (cr, width, 0);
 
   if (corners & UNICO_CORNER_TOPLEFT)
-    cairo_arc(cr, radius, -radius, radius, G_PI*0.5, G_PI);
+    cairo_arc (cr, radius, -radius, radius, G_PI*0.5, G_PI);
   else
-    cairo_line_to(cr, 0, 0);
+    cairo_line_to (cr, 0, 0);
 
-  cairo_translate(cr, -x, -y);
+  cairo_translate (cr, -x, -y);
 }
 
 void
