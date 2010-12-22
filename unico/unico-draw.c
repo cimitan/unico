@@ -406,17 +406,15 @@ unico_draw_scrollbar_trough_background (GtkThemingEngine *engine,
                                         gint width,
                                         gint height)
 {
-  const GtkWidgetPath *path;
   gdouble line_width;
   gint hoffset = 0;
   gint voffset = 0;
   gint radius;
 
-  path = gtk_theming_engine_get_path (engine);
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  if (gtk_widget_path_is_type (path, GTK_TYPE_HSCROLLBAR))
+  if (width>height)
     hoffset = 1;
   else
     voffset = 1;
@@ -435,15 +433,13 @@ unico_draw_scrollbar_trough_frame (GtkThemingEngine *engine,
                                    gint width,
                                    gint height)
 {
-  const GtkWidgetPath *path;
   gint hoffset = 0;
   gint voffset = 0;
   gint radius;
 
-  path = gtk_theming_engine_get_path (engine);
   unico_get_border_radius (engine, &radius);
 
-  if (gtk_widget_path_is_type (path, GTK_TYPE_HSCROLLBAR))
+  if (width>height)
     hoffset = 1;
   else
     voffset = 1;
