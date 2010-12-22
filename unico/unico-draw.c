@@ -99,7 +99,7 @@ unico_get_frame_gap_clip (gint x,
           UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, 0.0,
                           frame->gap_width-3, 2.0);
           UNICO_RECT_SET (*border, 1.0+frame->gap_x, 0.0,
-                          frame->gap_width-2, 2.0);
+                          frame->gap_width-3, 2.0);
           break;
         }
       case GTK_POS_BOTTOM:
@@ -107,7 +107,7 @@ unico_get_frame_gap_clip (gint x,
           UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, height-2.0,
                           frame->gap_width-3, 2.0);
           UNICO_RECT_SET (*border, 1.0+frame->gap_x, height-1.0,
-                          frame->gap_width-2, 2.0);
+                          frame->gap_width-3, 2.0);
           break;
         }
       case GTK_POS_LEFT:
@@ -115,7 +115,7 @@ unico_get_frame_gap_clip (gint x,
           UNICO_RECT_SET (*bevel, 0.0, 2.0+frame->gap_x,
                           2.0, frame->gap_width-3);
           UNICO_RECT_SET (*border, 0.0, 1.0+frame->gap_x,
-                          1.0, frame->gap_width-2);
+                          1.0, frame->gap_width-3);
           break;
         }
       case GTK_POS_RIGHT:
@@ -123,7 +123,7 @@ unico_get_frame_gap_clip (gint x,
           UNICO_RECT_SET (*bevel, width-2.0, 2.0+frame->gap_x,
                           2.0, frame->gap_width-3);
           UNICO_RECT_SET (*border, width-1.0, 1.0+frame->gap_x,
-                          1.0, frame->gap_width-2);
+                          1.0, frame->gap_width-3);
           break;
         }
     }
@@ -152,7 +152,9 @@ unico_draw_frame (cairo_t *cr,
     unico_get_frame_gap_clip (x, y, width, height,
                               &bevel_clip, &frame_clip, frame);
 
-	cairo_translate (cr, x, y);
+  cairo_save (cr);
+
+  cairo_translate (cr, x, y);
 
   cairo_save (cr);
 
@@ -219,6 +221,8 @@ unico_draw_frame (cairo_t *cr,
     {
       unico_cairo_draw_border_rect (cr, engine, 0, 0, width, height, radius, corners);
     }
+
+  cairo_restore (cr);
 
   cairo_restore (cr);
 }
@@ -364,10 +368,7 @@ unico_draw_tab (cairo_t *cr,
 
   cairo_save (cr);
 
-  if (state & GTK_STATE_FLAG_ACTIVE)
-    cairo_rectangle (cr, x, y, width, height);
-  else
-    cairo_rectangle (cr, x, y, width+1, height+1); /* XXX: remember to color pixels below */
+  cairo_rectangle (cr, x, y, width, height);
   cairo_clip (cr);
 
   /* Make the tabs slightly bigger than they should be, to create a gap */
