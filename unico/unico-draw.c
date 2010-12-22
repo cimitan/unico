@@ -32,10 +32,10 @@
 static void
 unico_draw_button_background (cairo_t *cr,
                               GtkThemingEngine *engine,
-                              int x,
-                              int y,
-                              int width,
-                              int height,
+                              gint x,
+                              gint y,
+                              gint width,
+                              gint height,
                               UnicoButtonParameters *button)
 {
   unico_cairo_draw_background (cr, engine, x, y, width, height);
@@ -44,20 +44,20 @@ unico_draw_button_background (cairo_t *cr,
 static void
 unico_draw_button_frame (cairo_t *cr,
                          GtkThemingEngine *engine,
-                         int x,
-                         int y,
-                         int width,
-                         int height,
+                         gint x,
+                         gint y,
+                         gint width,
+                         gint height,
                          UnicoButtonParameters *button)
 {
   unico_cairo_draw_frame (cr, engine, x, y, width, height);
 }
 
 static void
-unico_get_frame_gap_clip (int x,
-                          int y,
-                          int width,
-                          int height,
+unico_get_frame_gap_clip (gint x,
+                          gint y,
+                          gint width,
+                          gint height,
                           GdkRectangle *bevel,
                           GdkRectangle *border,
                           UnicoFrameParameters *frame)
@@ -102,17 +102,17 @@ unico_get_frame_gap_clip (int x,
 static void
 unico_draw_frame (cairo_t *cr,
                   GtkThemingEngine *engine,
-                  int x,
-                  int y,
-                  int width,
-                  int height,
+                  gint x,
+                  gint y,
+                  gint width,
+                  gint height,
                   UnicoFrameParameters *frame)
 {
   GdkRectangle bevel_clip = {0, 0, 0, 0};
   GdkRectangle frame_clip = {0, 0, 0, 0};
   UnicoCorners corners;
-  double line_width;
-  int radius;
+  gdouble line_width;
+  gint radius;
 
   corners = unico_get_corners (engine);
   unico_get_line_width (engine, &line_width);
@@ -194,10 +194,10 @@ unico_draw_frame (cairo_t *cr,
 static void
 unico_draw_notebook (cairo_t *cr,
                      GtkThemingEngine *engine,
-                     int x,
-                     int y,
-                     int width,
-                     int height,
+                     gint x,
+                     gint y,
+                     gint width,
+                     gint height,
                      UnicoFrameParameters *frame)
 {
   unico_cairo_draw_background (cr, engine, x, y, width, height);
@@ -206,11 +206,11 @@ unico_draw_notebook (cairo_t *cr,
 
 static void
 unico_draw_slider_button_path (cairo_t *cr,
-                               int x,
-                               int y,
-                               int width,
-                               int height,
-                               int radius)
+                               gint x,
+                               gint y,
+                               gint width,
+                               gint height,
+                               gint radius)
 {
   cairo_move_to (cr, x+radius, y);
   cairo_arc (cr, x+width-radius, y+radius, radius, G_PI*1.5, G_PI*2);
@@ -223,15 +223,15 @@ unico_draw_slider_button_path (cairo_t *cr,
 static void
 unico_draw_slider_button (cairo_t *cr,
                           GtkThemingEngine *engine,
-                          int x,
-                          int y,
-                          int width,
-                          int height,
+                          gint x,
+                          gint y,
+                          gint width,
+                          gint height,
                           UnicoSliderParameters *slider)
 {
   UnicoCorners corners;
-  double line_width;
-  int radius;
+  gdouble line_width;
+  gint radius;
 
   corners = unico_get_corners (engine);
   unico_get_line_width (engine, &line_width);
@@ -277,16 +277,16 @@ unico_draw_slider_button (cairo_t *cr,
 static void
 unico_draw_tab (cairo_t *cr,
                 GtkThemingEngine* engine,
-                int x,
-                int y,
-                int width,
-                int height,
+                gint x,
+                gint y,
+                gint width,
+                gint height,
                 UnicoTabParameters *tab)
 {
   GtkStateFlags state;
   UnicoCorners corners;
-  double line_width;
-  int radius;
+  gdouble line_width;
+  gint radius;
 
   state = gtk_theming_engine_get_state (engine);
   unico_get_line_width (engine, &line_width);

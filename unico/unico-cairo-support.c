@@ -26,13 +26,13 @@
 void
 unico_cairo_draw_background (cairo_t *cr,
                              GtkThemingEngine *engine,
-                             int x,
-                             int y,
-                             int width,
-                             int height)
+                             gint x,
+                             gint y,
+                             gint width,
+                             gint height)
 {
-  double line_width;
-  int radius;
+  gdouble line_width;
+  gint radius;
 
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
@@ -46,10 +46,10 @@ unico_cairo_draw_background (cairo_t *cr,
 void
 unico_cairo_draw_background_from_path (cairo_t *cr,
                                        GtkThemingEngine *engine,
-                                       double x,
-                                       double y,
-                                       double width,
-                                       double height)
+                                       gdouble x,
+                                       gdouble y,
+                                       gdouble width,
+                                       gdouble height)
 {
   GtkStateFlags state;
   GdkRGBA *background_color;
@@ -89,11 +89,11 @@ unico_cairo_draw_background_from_path (cairo_t *cr,
 void
 unico_cairo_draw_background_rect (cairo_t *cr,
                                   GtkThemingEngine *engine,
-                                  double x,
-                                  double y,
-                                  double width,
-                                  double height,
-                                  int radius,
+                                  gdouble x,
+                                  gdouble y,
+                                  gdouble width,
+                                  gdouble height,
+                                  gint radius,
                                   UnicoCorners corners)
 {
   unico_cairo_rounded_rect (cr, x, y, width, height, radius, corners);
@@ -103,14 +103,14 @@ unico_cairo_draw_background_rect (cairo_t *cr,
 void
 unico_cairo_draw_frame (cairo_t *cr,
                         GtkThemingEngine *engine,
-                        int x,
-                        int y,
-                        int width,
-                        int height)
+                        gint x,
+                        gint y,
+                        gint width,
+                        gint height)
 {
   UnicoCorners corners;
-  double line_width;
-  int radius;
+  gdouble line_width;
+  gint radius;
 
   corners = unico_get_corners (engine);
   unico_get_line_width (engine, &line_width);
@@ -135,15 +135,15 @@ unico_cairo_draw_frame (cairo_t *cr,
 void
 unico_cairo_draw_border_from_path (cairo_t *cr,
                                    GtkThemingEngine *engine,
-                                   double x,
-                                   double y,
-                                   double width,
-                                   double height)
+                                   gdouble x,
+                                   gdouble y,
+                                   gdouble width,
+                                   gdouble height)
 {
   GtkStateFlags state;
   GdkRGBA *border_color;
   cairo_pattern_t *border_pat;
-  double line_width;
+  gdouble line_width;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
@@ -181,14 +181,14 @@ unico_cairo_draw_border_from_path (cairo_t *cr,
 void
 unico_cairo_draw_border_rect (cairo_t *cr,
                               GtkThemingEngine *engine,
-                              double x,
-                              double y,
-                              double width,
-                              double height,
-                              int radius,
+                              gdouble x,
+                              gdouble y,
+                              gdouble width,
+                              gdouble height,
+                              gint radius,
                               UnicoCorners corners)
 {
-  double line_width;
+  gdouble line_width;
 
   unico_get_line_width (engine, &line_width);
 
@@ -205,15 +205,15 @@ unico_cairo_draw_border_rect (cairo_t *cr,
 void
 unico_cairo_draw_stroke_inner_from_path (cairo_t *cr,
                                          GtkThemingEngine *engine,
-                                         double x,
-                                         double y,
-                                         double width,
-                                         double height)
+                                         gdouble x,
+                                         gdouble y,
+                                         gdouble width,
+                                         gdouble height)
 {
   GtkStateFlags state;
   GdkRGBA *stroke_inner_color;
   cairo_pattern_t *stroke_inner_pat;
-  double line_width;
+  gdouble line_width;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
@@ -251,14 +251,14 @@ unico_cairo_draw_stroke_inner_from_path (cairo_t *cr,
 void
 unico_cairo_draw_stroke_inner_rect (cairo_t *cr,
                                     GtkThemingEngine *engine,
-                                    double x,
-                                    double y,
-                                    double width,
-                                    double height,
-                                    int radius,
+                                    gdouble x,
+                                    gdouble y,
+                                    gdouble width,
+                                    gdouble height,
+                                    gint radius,
                                     UnicoCorners corners)
 {
-  double line_width;
+  gdouble line_width;
 
   unico_get_line_width (engine, &line_width);
 
@@ -275,15 +275,15 @@ unico_cairo_draw_stroke_inner_rect (cairo_t *cr,
 void
 unico_cairo_draw_stroke_outer_from_path (cairo_t *cr,
                                          GtkThemingEngine *engine,
-                                         double x,
-                                         double y,
-                                         double width,
-                                         double height)
+                                         gdouble x,
+                                         gdouble y,
+                                         gdouble width,
+                                         gdouble height)
 {
   GtkStateFlags state;
   GdkRGBA *stroke_outer_color;
   cairo_pattern_t *stroke_outer_pat;
-  double line_width;
+  gdouble line_width;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
@@ -322,14 +322,14 @@ unico_cairo_draw_stroke_outer_from_path (cairo_t *cr,
 void
 unico_cairo_draw_stroke_outer_rect (cairo_t *cr,
                                     GtkThemingEngine *engine,
-                                    double x,
-                                    double y,
-                                    double width,
-                                    double height,
-                                    int radius,
+                                    gdouble x,
+                                    gdouble y,
+                                    gdouble width,
+                                    gdouble height,
+                                    gint radius,
                                     UnicoCorners corners)
 {
-  double line_width;
+  gdouble line_width;
 
   unico_get_line_width (engine, &line_width);
 
@@ -345,12 +345,12 @@ unico_cairo_draw_stroke_outer_rect (cairo_t *cr,
 
 void
 unico_cairo_exchange_axis (cairo_t *cr,
-                           int *x,
-                           int *y,
-                           int *width,
-                           int *height)
+                           gint *x,
+                           gint *y,
+                           gint *width,
+                           gint *height)
 {
-  int tmp;
+  gint tmp;
   cairo_matrix_t matrix;
 
   cairo_translate (cr, *x, *y);
@@ -368,11 +368,11 @@ unico_cairo_exchange_axis (cairo_t *cr,
 
 void
 unico_cairo_rounded_rect (cairo_t *cr,
-                          double x,
-                          double y,
-                          double width,
-                          double height,
-                          int radius,
+                          gdouble x,
+                          gdouble y,
+                          gdouble width,
+                          gdouble height,
+                          gint radius,
                           UnicoCorners corners)
 {
   if (radius <= 0)
@@ -411,14 +411,14 @@ unico_cairo_rounded_rect (cairo_t *cr,
 
 void
 unico_cairo_rounded_rect_inner (cairo_t *cr,
-                                double x,
-                                double y,
-                                double width,
-                                double height,
-                                int radius,
+                                gdouble x,
+                                gdouble y,
+                                gdouble width,
+                                gdouble height,
+                                gint radius,
                                 UnicoCorners corners)
 {
-  double line_width;
+  gdouble line_width;
 
   line_width = cairo_get_line_width (cr);
 
@@ -431,11 +431,11 @@ unico_cairo_rounded_rect_inner (cairo_t *cr,
 
 void
 unico_cairo_rounded_rect_inverted (cairo_t *cr,
-                                   double x,
-                                   double y,
-                                   double width,
-                                   double height,
-                                   int radius,
+                                   gdouble x,
+                                   gdouble y,
+                                   gdouble width,
+                                   gdouble height,
+                                   gint radius,
                                    UnicoCorners corners)
 {
   if (radius <= 0)
@@ -478,14 +478,14 @@ unico_cairo_rounded_rect_inverted (cairo_t *cr,
 
 void
 unico_cairo_rounded_rect_inverted_inner (cairo_t *cr,
-                                         double x,
-                                         double y,
-                                         double width,
-                                         double height,
-                                         int radius,
+                                         gdouble x,
+                                         gdouble y,
+                                         gdouble width,
+                                         gdouble height,
+                                         gint radius,
                                          UnicoCorners corners)
 {
-  double line_width;
+  gdouble line_width;
 
   line_width = cairo_get_line_width (cr);
 
