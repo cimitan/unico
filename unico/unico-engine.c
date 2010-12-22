@@ -63,7 +63,7 @@ unico_engine_render_background (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     {
-      style_functions->draw_menubar_background (engine, cr, x, y, width, height);
+      style_functions->draw_menubar_background (cr, engine, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
