@@ -32,9 +32,9 @@ G_GNUC_INTERNAL void unico_lookup_functions (UnicoEngine *engine,
 
 G_GNUC_INTERNAL UnicoCorners unico_get_corners (GtkThemingEngine *engine);
 
-G_GNUC_INTERNAL double unico_get_line_width (GtkThemingEngine *engine);
+G_GNUC_INTERNAL void unico_get_line_width (GtkThemingEngine *engine, double *line_width);
 
-G_GNUC_INTERNAL int unico_get_border_radius (GtkThemingEngine *engine);
+G_GNUC_INTERNAL int unico_get_border_radius (GtkThemingEngine *engine, int *radius);
 
 G_END_DECLS
 

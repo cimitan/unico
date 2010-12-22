@@ -53,36 +53,30 @@ unico_get_corners (GtkThemingEngine *engine)
   return corners;
 }
 
-double
-unico_get_line_width (GtkThemingEngine *engine)
+void
+unico_get_line_width (GtkThemingEngine *engine, double *line_width)
 {
   GtkBorder *border;
   GtkStateFlags state;
-  double line_width;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
                           "border-width", &border,
                           NULL);
 
-  line_width = MIN (MIN (border->top, border->bottom),
+  *line_width = MIN (MIN (border->top, border->bottom),
                     MIN (border->left, border->right));
 
   gtk_border_free (border);
-
-  return line_width;
 }
 
-int
-unico_get_border_radius (GtkThemingEngine *engine)
+void
+unico_get_border_radius (GtkThemingEngine *engine, int *radius)
 {
   GtkStateFlags state;
-  int radius;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "border-radius", &radius,
+                          "border-radius", radius,
                           NULL);
-
-  return radius;
 }

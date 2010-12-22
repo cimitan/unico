@@ -115,8 +115,8 @@ unico_draw_frame (cairo_t *cr,
   int radius;
 
   corners = unico_get_corners (engine);
-  line_width = unico_get_line_width (engine);
-  radius = unico_get_border_radius (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
 
   if (frame->gap_x != -1)
     unico_get_frame_gap_clip (x, y, width, height,
@@ -234,8 +234,8 @@ unico_draw_slider_button (cairo_t *cr,
   int radius;
 
   corners = unico_get_corners (engine);
-  line_width = unico_get_line_width (engine);
-  radius = unico_get_border_radius (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
   radius = MIN (radius, MIN (width/2.0, height/2.0));
 
   cairo_set_line_width (cr, line_width);
@@ -289,15 +289,15 @@ unico_draw_tab (cairo_t *cr,
   int radius;
 
   state = gtk_theming_engine_get_state (engine);
-  line_width = unico_get_line_width (engine);
-  radius = unico_get_border_radius (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
 
   cairo_save (cr);
 
   if (state & GTK_STATE_FLAG_ACTIVE)
     cairo_rectangle (cr, x, y, width, height);
   else
-    cairo_rectangle (cr, x, y, width+1, height+1); /* XXX: remembet to color pixels below */
+    cairo_rectangle (cr, x, y, width+1, height+1); /* XXX: remember to color pixels below */
   cairo_clip (cr);
 
   /* Make the tabs slightly bigger than they should be, to create a gap */
