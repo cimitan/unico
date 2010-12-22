@@ -97,33 +97,33 @@ unico_get_frame_gap_clip (gint x,
       case GTK_POS_TOP:
         {
           UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, 0.0,
-                          frame->gap_width-3, frame->gap_width);
+                          frame->gap_width-3, 2.0);
           UNICO_RECT_SET (*border, 1.0+frame->gap_x, 0.0,
-                          frame->gap_width-2, frame->gap_width);
+                          frame->gap_width-2, 2.0);
           break;
         }
       case GTK_POS_BOTTOM:
         {
           UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, height-2.0,
-                          frame->gap_width-3, frame->gap_width);
+                          frame->gap_width-3, 2.0);
           UNICO_RECT_SET (*border, 1.0+frame->gap_x, height-1.0,
-                          frame->gap_width-2, frame->gap_width);
+                          frame->gap_width-2, 2.0);
           break;
         }
       case GTK_POS_LEFT:
         {
           UNICO_RECT_SET (*bevel, 0.0, 2.0+frame->gap_x,
-                          frame->gap_width, frame->gap_width-3);
+                          2.0, frame->gap_width-3);
           UNICO_RECT_SET (*border, 0.0, 1.0+frame->gap_x,
-                          frame->gap_width, frame->gap_width-2);
+                          1.0, frame->gap_width-2);
           break;
         }
       case GTK_POS_RIGHT:
         {
           UNICO_RECT_SET (*bevel, width-2.0, 2.0+frame->gap_x,
-                          frame->gap_width, frame->gap_width-3);
+                          2.0, frame->gap_width-3);
           UNICO_RECT_SET (*border, width-1.0, 1.0+frame->gap_x,
-                          frame->gap_width, frame->gap_width-2);
+                          1.0, frame->gap_width-2);
           break;
         }
     }
@@ -152,6 +152,8 @@ unico_draw_frame (cairo_t *cr,
     unico_get_frame_gap_clip (x, y, width, height,
                               &bevel_clip, &frame_clip, frame);
 
+	cairo_translate (cr, x, y);
+
   cairo_save (cr);
 
   /* Set clip for the bevel */
@@ -159,7 +161,7 @@ unico_draw_frame (cairo_t *cr,
     {
       /* Set clip for gap */
       cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-      cairo_rectangle      (cr, x, y, width, height);
+      cairo_rectangle      (cr, 0, 0, width, height);
       cairo_rectangle      (cr, bevel_clip.x, bevel_clip.y, bevel_clip.width, bevel_clip.height);
       cairo_clip           (cr);
     }
@@ -170,18 +172,18 @@ unico_draw_frame (cairo_t *cr,
     {
       if (frame->shadow == GTK_SHADOW_ETCHED_IN)
         unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                                x+line_width, y+line_width,
+                                                line_width, line_width,
                                                 width-(line_width*2), height-(line_width*2),
                                                 radius-line_width, corners);
       else
         unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                                x, y,
+                                                0, 0,
                                                 width-(line_width*2), height-(line_width*2),
                                                 radius-line_width, corners);
     }
   else if (frame->shadow != GTK_SHADOW_NONE)
     unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                            x+line_width, y+line_width,
+                                            line_width, line_width,
                                             width-(line_width*2), height-(line_width*2),
                                             radius-line_width, corners);
 
@@ -193,7 +195,7 @@ unico_draw_frame (cairo_t *cr,
     {
       /* Set clip for gap */
       cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-      cairo_rectangle      (cr, x, y, width, height);
+      cairo_rectangle      (cr, 0, 0, width, height);
       cairo_rectangle      (cr, frame_clip.x, frame_clip.y, frame_clip.width, frame_clip.height);
       cairo_clip           (cr);
     }
@@ -204,18 +206,18 @@ unico_draw_frame (cairo_t *cr,
     {
       if (frame->shadow == GTK_SHADOW_ETCHED_OUT)
         unico_cairo_draw_border_rect (cr, engine,
-                                          x+line_width, y+line_width,
+                                          line_width, line_width,
                                           width-(line_width*2), height-(line_width*2),
                                           radius-line_width, corners);
       else
         unico_cairo_draw_border_rect (cr, engine,
-                                          x, y,
+                                          0, 0,
                                           width-(line_width*2), height-(line_width*2),
                                           radius-line_width, corners);
     }
   else
     {
-      unico_cairo_draw_border_rect (cr, engine, x, y, width, height, radius, corners);
+      unico_cairo_draw_border_rect (cr, engine, 0, 0, width, height, radius, corners);
     }
 
   cairo_restore (cr);
