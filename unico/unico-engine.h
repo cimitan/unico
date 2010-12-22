@@ -52,8 +52,8 @@ struct _UnicoEngineClass
   UnicoStyleFunctions style_functions[UNICO_NUM_STYLES];
 };
 
-G_GNUC_INTERNAL void  null_engine_register_types (GTypeModule *module);
-G_GNUC_INTERNAL GType null_engine_get_type       (void);
+G_GNUC_INTERNAL void  unico_engine_register_types (GTypeModule *module);
+G_GNUC_INTERNAL GType unico_engine_get_type       (void);
 
 G_END_DECLS
 

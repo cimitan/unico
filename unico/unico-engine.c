@@ -100,8 +100,7 @@ unico_engine_render_extension (GtkThemingEngine *engine,
 
   UNICO_CAIRO_INIT
 
-  unico_lookup_functions (UNICO_ENGINE (engine),
-                          &style_functions, NULL);
+  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
 
   if (gtk_theming_engine_has_region (engine, GTK_STYLE_REGION_TAB, NULL))
     {
