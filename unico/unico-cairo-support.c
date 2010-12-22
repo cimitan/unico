@@ -38,9 +38,9 @@ unico_cairo_draw_background (cairo_t *cr,
   unico_get_border_radius (engine, &radius);
 
   unico_cairo_draw_background_rect (cr, engine,
-                                        x+1+line_width*2, y+1+line_width*2,
-                                        width-2-(line_width*4), height-2-(line_width*4),
-                                        radius-1, unico_get_corners (engine));
+                                        x+line_width*2, y+line_width*2,
+                                        width-line_width*4, height-line_width*4,
+                                        radius, unico_get_corners (engine));
 }
 
 void
@@ -122,13 +122,13 @@ unico_cairo_draw_frame (cairo_t *cr,
                                           radius+line_width, corners);
 
   unico_cairo_draw_stroke_inner_rect (cr, engine,
-                                          x+(line_width*2), y+(line_width*2),
-                                          width-(line_width*4), height-(line_width*4),
+                                          x+line_width*2, y+line_width*2,
+                                          width-line_width*4, height-line_width*4,
                                           radius-line_width, corners);
 
   unico_cairo_draw_border_rect (cr, engine,
                                     x+line_width, y+line_width,
-                                    width-(line_width*2), height-(line_width*2),
+                                    width-line_width*2, height-line_width*2,
                                     radius, corners);
 }
 

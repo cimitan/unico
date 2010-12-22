@@ -63,7 +63,7 @@ unico_engine_render_background (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     {
-      GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_background (engine, cr, x, y, width, height);
+      style_functions->draw_menubar_background (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -72,11 +72,7 @@ unico_engine_render_background (GtkThemingEngine *engine,
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
-      UnicoButtonParameters *button;
-
-      button->horizontal = TRUE;
-
-      style_functions->draw_button_background (cr, engine, x, y, width, height, button);
+      style_functions->draw_button_background (cr, engine, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
@@ -159,7 +155,7 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     {
-      GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame (engine, cr, x, y, width, height);
+      style_functions->draw_menubar_frame (cr, engine, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -168,11 +164,7 @@ unico_engine_render_frame (GtkThemingEngine *engine,
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
-      UnicoButtonParameters *button;
-
-      button->horizontal = TRUE;
-
-      style_functions->draw_button_frame (cr, engine, x, y, width, height, button);
+      style_functions->draw_button_frame (cr, engine, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))

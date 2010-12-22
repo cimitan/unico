@@ -24,11 +24,6 @@ G_BEGIN_DECLS
 
 typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 
-typedef struct
-{
-  gboolean horizontal;
-} UnicoButtonParameters;
-
 typedef enum
 {
   UNICO_CORNER_NONE        = 0,
@@ -78,16 +73,28 @@ struct _UnicoStyleFunctions
                                   gint x,
                                   gint y,
                                   gint width,
-                                  gint height,
-                                  UnicoButtonParameters *button);
+                                  gint height);
 
   void (*draw_button_frame) (cairo_t *cr,
                              GtkThemingEngine *engine,
                              gint x,
                              gint y,
                              gint width,
-                             gint height,
-                             UnicoButtonParameters *button);
+                             gint height);
+
+  void (*draw_menubar_background) (cairo_t *cr,
+                                   GtkThemingEngine *engine,
+                                   gint x,
+                                   gint y,
+                                   gint width,
+                                   gint height);
+
+  void (*draw_menubar_frame) (cairo_t *cr,
+                              GtkThemingEngine *engine,
+                              gint x,
+                              gint y,
+                              gint width,
+                              gint height);
 #if 0
   void (*draw_checkbox) (cairo_t *cr,
                          GtkThemingEngine *engine,
