@@ -279,6 +279,141 @@ unico_draw_progressbar_trough_frame (cairo_t *cr,
 }
 
 static void
+unico_draw_scrollbar_stepper_background (cairo_t *cr,
+                                         GtkThemingEngine *engine,
+                                         gint x,
+                                         gint y,
+                                         gint width,
+                                         gint height)
+{
+  gdouble line_width;
+  gint radius;
+
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_background_rect (cr, engine,
+                                        x+1+line_width, y+1+line_width,
+                                        width-2-(line_width*2), height-2-(line_width*2),
+                                        radius-1, unico_get_corners (engine));
+}
+
+static void
+unico_draw_scrollbar_stepper_frame (cairo_t *cr,
+                                    GtkThemingEngine *engine,
+                                    gint x,
+                                    gint y,
+                                    gint width,
+                                    gint height)
+{
+  UnicoCorners corners;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_stroke_inner_rect (cr, engine,
+                                          x+line_width, y+line_width,
+                                          width-(line_width*2), height-(line_width*2),
+                                          radius, corners);
+
+  unico_cairo_draw_border_rect (cr, engine,
+                                    x, y,
+                                    width, height,
+                                    radius, corners);
+}
+
+static void
+unico_draw_scrollbar_slider (cairo_t *cr,
+                             GtkThemingEngine *engine,
+                             gint x,
+                             gint y,
+                             gint width,
+                             gint height)
+{
+  UnicoCorners corners;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_background_rect (cr, engine,
+                                        x+1+line_width, y+1+line_width,
+                                        width-2-(line_width*2), height-2-(line_width*2),
+                                        radius-1, corners);
+
+  unico_cairo_draw_stroke_inner_rect (cr, engine,
+                                          x+line_width, y+line_width,
+                                          width-(line_width*2), height-(line_width*2),
+                                          radius, corners);
+
+  unico_cairo_draw_border_rect (cr, engine,
+                                    x, y,
+                                    width, height,
+                                    radius, corners);
+}
+
+static void
+unico_draw_scrollbar_trough_background (cairo_t *cr,
+                                        GtkThemingEngine *engine,
+                                        gint x,
+                                        gint y,
+                                        gint width,
+                                        gint height)
+{
+  const GtkWidgetPath *path;
+  gdouble line_width;
+  gint hoffset = 0;
+  gint voffset = 0;
+  gint radius;
+
+  path = gtk_theming_engine_get_path (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  if (gtk_widget_path_is_type (path, GTK_TYPE_HSCROLLBAR))
+    hoffset = 1;
+  else
+    voffset = 1;
+
+  unico_cairo_draw_background_rect (cr, engine,
+                                        x+line_width+hoffset, y+line_width+voffset,
+                                        width-(line_width*2)-hoffset*2, height-(line_width*2)-voffset*2,
+                                        radius, unico_get_corners (engine));
+}
+
+static void
+unico_draw_scrollbar_trough_frame (cairo_t *cr,
+                                   GtkThemingEngine *engine,
+                                   gint x,
+                                   gint y,
+                                   gint width,
+                                   gint height)
+{
+  const GtkWidgetPath *path;
+  gint hoffset = 0;
+  gint voffset = 0;
+  gint radius;
+
+  path = gtk_theming_engine_get_path (engine);
+  unico_get_border_radius (engine, &radius);
+
+  if (gtk_widget_path_is_type (path, GTK_TYPE_HSCROLLBAR))
+    hoffset = 1;
+  else
+    voffset = 1;
+
+  unico_cairo_draw_border_rect (cr, engine,
+                                    x+hoffset, y+voffset,
+                                    width-hoffset*2, height-voffset*2,
+                                    radius, unico_get_corners (engine));
+}
+
+static void
 unico_draw_slider_button_path (cairo_t *cr,
                                gint x,
                                gint y,
@@ -444,6 +579,11 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_notebook                      = unico_draw_notebook;
   functions->draw_progressbar_trough_background = unico_draw_progressbar_trough_background;
   functions->draw_progressbar_trough_frame      = unico_draw_progressbar_trough_frame;
+  functions->draw_scrollbar_slider              = unico_draw_scrollbar_slider;
+  functions->draw_scrollbar_stepper_background  = unico_draw_scrollbar_stepper_background;
+  functions->draw_scrollbar_stepper_frame       = unico_draw_scrollbar_stepper_frame;
+  functions->draw_scrollbar_trough_background   = unico_draw_scrollbar_trough_background;
+  functions->draw_scrollbar_trough_frame        = unico_draw_scrollbar_trough_frame;
   functions->draw_slider_button                 = unico_draw_slider_button;
   functions->draw_tab                           = unico_draw_tab;
 }

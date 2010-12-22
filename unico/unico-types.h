@@ -22,8 +22,6 @@
 
 G_BEGIN_DECLS
 
-typedef unsigned char gboolean;
-typedef unsigned char uint8;
 typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 
 typedef struct
@@ -186,6 +184,27 @@ struct _UnicoStyleFunctions
                                          gint y,
                                          gint width,
                                          gint height);
+
+  void (*draw_scrollbar_slider) (cairo_t *cr,
+                                 GtkThemingEngine *engine,
+                                 gint x,
+                                 gint y,
+                                 gint width,
+                                 gint height);
+
+  void (*draw_scrollbar_stepper_background) (cairo_t *cr,
+                                             GtkThemingEngine *engine,
+                                             gint x,
+                                             gint y,
+                                             gint width,
+                                             gint height);
+
+  void (*draw_scrollbar_stepper_frame) (cairo_t *cr,
+                                        GtkThemingEngine *engine,
+                                        gint x,
+                                        gint y,
+                                        gint width,
+                                        gint height);
 
   void (*draw_scrollbar_trough_background) (cairo_t *cr,
                                             GtkThemingEngine *engine,
