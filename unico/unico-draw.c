@@ -38,7 +38,16 @@ unico_draw_button_background (cairo_t *cr,
                               gint height,
                               UnicoButtonParameters *button)
 {
-  unico_cairo_draw_background (cr, engine, x, y, width, height);
+  gdouble line_width;
+  gint radius;
+
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_background_rect (cr, engine,
+                                        x+1+line_width*2, y+1+line_width*2,
+                                        width-2-(line_width*4), height-2-(line_width*4),
+                                        radius-1, unico_get_corners (engine));
 }
 
 static void
@@ -50,7 +59,28 @@ unico_draw_button_frame (cairo_t *cr,
                          gint height,
                          UnicoButtonParameters *button)
 {
-  unico_cairo_draw_frame (cr, engine, x, y, width, height);
+  UnicoCorners corners;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_stroke_outer_rect (cr, engine,
+                                          x, y,
+                                          width, height,
+                                          radius+line_width, corners);
+
+  unico_cairo_draw_stroke_inner_rect (cr, engine,
+                                          x+(line_width*2), y+(line_width*2),
+                                          width-(line_width*4), height-(line_width*4),
+                                          radius-line_width, corners);
+
+  unico_cairo_draw_border_rect (cr, engine,
+                                    x+line_width, y+line_width,
+                                    width-(line_width*2), height-(line_width*2),
+                                    radius, corners);
 }
 
 static void
@@ -202,6 +232,44 @@ unico_draw_notebook (cairo_t *cr,
 {
   unico_cairo_draw_background (cr, engine, x, y, width, height);
   unico_draw_frame (cr, engine, x, y, width, height, frame);
+}
+
+static void
+unico_draw_progressbar_trough_background (cairo_t *cr,
+                                          GtkThemingEngine *engine,
+                                          gint x,
+                                          gint y,
+                                          gint width,
+                                          gint height)
+{
+  gdouble line_width;
+  gint radius;
+
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_background_rect (cr, engine,
+                                        x+line_width, y+line_width,
+                                        width-(line_width*2), height-(line_width*2),
+                                        radius, unico_get_corners (engine));
+}
+
+static void
+unico_draw_progressbar_trough_frame (cairo_t *cr,
+                                     GtkThemingEngine *engine,
+                                     gint x,
+                                     gint y,
+                                     gint width,
+                                     gint height)
+{
+  gint radius;
+
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_border_rect (cr, engine,
+                                    x, y,
+                                    width, height,
+                                    radius, unico_get_corners (engine));
 }
 
 static void
@@ -367,10 +435,12 @@ unico_register_style_default (UnicoStyleFunctions *functions)
 {
   g_assert (functions);
 
-  functions->draw_button_background = unico_draw_button_background;
-  functions->draw_button_frame      = unico_draw_button_frame;
-  functions->draw_frame             = unico_draw_frame;
-  functions->draw_notebook          = unico_draw_notebook;
-  functions->draw_slider_button     = unico_draw_slider_button;
-  functions->draw_tab               = unico_draw_tab;
+  functions->draw_button_background             = unico_draw_button_background;
+  functions->draw_button_frame                  = unico_draw_button_frame;
+  functions->draw_frame                         = unico_draw_frame;
+  functions->draw_notebook                      = unico_draw_notebook;
+  functions->draw_progressbar_trough_background = unico_draw_progressbar_trough_background;
+  functions->draw_progressbar_trough_frame      = unico_draw_progressbar_trough_frame;
+  functions->draw_slider_button                 = unico_draw_slider_button;
+  functions->draw_tab                           = unico_draw_tab;
 }

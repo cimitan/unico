@@ -172,12 +172,21 @@ struct _UnicoStyleFunctions
                          GtkThemingEngine *engine,
                          gint x, gint y, gint width, gint height,
                          gint menuitemstyle);
+#endif
+  void (*draw_progressbar_trough_background) (cairo_t *cr,
+                                              GtkThemingEngine *engine,
+                                              gint x,
+                                              gint y,
+                                              gint width,
+                                              gint height);
 
-  void (*draw_progressbar_trough) (cairo_t *cr,
-                                   GtkThemingEngine *engine,
-                                   const ProgressBarParameters *progressbar,
-                                   gint x, gint y, gint width, gint height);
-
+  void (*draw_progressbar_trough_frame) (cairo_t *cr,
+                                         GtkThemingEngine *engine,
+                                         gint x,
+                                         gint y,
+                                         gint width,
+                                         gint height);
+#if 0
   void (*draw_progressbar_fill) (cairo_t *cr,
                                  GtkThemingEngine *engine,
                                  const ProgressBarParameters *progressbar,

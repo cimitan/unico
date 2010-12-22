@@ -54,10 +54,12 @@ unico_engine_render_background (GtkThemingEngine *engine,
                                 gdouble height)
 {
   UnicoStyleFunctions *style_functions;
+  const GtkWidgetPath *path;
 
   UNICO_CAIRO_INIT
 
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+  path = gtk_theming_engine_get_path (engine);
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
       gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -71,6 +73,11 @@ unico_engine_render_background (GtkThemingEngine *engine,
       button->horizontal = TRUE;
 
       style_functions->draw_button_background (cr, engine, x, y, width, height, button);
+    }
+  else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
+           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
+    {
+      style_functions->draw_progressbar_trough_background (cr, engine, x, y, width, height);
     }
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_background (engine, cr, x, y, width, height);
@@ -96,7 +103,7 @@ unico_engine_render_extension (GtkThemingEngine *engine,
                                gdouble height,
                                GtkPositionType gap_side)
 {
-  UnicoStyleFunctions  *style_functions;
+  UnicoStyleFunctions *style_functions;
 
   UNICO_CAIRO_INIT
 
@@ -134,10 +141,12 @@ unico_engine_render_frame (GtkThemingEngine *engine,
                            gdouble height)
 {
   UnicoStyleFunctions *style_functions;
+  const GtkWidgetPath *path;
 
   UNICO_CAIRO_INIT
 
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+  path = gtk_theming_engine_get_path (engine);
 
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
       gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -151,6 +160,11 @@ unico_engine_render_frame (GtkThemingEngine *engine,
       button->horizontal = TRUE;
 
       style_functions->draw_button_frame (cr, engine, x, y, width, height, button);
+    }
+  else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
+           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
+    {
+      style_functions->draw_progressbar_trough_frame (cr, engine, x, y, width, height);
     }
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame (engine, cr, x, y, width, height);
