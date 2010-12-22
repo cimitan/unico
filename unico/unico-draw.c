@@ -283,10 +283,12 @@ unico_draw_tab (cairo_t *cr,
                 int height,
                 UnicoTabParameters *tab)
 {
+  GtkStateFlags state;
   UnicoCorners corners;
   double line_width;
   int radius;
 
+  state = gtk_theming_engine_get_state (engine);
   line_width = unico_get_line_width (engine);
   radius = unico_get_border_radius (engine);
 

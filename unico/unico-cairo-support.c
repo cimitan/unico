@@ -394,7 +394,7 @@ unico_cairo_rounded_rect (cairo_t *cr,
     cairo_line_to (cr, x+width, y);
 
   if (corners & UNICO_CORNER_BOTTOMRIGHT)
-    cairo_arc (cr, x+width-radius, y+height-radius, radius, 0, G_PI*0.5);
+    cairo_arc (cr, x+width-radius, y+height-radius, radius, 0.0, G_PI*0.5);
   else
     cairo_line_to (cr, x+width, y+height);
 
@@ -430,13 +430,13 @@ unico_cairo_rounded_rect_inner (cairo_t *cr,
 }
 
 void
-unico_rounded_rect_inverted (cairo_t *cr,
-                             double x,
-                             double y,
-                             double width,
-                             double height,
-                             int radius,
-                             UnicoCorners corners)
+unico_cairo_rounded_rect_inverted (cairo_t *cr,
+                                   double x,
+                                   double y,
+                                   double width,
+                                   double height,
+                                   int radius,
+                                   UnicoCorners corners)
 {
   if (radius <= 0)
     {
