@@ -22,13 +22,13 @@
 
 G_BEGIN_DECLS
 
-typedef unsigned char boolean;
+typedef unsigned char gboolean;
 typedef unsigned char uint8;
 typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 
 typedef struct
 {
-  boolean horizontal;
+  gboolean horizontal;
 } UnicoButtonParameters;
 
 typedef enum
@@ -51,9 +51,9 @@ typedef struct
 
 typedef struct
 {
-  boolean lower;
-  boolean horizontal;
-  boolean fill_level;
+  gboolean lower;
+  gboolean horizontal;
+  gboolean fill_level;
 } UnicoSliderParameters;
 
 typedef enum
@@ -105,7 +105,7 @@ struct _UnicoStyleFunctions
                          GtkThemingEngine *engine,
                          const ComboBoxParameters *combobox,
                          gint x, gint y, gint width, gint height,
-                         boolean vertical);
+                         gboolean vertical);
 
   void (*draw_entry) (cairo_t *cr,
                       GtkThemingEngine *engine,
@@ -186,6 +186,20 @@ struct _UnicoStyleFunctions
                                          gint y,
                                          gint width,
                                          gint height);
+
+  void (*draw_scrollbar_trough_background) (cairo_t *cr,
+                                            GtkThemingEngine *engine,
+                                            gint x,
+                                            gint y,
+                                            gint width,
+                                            gint height);
+
+  void (*draw_scrollbar_trough_frame) (cairo_t *cr,
+                                       GtkThemingEngine *engine,
+                                       gint x,
+                                       gint y,
+                                       gint width,
+                                       gint height);
 #if 0
   void (*draw_progressbar_fill) (cairo_t *cr,
                                  GtkThemingEngine *engine,
@@ -247,13 +261,13 @@ struct _UnicoStyleFunctions
                               GtkThemingEngine *engine,
                               const HandleParameters *handle,
                               gint x, gint y, gint width, gint height,
-                              boolean horizontal);
+                              gboolean horizontal);
 
   void (*draw_spinbutton) (cairo_t *cr,
                            GtkThemingEngine *engine,
                            const SpinbuttonParameters *spinbutton,
                            gint x, gint y, gint width, gint height,
-                           boolean horizontal);
+                           gboolean horizontal);
 
   void (*draw_spinbutton_down) (cairo_t *cr,
                                 GtkThemingEngine *engine,
