@@ -234,9 +234,6 @@ unico_draw_menubar_background (GtkThemingEngine *engine,
                                gint height)
 {
   UnicoCorners corners = UNICO_CORNER_NONE;
-  gdouble line_width;
-
-  unico_get_line_width (engine, &line_width);
 
   unico_cairo_draw_background_rect (engine, cr,
                                     x, y,
@@ -266,6 +263,101 @@ unico_draw_menubar_frame (GtkThemingEngine *engine,
                                 x, y,
                                 width, height,
                                 0, corners);
+}
+
+static void
+unico_draw_menubaritem_background (GtkThemingEngine *engine,
+                                   cairo_t *cr,
+                                   gint x,
+                                   gint y,
+                                   gint width,
+                                   gint height)
+{
+  UnicoCorners corners;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x, y,
+                                    width, height+1,
+                                    radius, corners);
+}
+
+
+static void
+unico_draw_menubaritem_frame (GtkThemingEngine *engine,
+                              cairo_t *cr,
+                              gint x,
+                              gint y,
+                              gint width,
+                              gint height)
+{
+  UnicoCorners corners;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-line_width*2, height+1,
+                                      radius, corners);
+
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height+1,
+                                radius, corners);
+}
+
+static void
+unico_draw_menuitem_background (GtkThemingEngine *engine,
+                                cairo_t *cr,
+                                gint x,
+                                gint y,
+                                gint width,
+                                gint height)
+{
+  UnicoCorners corners;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x, y,
+                                    width, height,
+                                    radius, corners);
+}
+
+static void
+unico_draw_menuitem_frame (GtkThemingEngine *engine,
+                           cairo_t *cr,
+                           gint x,
+                           gint y,
+                           gint width,
+                           gint height)
+{
+  UnicoCorners corners;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width, y+line_width,
+                                      width-line_width*2, height-line_width*2,
+                                      radius, corners);
+
+  unico_cairo_draw_border_rect (engine, cr,
+                                x, y,
+                                width, height,
+                                radius, corners);
 }
 
 static void
@@ -659,6 +751,10 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_frame                         = unico_draw_frame;
   functions->draw_menubar_background            = unico_draw_menubar_background;
   functions->draw_menubar_frame                 = unico_draw_menubar_frame;
+  functions->draw_menubaritem_background        = unico_draw_menubaritem_background;
+  functions->draw_menubaritem_frame             = unico_draw_menubaritem_frame;
+  functions->draw_menuitem_background           = unico_draw_menuitem_background;
+  functions->draw_menuitem_frame                = unico_draw_menuitem_frame;
   functions->draw_notebook                      = unico_draw_notebook;
   functions->draw_progressbar_trough_background = unico_draw_progressbar_trough_background;
   functions->draw_progressbar_trough_frame      = unico_draw_progressbar_trough_frame;

@@ -79,6 +79,15 @@ unico_engine_render_background (GtkThemingEngine *engine,
     {
       style_functions->draw_button_background (engine, cr, x, y, width, height);
     }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM) &&
+           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
+    {
+      style_functions->draw_menubaritem_background (engine, cr, x, y, width, height);
+    }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM))
+    {
+      style_functions->draw_menuitem_background (engine, cr, x, y, width, height);
+    }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
     {
@@ -175,6 +184,15 @@ unico_engine_render_frame (GtkThemingEngine *engine,
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
       style_functions->draw_button_frame (engine, cr, x, y, width, height);
+    }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM) &&
+           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
+    {
+      style_functions->draw_menubaritem_frame (engine, cr, x, y, width, height);
+    }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM))
+    {
+      style_functions->draw_menuitem_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_widget_path_is_type (path, GTK_TYPE_PROGRESS_BAR) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))

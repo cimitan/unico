@@ -96,6 +96,34 @@ struct _UnicoStyleFunctions
                               gint width,
                               gint height);
 
+  void (*draw_menubaritem_background) (GtkThemingEngine *engine,
+                                       cairo_t *cr,
+                                       gint x,
+                                       gint y,
+                                       gint width,
+                                       gint height);
+
+  void (*draw_menubaritem_frame) (GtkThemingEngine *engine,
+                                  cairo_t *cr,
+                                  gint x,
+                                  gint y,
+                                  gint width,
+                                  gint height);
+
+  void (*draw_menuitem_background) (GtkThemingEngine *engine,
+                                    cairo_t *cr,
+                                    gint x,
+                                    gint y,
+                                    gint width,
+                                    gint height);
+
+  void (*draw_menuitem_frame) (GtkThemingEngine *engine,
+                               cairo_t *cr,
+                               gint x,
+                               gint y,
+                               gint width,
+                               gint height);
+
   void (*draw_toolbar_background) (GtkThemingEngine *engine,
                                    cairo_t *cr,
                                    gint x,
