@@ -422,7 +422,11 @@ unico_engine_render_layout (GtkThemingEngine *engine,
 
       cairo_translate (cr, 1, 1);
 
-      gdk_cairo_set_source_rgba (cr, text_shadow_color);
+      if (text_shadow_color)
+        gdk_cairo_set_source_rgba (cr, text_shadow_color);
+      else
+        cairo_set_source_rgba (cr, 1, 1, 1, 0.6);
+
       pango_cairo_show_layout (cr, layout);
 
       cairo_restore (cr);
