@@ -75,6 +75,11 @@ unico_engine_render_background (GtkThemingEngine *engine,
     {
       style_functions->draw_scrollbar_stepper_background (engine, cr, x, y, width, height);
     }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
+           gtk_theming_engine_has_class (engine, GTK_STYLE_REGION_COLUMN_HEADER))
+    {
+      style_functions->draw_column_header_background (engine, cr, x, y, width, height);
+    }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
       style_functions->draw_button_background (engine, cr, x, y, width, height);
@@ -180,6 +185,11 @@ unico_engine_render_frame (GtkThemingEngine *engine,
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
     {
       style_functions->draw_scrollbar_stepper_frame (engine, cr, x, y, width, height);
+    }
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
+           gtk_theming_engine_has_class (engine, GTK_STYLE_REGION_COLUMN_HEADER))
+    {
+      style_functions->draw_column_header_frame (engine, cr, x, y, width, height);
     }
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON))
     {
@@ -381,7 +391,48 @@ unico_engine_render_layout (GtkThemingEngine *engine,
                             gdouble y,
                             PangoLayout *layout)
 {
-  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_layout (engine, cr, x, y, layout);
+  GdkRGBA *color;
+  GtkStateFlags state;
+
+  UNICO_CAIRO_INIT
+
+  cairo_translate (cr, x, y);
+
+  state = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, state,
+                          "color", &color,
+                          NULL);
+
+  gdk_cairo_set_source_rgba (cr, color);
+
+  if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_ACCELERATOR))
+    {
+      unico_cairo_set_source_color_with_alpha (cr, color, 0.6);
+    }
+
+  if (state & GTK_STATE_FLAG_INSENSITIVE)
+    {
+      GdkRGBA *text_shadow_color;
+
+      gtk_theming_engine_get (engine, state,
+                              "-unico-text-shadow-color", &text_shadow_color,
+                              NULL);
+
+      cairo_save (cr);
+
+      cairo_translate (cr, 1, 1);
+
+      gdk_cairo_set_source_rgba (cr, text_shadow_color);
+      pango_cairo_show_layout (cr, layout);
+
+      cairo_restore (cr);
+
+      gdk_rgba_free (text_shadow_color);
+    }
+
+  pango_cairo_show_layout (cr, layout);
+
+  gdk_rgba_free (color);
 }
 
 static void
@@ -498,6 +549,12 @@ unico_engine_class_init (UnicoEngineClass *klass)
                                                             "Stroke outer gradient",
                                                             "Stroke outer gradient",
                                                             CAIRO_GOBJECT_TYPE_PATTERN, 0));
+
+  gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+                                        g_param_spec_boxed ("text-shadow-color",
+                                                            "Text shadow color",
+                                                            "Text shadow color",
+                                                            GDK_TYPE_RGBA, 0));
 }
 
 static void

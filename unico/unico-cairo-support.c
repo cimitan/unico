@@ -76,7 +76,7 @@ unico_cairo_draw_background_from_path (GtkThemingEngine *engine,
           cairo_pattern_destroy (background_pat);
         }
       else
-        unico_cairo_set_source_color (cr, background_color);
+        gdk_cairo_set_source_rgba (cr, background_color);
 
       cairo_fill (cr);
     }
@@ -168,7 +168,7 @@ unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
           cairo_pattern_destroy (border_pat);
         }
       else
-        unico_cairo_set_source_color (cr, border_color);
+        gdk_cairo_set_source_rgba (cr, border_color);
 
       cairo_stroke (cr);
     }
@@ -238,7 +238,7 @@ unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
           cairo_pattern_destroy (stroke_inner_pat);
         }
       else
-        unico_cairo_set_source_color (cr, stroke_inner_color);
+        gdk_cairo_set_source_rgba (cr, stroke_inner_color);
 
       cairo_stroke (cr);
     }
@@ -309,7 +309,7 @@ unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
           cairo_identity_matrix (cr);
         }
       else
-        unico_cairo_set_source_color (cr, stroke_outer_color);
+        gdk_cairo_set_source_rgba (cr, stroke_outer_color);
 
       cairo_stroke (cr);
     }
@@ -497,10 +497,11 @@ unico_cairo_rounded_rect_inverted_inner (cairo_t *cr,
 }
 
 void
-unico_cairo_set_source_color (cairo_t *cr,
-                              GdkRGBA *color)
+unico_cairo_set_source_color_with_alpha (cairo_t *cr,
+                                         GdkRGBA *color,
+                                         gdouble alpha)
 {
   g_return_if_fail (cr && color);
 
-  cairo_set_source_rgba (cr, color->red, color->green, color->blue, color->alpha);
+  cairo_set_source_rgba (cr, color->red, color->green, color->blue, alpha);
 }

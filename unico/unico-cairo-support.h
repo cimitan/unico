@@ -142,8 +142,9 @@ G_GNUC_INTERNAL void unico_cairo_rounded_rect_inverted_inner (cairo_t *cr,
                                                               gint radius,
                                                               UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_set_source_color (cairo_t *cr,
-                                                   GdkRGBA *color);
+G_GNUC_INTERNAL void unico_cairo_set_source_color_with_alpha (cairo_t *cr,
+                                                              GdkRGBA *color,
+                                                              gdouble alpha);
 
 G_END_DECLS
 

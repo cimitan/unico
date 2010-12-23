@@ -30,12 +30,7 @@
                                              (rect).height = (_h);
 
 static void
-unico_draw_button_background (GtkThemingEngine *engine,
-                              cairo_t *cr,
-                              gint x,
-                              gint y,
-                              gint width,
-                              gint height)
+unico_draw_button_background (DRAW_ARGS)
 {
   gdouble line_width;
   gint radius;
@@ -50,12 +45,7 @@ unico_draw_button_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_button_frame (GtkThemingEngine *engine,
-                         cairo_t *cr,
-                         gint x,
-                         gint y,
-                         gint width,
-                         gint height)
+unico_draw_button_frame (DRAW_ARGS)
 {
   UnicoCorners corners;
   gdouble line_width;
@@ -79,6 +69,36 @@ unico_draw_button_frame (GtkThemingEngine *engine,
                                 x+line_width, y+line_width,
                                 width-line_width*2, height-line_width*2,
                                 radius, corners);
+}
+
+static void
+unico_draw_column_header_background (DRAW_ARGS)
+{
+  UnicoCorners corners = UNICO_CORNER_NONE;
+
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x, y,
+                                    width, height,
+                                    0, corners);
+}
+
+static void
+unico_draw_column_header_frame (DRAW_ARGS)
+{
+  UnicoCorners corners = UNICO_CORNER_NONE;
+  gdouble line_width;
+
+  unico_get_line_width (engine, &line_width);
+
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x, y,
+                                      width-line_width, height-line_width,
+                                      0, corners);
+
+  unico_cairo_draw_border_rect (engine, cr,
+                                x-line_width, y-line_width,
+                                width, height,
+                                0, corners);
 }
 
 static void
@@ -128,12 +148,7 @@ unico_get_frame_gap_clip (gint x,
 }
 
 static void
-unico_draw_frame (GtkThemingEngine *engine,
-                  cairo_t *cr,
-                  gint x,
-                  gint y,
-                  gint width,
-                  gint height,
+unico_draw_frame (DRAW_ARGS,
                   UnicoFrameParameters *frame)
 {
   GdkRectangle bevel_clip = {0, 0, 0, 0};
@@ -226,12 +241,7 @@ unico_draw_frame (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_menubar_background (GtkThemingEngine *engine,
-                               cairo_t *cr,
-                               gint x,
-                               gint y,
-                               gint width,
-                               gint height)
+unico_draw_menubar_background (DRAW_ARGS)
 {
   UnicoCorners corners = UNICO_CORNER_NONE;
 
@@ -242,12 +252,7 @@ unico_draw_menubar_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_menubar_frame (GtkThemingEngine *engine,
-                          cairo_t *cr,
-                          gint x,
-                          gint y,
-                          gint width,
-                          gint height)
+unico_draw_menubar_frame (DRAW_ARGS)
 {
   UnicoCorners corners = UNICO_CORNER_NONE;
   gdouble line_width;
@@ -266,12 +271,7 @@ unico_draw_menubar_frame (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_menubaritem_background (GtkThemingEngine *engine,
-                                   cairo_t *cr,
-                                   gint x,
-                                   gint y,
-                                   gint width,
-                                   gint height)
+unico_draw_menubaritem_background (DRAW_ARGS)
 {
   UnicoCorners corners;
   gint radius;
@@ -285,14 +285,8 @@ unico_draw_menubaritem_background (GtkThemingEngine *engine,
                                     radius, corners);
 }
 
-
 static void
-unico_draw_menubaritem_frame (GtkThemingEngine *engine,
-                              cairo_t *cr,
-                              gint x,
-                              gint y,
-                              gint width,
-                              gint height)
+unico_draw_menubaritem_frame (DRAW_ARGS)
 {
   UnicoCorners corners;
   gdouble line_width;
@@ -314,12 +308,7 @@ unico_draw_menubaritem_frame (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_menuitem_background (GtkThemingEngine *engine,
-                                cairo_t *cr,
-                                gint x,
-                                gint y,
-                                gint width,
-                                gint height)
+unico_draw_menuitem_background (DRAW_ARGS)
 {
   UnicoCorners corners;
   gint radius;
@@ -334,12 +323,7 @@ unico_draw_menuitem_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_menuitem_frame (GtkThemingEngine *engine,
-                           cairo_t *cr,
-                           gint x,
-                           gint y,
-                           gint width,
-                           gint height)
+unico_draw_menuitem_frame (DRAW_ARGS)
 {
   UnicoCorners corners;
   gdouble line_width;
@@ -361,12 +345,7 @@ unico_draw_menuitem_frame (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_notebook (GtkThemingEngine *engine,
-                     cairo_t *cr,
-                     gint x,
-                     gint y,
-                     gint width,
-                     gint height,
+unico_draw_notebook (DRAW_ARGS,
                      UnicoFrameParameters *frame)
 {
   unico_cairo_draw_background (engine, cr, x, y, width, height);
@@ -374,12 +353,7 @@ unico_draw_notebook (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_progressbar_trough_background (GtkThemingEngine *engine,
-                                          cairo_t *cr,
-                                          gint x,
-                                          gint y,
-                                          gint width,
-                                          gint height)
+unico_draw_progressbar_trough_background (DRAW_ARGS)
 {
   gdouble line_width;
   gint radius;
@@ -394,12 +368,7 @@ unico_draw_progressbar_trough_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_progressbar_trough_frame (GtkThemingEngine *engine,
-                                     cairo_t *cr,
-                                     gint x,
-                                     gint y,
-                                     gint width,
-                                     gint height)
+unico_draw_progressbar_trough_frame (DRAW_ARGS)
 {
   gint radius;
 
@@ -412,12 +381,7 @@ unico_draw_progressbar_trough_frame (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_scrollbar_stepper_background (GtkThemingEngine *engine,
-                                         cairo_t *cr,
-                                         gint x,
-                                         gint y,
-                                         gint width,
-                                         gint height)
+unico_draw_scrollbar_stepper_background (DRAW_ARGS)
 {
   gdouble line_width;
   gint radius;
@@ -432,12 +396,7 @@ unico_draw_scrollbar_stepper_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_scrollbar_stepper_frame (GtkThemingEngine *engine,
-                                    cairo_t *cr,
-                                    gint x,
-                                    gint y,
-                                    gint width,
-                                    gint height)
+unico_draw_scrollbar_stepper_frame (DRAW_ARGS)
 {
   UnicoCorners corners;
   gdouble line_width;
@@ -459,12 +418,7 @@ unico_draw_scrollbar_stepper_frame (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_scrollbar_slider (GtkThemingEngine *engine,
-                             cairo_t *cr,
-                             gint x,
-                             gint y,
-                             gint width,
-                             gint height)
+unico_draw_scrollbar_slider (DRAW_ARGS)
 {
   UnicoCorners corners;
   gdouble line_width;
@@ -491,12 +445,7 @@ unico_draw_scrollbar_slider (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_scrollbar_trough_background (GtkThemingEngine *engine,
-                                        cairo_t *cr,
-                                        gint x,
-                                        gint y,
-                                        gint width,
-                                        gint height)
+unico_draw_scrollbar_trough_background (DRAW_ARGS)
 {
   gdouble line_width;
   gint hoffset = 0;
@@ -518,12 +467,7 @@ unico_draw_scrollbar_trough_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_scrollbar_trough_frame (GtkThemingEngine *engine,
-                                   cairo_t *cr,
-                                   gint x,
-                                   gint y,
-                                   gint width,
-                                   gint height)
+unico_draw_scrollbar_trough_frame (DRAW_ARGS)
 {
   gint hoffset = 0;
   gint voffset = 0;
@@ -559,12 +503,7 @@ unico_draw_slider_button_path (cairo_t *cr,
 }
 
 static void
-unico_draw_slider_button (GtkThemingEngine *engine,
-                          cairo_t *cr,
-                          gint x,
-                          gint y,
-                          gint width,
-                          gint height,
+unico_draw_slider_button (DRAW_ARGS,
                           UnicoSliderParameters *slider)
 {
   UnicoCorners corners;
@@ -613,12 +552,7 @@ unico_draw_slider_button (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_tab (GtkThemingEngine* engine,
-                cairo_t *cr,
-                gint x,
-                gint y,
-                gint width,
-                gint height,
+unico_draw_tab (DRAW_ARGS,
                 UnicoTabParameters *tab)
 {
   GtkStateFlags state;
@@ -698,12 +632,7 @@ unico_draw_tab (GtkThemingEngine* engine,
 }
 
 static void
-unico_draw_toolbar_background (GtkThemingEngine *engine,
-                               cairo_t *cr,
-                               gint x,
-                               gint y,
-                               gint width,
-                               gint height)
+unico_draw_toolbar_background (DRAW_ARGS)
 {
   UnicoCorners corners = UNICO_CORNER_NONE;
   gdouble line_width;
@@ -717,12 +646,7 @@ unico_draw_toolbar_background (GtkThemingEngine *engine,
 }
 
 static void
-unico_draw_toolbar_frame (GtkThemingEngine *engine,
-                          cairo_t *cr,
-                          gint x,
-                          gint y,
-                          gint width,
-                          gint height)
+unico_draw_toolbar_frame (DRAW_ARGS)
 {
   UnicoCorners corners = UNICO_CORNER_NONE;
   gdouble line_width;
@@ -748,6 +672,8 @@ unico_register_style_default (UnicoStyleFunctions *functions)
 
   functions->draw_button_background             = unico_draw_button_background;
   functions->draw_button_frame                  = unico_draw_button_frame;
+  functions->draw_column_header_background      = unico_draw_column_header_background;
+  functions->draw_column_header_frame           = unico_draw_column_header_frame;
   functions->draw_frame                         = unico_draw_frame;
   functions->draw_menubar_background            = unico_draw_menubar_background;
   functions->draw_menubar_frame                 = unico_draw_menubar_frame;
