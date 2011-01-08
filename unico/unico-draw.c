@@ -74,8 +74,10 @@ unico_draw_button_frame (DRAW_ARGS)
 static void
 unico_draw_check (DRAW_ARGS)
 {
+  GtkStateFlags state;
   UnicoCorners corners;
   gboolean in_cell, in_menu;
+  gboolean draw_bullet, inconsistent;
   gdouble line_width;
   gint radius;
 
@@ -83,28 +85,110 @@ unico_draw_check (DRAW_ARGS)
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
+  state = gtk_theming_engine_get_state (engine);
+
   in_cell = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL);
   in_menu = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU);
 
-  unico_cairo_draw_stroke_outer_rect (engine, cr,
-                                      x, y,
-                                      width, height,
-                                      radius+line_width, corners);
+  inconsistent = (state & GTK_STATE_FLAG_INCONSISTENT) != 0;
+  draw_bullet = (state & GTK_STATE_FLAG_ACTIVE) != 0;
+  draw_bullet |= inconsistent;
 
-  unico_cairo_draw_stroke_inner_rect (engine, cr,
-                                      x+line_width*2, y+line_width*2,
-                                      width-line_width*4, height-line_width*4,
-                                      radius-line_width, corners);
+  if (!in_menu)
+    {
+      unico_cairo_draw_stroke_outer_rect (engine, cr,
+                                          x, y,
+                                          width, height,
+                                          radius+line_width, corners);
 
-  unico_cairo_draw_border_rect (engine, cr,
-                                x+line_width, y+line_width,
-                                width-line_width*2, height-line_width*2,
-                                radius, corners);
+      unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                          x+line_width*2, y+line_width*2,
+                                          width-line_width*4, height-line_width*4,
+                                          radius-line_width, corners);
 
-  unico_cairo_draw_background_rect (engine, cr,
-                                    x+line_width*2, y+line_width*2,
-                                    width-line_width*4, height-line_width*4,
-                                    radius, unico_get_corners (engine));
+      unico_cairo_draw_border_rect (engine, cr,
+                                    x+line_width, y+line_width,
+                                    width-line_width*2, height-line_width*2,
+                                    radius, corners);
+
+      unico_cairo_draw_background_rect (engine, cr,
+                                        x+line_width*2, y+line_width*2,
+                                        width-line_width*4, height-line_width*4,
+                                        radius, unico_get_corners (engine));
+    }
+
+  if (draw_bullet)
+    {
+      GdkRGBA *bullet_color;
+
+      gtk_theming_engine_get (engine, state,
+                              "-unico-bullet-color", &bullet_color,
+                              NULL);
+
+      if (inconsistent)
+        {
+          cairo_save (cr);
+
+          cairo_set_line_width (cr, 2.0);
+          cairo_move_to (cr, 3, (double)height/2);
+          cairo_line_to (cr, width-3, (double)height/2);
+
+          cairo_restore (cr);
+        }
+      else
+        {
+          cairo_translate (cr, x, y);
+
+          if (in_menu)
+            {
+              cairo_scale (cr, (double)width/18.0, (double)height/18.0);
+              cairo_translate (cr, 2.0, 3.0);
+            }
+          else
+            {
+              GdkRGBA *bullet_outline_color;
+
+              gtk_theming_engine_get (engine, state,
+                                      "-unico-bullet-outline-color", &bullet_outline_color,
+                                      NULL);
+
+              cairo_scale (cr, (double)width/18.0, (double)height/18.0);
+
+              cairo_move_to (cr, 5.0, 5.65);
+              cairo_line_to (cr, 8.95, 9.57);
+              cairo_line_to (cr, 16.0, 2.54);
+              cairo_line_to (cr, 16.0, 8.36);
+              cairo_line_to (cr, 10.6, 15.1);
+              cairo_line_to (cr, 7.6, 15.1);
+              cairo_line_to (cr, 2.95, 10.48);
+              cairo_line_to (cr, 2.95, 7.65);
+              cairo_close_path (cr);
+
+              gdk_cairo_set_source_rgba (cr, bullet_outline_color);
+              cairo_fill (cr);
+
+              cairo_translate (cr, 4.0, 2.0);
+
+              gdk_rgba_free (bullet_outline_color);
+            }
+
+          cairo_move_to (cr, 0.0, 6.0);
+          cairo_line_to (cr, 0.0, 8.0);
+          cairo_line_to (cr, 4.0, 12.0);
+          cairo_line_to (cr, 6.0, 12.0);
+          cairo_line_to (cr, 15.0, 1.0);
+          cairo_line_to (cr, 15.0, 0.0);
+          cairo_line_to (cr, 14.0, 0.0);
+          cairo_line_to (cr, 5.0, 9.0);
+          cairo_line_to (cr, 1.0, 5.0);
+          cairo_close_path (cr);
+        }
+
+      gdk_cairo_set_source_rgba (cr, bullet_color);
+      cairo_fill (cr);
+
+      gdk_rgba_free (bullet_color);
+    }
 }
 
 static void
@@ -470,27 +554,45 @@ unico_draw_radio (DRAW_ARGS)
                               "-unico-bullet-color", &bullet_color,
                               NULL);
 
-      if (in_menu)
-        cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+      if (inconsistent)
+        {
+          cairo_save (cr);
+
+          cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+          cairo_set_line_width (cr, 2.0);
+
+          cairo_move_to(cr, 5, (double)height/2);
+          cairo_line_to(cr, width-5, (double)height/2);
+
+          gdk_cairo_set_source_rgba (cr, bullet_color);
+          cairo_stroke (cr);
+
+          cairo_restore (cr);
+        }
       else
         {
-          GdkRGBA *bullet_outline_color;
+          if (in_menu)
+            cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+          else
+            {
+              GdkRGBA *bullet_outline_color;
 
-          gtk_theming_engine_get (engine, state,
-                                  "-unico-bullet-outline-color", &bullet_outline_color,
-                                  NULL);
+              gtk_theming_engine_get (engine, state,
+                                      "-unico-bullet-outline-color", &bullet_outline_color,
+                                      NULL);
 
-          cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
-          gdk_cairo_set_source_rgba (cr, bullet_outline_color);
+              cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+              gdk_cairo_set_source_rgba (cr, bullet_outline_color);
+              cairo_fill (cr);
+
+              cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-5, 0, G_PI*2);
+
+              gdk_rgba_free (bullet_outline_color);
+            }
+
+          gdk_cairo_set_source_rgba (cr, bullet_color);
           cairo_fill (cr);
-
-          cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-5, 0, G_PI*2);
-
-          gdk_rgba_free (bullet_outline_color);
         }
-
-      gdk_cairo_set_source_rgba (cr, bullet_color);
-      cairo_fill (cr);
 
       gdk_rgba_free (bullet_color);
     }
