@@ -72,6 +72,42 @@ unico_draw_button_frame (DRAW_ARGS)
 }
 
 static void
+unico_draw_check (DRAW_ARGS)
+{
+  UnicoCorners corners;
+  gboolean in_cell, in_menu;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  in_cell = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL);
+  in_menu = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU);
+
+  unico_cairo_draw_stroke_outer_rect (engine, cr,
+                                      x, y,
+                                      width, height,
+                                      radius+line_width, corners);
+
+  unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                      x+line_width*2, y+line_width*2,
+                                      width-line_width*4, height-line_width*4,
+                                      radius-line_width, corners);
+
+  unico_cairo_draw_border_rect (engine, cr,
+                                x+line_width, y+line_width,
+                                width-line_width*2, height-line_width*2,
+                                radius, corners);
+
+  unico_cairo_draw_background_rect (engine, cr,
+                                    x+line_width*2, y+line_width*2,
+                                    width-line_width*4, height-line_width*4,
+                                    radius, unico_get_corners (engine));
+}
+
+static void
 unico_draw_column_header_background (DRAW_ARGS)
 {
   UnicoCorners corners = UNICO_CORNER_NONE;
@@ -381,6 +417,86 @@ unico_draw_progressbar_trough_frame (DRAW_ARGS)
 }
 
 static void
+unico_draw_radio (DRAW_ARGS)
+{
+  GtkStateFlags state;
+  UnicoCorners corners;
+  gboolean in_cell, in_menu;
+  gboolean draw_bullet, inconsistent;
+  gdouble line_width;
+  gint radius;
+
+  corners = unico_get_corners (engine);
+  unico_get_line_width (engine, &line_width);
+  unico_get_border_radius (engine, &radius);
+
+  state = gtk_theming_engine_get_state (engine);
+
+  in_cell = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL);
+  in_menu = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU);
+
+  inconsistent = (state & GTK_STATE_FLAG_INCONSISTENT) != 0;
+  draw_bullet = (state & GTK_STATE_FLAG_ACTIVE) != 0;
+  draw_bullet |= inconsistent;
+
+  if (!in_menu)
+    {
+      unico_cairo_draw_stroke_outer_rect (engine, cr,
+                                          x, y,
+                                          width, height,
+                                          radius+line_width, corners);
+
+      unico_cairo_draw_stroke_inner_rect (engine, cr,
+                                          x+line_width*2, y+line_width*2,
+                                          width-line_width*4, height-line_width*4,
+                                          radius-line_width, corners);
+
+      unico_cairo_draw_border_rect (engine, cr,
+                                    x+line_width, y+line_width,
+                                    width-line_width*2, height-line_width*2,
+                                    radius, corners);
+
+      unico_cairo_draw_background_rect (engine, cr,
+                                        x+line_width*2, y+line_width*2,
+                                        width-line_width*4, height-line_width*4,
+                                        radius, unico_get_corners (engine));
+    }
+
+  if (draw_bullet)
+    {
+      GdkRGBA *bullet_color;
+
+      gtk_theming_engine_get (engine, state,
+                              "-unico-bullet-color", &bullet_color,
+                              NULL);
+
+      if (in_menu)
+        cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+      else
+        {
+          GdkRGBA *bullet_outline_color;
+
+          gtk_theming_engine_get (engine, state,
+                                  "-unico-bullet-outline-color", &bullet_outline_color,
+                                  NULL);
+
+          cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+          gdk_cairo_set_source_rgba (cr, bullet_outline_color);
+          cairo_fill (cr);
+
+          cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-5, 0, G_PI*2);
+
+          gdk_rgba_free (bullet_outline_color);
+        }
+
+      gdk_cairo_set_source_rgba (cr, bullet_color);
+      cairo_fill (cr);
+
+      gdk_rgba_free (bullet_color);
+    }
+}
+
+static void
 unico_draw_scrollbar_stepper_background (DRAW_ARGS)
 {
   gdouble line_width;
@@ -664,7 +780,6 @@ unico_draw_toolbar_frame (DRAW_ARGS)
                                 0, corners);
 }
 
-
 void
 unico_register_style_default (UnicoStyleFunctions *functions)
 {
@@ -672,6 +787,7 @@ unico_register_style_default (UnicoStyleFunctions *functions)
 
   functions->draw_button_background             = unico_draw_button_background;
   functions->draw_button_frame                  = unico_draw_button_frame;
+  functions->draw_check                         = unico_draw_check;
   functions->draw_column_header_background      = unico_draw_column_header_background;
   functions->draw_column_header_frame           = unico_draw_column_header_frame;
   functions->draw_frame                         = unico_draw_frame;
@@ -684,6 +800,7 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_notebook                      = unico_draw_notebook;
   functions->draw_progressbar_trough_background = unico_draw_progressbar_trough_background;
   functions->draw_progressbar_trough_frame      = unico_draw_progressbar_trough_frame;
+  functions->draw_radio                         = unico_draw_radio;
   functions->draw_scrollbar_slider              = unico_draw_scrollbar_slider;
   functions->draw_scrollbar_stepper_background  = unico_draw_scrollbar_stepper_background;
   functions->draw_scrollbar_stepper_frame       = unico_draw_scrollbar_stepper_frame;

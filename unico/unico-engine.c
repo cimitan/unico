@@ -115,7 +115,13 @@ unico_engine_render_check (GtkThemingEngine *engine,
                            gdouble width,
                            gdouble height)
 {
-  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_check (engine, cr, x, y, width, height);
+  UnicoStyleFunctions *style_functions;
+
+  UNICO_CAIRO_INIT
+
+  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+
+  style_functions->draw_check (engine, cr, x, y, width, height);
 }
 
 static void
@@ -447,13 +453,13 @@ unico_engine_render_option (GtkThemingEngine *engine,
                             gdouble width,
                             gdouble height)
 {
-/*  UnicoStyleFunctions *style_functions;*/
+  UnicoStyleFunctions *style_functions;
 
-/*  UNICO_CAIRO_INIT*/
+  UNICO_CAIRO_INIT
 
-/*  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);*/
+  unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
 
-  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_option (engine, cr, x, y, width, height);
+  style_functions->draw_radio (engine, cr, x, y, width, height);
 }
 
 static void
@@ -523,6 +529,18 @@ unico_engine_class_init (UnicoEngineClass *klass)
                                                             "Border gradient",
                                                             "Border gradient",
                                                             CAIRO_GOBJECT_TYPE_PATTERN, 0));
+
+  gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+                                        g_param_spec_boxed ("bullet-color",
+                                                            "Bullet color",
+                                                            "Bullet color",
+                                                            GDK_TYPE_RGBA, 0));
+
+  gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+                                        g_param_spec_boxed ("bullet-outline-color",
+                                                            "Bullet outline color",
+                                                            "Bullet outline color",
+                                                            GDK_TYPE_RGBA, 0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
                                         g_param_spec_boxed ("focus-color",

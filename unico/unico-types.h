@@ -79,6 +79,8 @@ struct _UnicoStyleFunctions
 
   void (*draw_button_frame) (DRAW_ARGS);
 
+  void (*draw_check) (DRAW_ARGS);
+
   void (*draw_column_header_background) (DRAW_ARGS);
 
   void (*draw_column_header_frame) (DRAW_ARGS);
@@ -94,6 +96,8 @@ struct _UnicoStyleFunctions
   void (*draw_menuitem_background) (DRAW_ARGS);
 
   void (*draw_menuitem_frame) (DRAW_ARGS);
+
+  void (*draw_radio) (DRAW_ARGS);
 
   void (*draw_toolbar_background) (DRAW_ARGS);
 
