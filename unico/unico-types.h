@@ -69,21 +69,34 @@ typedef struct
 
 struct _UnicoStyleFunctions
 {
-#if 0
-  void (*draw_arrow) (cairo_t *cr,
-                      GtkThemingEngine *engine,
-                      const ArrowParameters  *arrow,
-                      gint x, gint y, gint width, gint height);
-#endif
   void (*draw_button_background) (DRAW_ARGS);
 
   void (*draw_button_frame) (DRAW_ARGS);
+
+  void (*draw_cell) (DRAW_ARGS);
 
   void (*draw_check) (DRAW_ARGS);
 
   void (*draw_column_header_background) (DRAW_ARGS);
 
   void (*draw_column_header_frame) (DRAW_ARGS);
+
+  void (*draw_combo_button_background) (DRAW_ARGS);
+
+  void (*draw_combo_button_frame) (DRAW_ARGS);
+
+  void (*draw_entry_background) (DRAW_ARGS);
+
+  void (*draw_entry_frame) (DRAW_ARGS);
+
+  void (*draw_frame) (DRAW_ARGS,
+                      UnicoFrameParameters *frame);
+
+  void (*draw_icon_view) (DRAW_ARGS);
+
+  void (*draw_menu_frame) (DRAW_ARGS);
+
+  void (*draw_menu_background) (DRAW_ARGS);
 
   void (*draw_menubar_background) (DRAW_ARGS);
 
@@ -97,87 +110,18 @@ struct _UnicoStyleFunctions
 
   void (*draw_menuitem_frame) (DRAW_ARGS);
 
-  void (*draw_radio) (DRAW_ARGS);
-
-  void (*draw_toolbar_background) (DRAW_ARGS);
-
-  void (*draw_toolbar_frame) (DRAW_ARGS);
-#if 0
-  void (*draw_checkbox) (cairo_t *cr,
-                         GtkThemingEngine *engine,
-                         const CheckboxParameters *checkbox,
-                         gint x, gint y, gint width, gint height,
-                         gdouble trans);
-
-  void (*draw_combo_separator) (cairo_t *cr,
-                                GtkThemingEngine *engine,
-                                gint x, gint y, gint width, gint height);
-
-  void (*draw_combobox) (cairo_t *cr,
-                         GtkThemingEngine *engine,
-                         const ComboBoxParameters *combobox,
-                         gint x, gint y, gint width, gint height,
-                         gboolean vertical);
-
-  void (*draw_entry) (cairo_t *cr,
-                      GtkThemingEngine *engine,
-                      const FocusParameters  *focus,
-                      gint x, gint y, gint width, gint height);
-
-  void (*draw_entry_progress)   (cairo_t *cr,
-                                 GtkThemingEngine *engine,
-                                 const EntryProgressParameters *progress,
-                                 gint x, gint y, gint width, gint height);
-
-  void (*draw_expander) (cairo_t *cr,
-                         GtkThemingEngine *engine,
-                         const ExpanderParameters *expander,
-                         gint x, gint y);
-
-  void (*draw_focus) (cairo_t *cr,
-                      GtkThemingEngine *engine,
-                      const FocusParameters  *focus,
-                      gint x, gint y, gint width, gint height);
-#endif
-  void (*draw_frame) (DRAW_ARGS,
-                      UnicoFrameParameters *frame);
-
   void (*draw_notebook) (DRAW_ARGS,
                          UnicoFrameParameters *frame);
 
-#if 0
-  void (*draw_handle) (cairo_t *cr,
-                       GtkThemingEngine *engine,
-                       const HandleParameters *handle,
-                       gint x, gint y, gint width, gint height);
+  void (*draw_progressbar_fill_background) (DRAW_ARGS);
 
-  void (*draw_iconview) (cairo_t *cr,
-                         GtkThemingEngine *engine,
-                         gint x, gint y, gint width, gint height);
+  void (*draw_progressbar_fill_frame) (DRAW_ARGS);
 
-  void (*draw_list_view_header) (cairo_t *cr,
-                                 GtkThemingEngine *engine,
-                                 const ListViewHeaderParameters *header,
-                                 gint x, gint y, gint width, gint height);
-
-  void (*draw_menu_frame) (cairo_t *cr,
-                           GtkThemingEngine *engine,
-                           gint x, gint y, gint width, gint height,
-                           gint menustyle);
-
-  void (*draw_menubar) (cairo_t *cr,
-                        GtkThemingEngine *engine,
-                        gint x, gint y, gint width, gint height,
-                        gint menubarstyle);
-
-  void (*draw_menuitem) (cairo_t *cr,
-                         GtkThemingEngine *engine,
-                         gint x, gint y, gint width, gint height,
-                         gint menuitemstyle);
-#endif
   void (*draw_progressbar_trough_background) (DRAW_ARGS);
 
   void (*draw_progressbar_trough_frame) (DRAW_ARGS);
+
+  void (*draw_radio) (DRAW_ARGS);
 
   void (*draw_scrollbar_slider) (DRAW_ARGS);
 
@@ -188,90 +132,16 @@ struct _UnicoStyleFunctions
   void (*draw_scrollbar_trough_background) (DRAW_ARGS);
 
   void (*draw_scrollbar_trough_frame) (DRAW_ARGS);
-#if 0
-  void (*draw_progressbar_fill) (cairo_t *cr,
-                                 GtkThemingEngine *engine,
-                                 const ProgressBarParameters *progressbar,
-                                 gint x, gint y, gint width, gint height,
-                                 gint offset);
-
-  void (*draw_radiobutton) (cairo_t *cr,
-                            GtkThemingEngine *engine,
-                            const CheckboxParameters *checkbox,
-                            gint x, gint y, gint width, gint height,
-                            gdouble trans);
-
-  void (*draw_resize_grip) (cairo_t *cr,
-                            GtkThemingEngine *engine,
-                            const ResizeGripParameters *grip,
-                            gint x, gint y, gint width, gint height);
-
-  void (*draw_scale_trough) (cairo_t *cr,
-                             GtkThemingEngine *engine,
-                             const SliderParameters *slider,
-                             gint x, gint y, gint width, gint height);
-
-  void (*draw_scrollbar_stepper) (cairo_t *cr,
-                                  GtkThemingEngine *engine,
-                                  const ScrollBarParameters        *scrollbar,
-                                  //const ScrollBarStepperParameters *stepper,
-                                  gint x, gint y, gint width, gint height);
-
-  void (*draw_scrollbar_slider) (cairo_t *cr,
-                                 GtkThemingEngine *engine,
-                                 const ScrollBarParameters *scrollbar,
-                                 gint x, gint y, gint width, gint height);
-
-  void (*draw_scrollbar_trough) (cairo_t *cr,
-                                 GtkThemingEngine *engine,
-                                 const ScrollBarParameters *scrollbar,
-                                 gint x, gint y, gint width, gint height);
-
-  void (*draw_selected_cell) (cairo_t *cr,
-                              GtkThemingEngine *engine,
-                              const CellParameters   *cell,
-                              gint x, gint y, gint width, gint height);
-  void (*draw_separator) (cairo_t *cr,
-                          GtkThemingEngine *engine,
-                          const SeparatorParameters *separator,
-                          gint x, gint y, gint width, gint height);
-#endif
 
   void (*draw_slider_button) (DRAW_ARGS,
                               UnicoSliderParameters *slider);
-#if 0
-  void (*draw_slider_handle) (cairo_t *cr,
-                              GtkThemingEngine *engine,
-                              const HandleParameters *handle,
-                              gint x, gint y, gint width, gint height,
-                              gboolean horizontal);
 
-  void (*draw_spinbutton) (cairo_t *cr,
-                           GtkThemingEngine *engine,
-                           const SpinbuttonParameters *spinbutton,
-                           gint x, gint y, gint width, gint height,
-                           gboolean horizontal);
-
-  void (*draw_spinbutton_down) (cairo_t *cr,
-                                GtkThemingEngine *engine,
-                                gint x, gint y, gint width, gint height);
-
-  void (*draw_statusbar) (cairo_t *cr,
-                          GtkThemingEngine *engine,
-                          gint x, gint y, gint width, gint height);
-#endif
   void (*draw_tab) (DRAW_ARGS,
                     UnicoTabParameters *tab);
-#if 0
-  void (*draw_toolbar) (cairo_t *cr,
-                        GtkThemingEngine *engine,
-                        const ToolbarParameters *toolbar,
-                        gint x, gint y, gint width, gint height);
 
-  void (*draw_tooltip) (cairo_t *cr,
-                        GtkThemingEngine *engine,
-                        gint x, gint y, gint width, gint height);
-#endif
+  void (*draw_toolbar_background) (DRAW_ARGS);
+
+  void (*draw_toolbar_frame) (DRAW_ARGS);
 };
 
 G_END_DECLS
