@@ -32,16 +32,18 @@
                                              (rect).width  = (_w); \
                                              (rect).height = (_h);
 
+#define DEBUG printf("%s \n", __func__);
+
 static void
 unico_draw_button_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_button_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
@@ -62,7 +64,7 @@ unico_draw_cell (DRAW_ARGS)
   if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE)
     offset = line_width;
 
-  unico_cairo_draw_background_with_corners (engine, cr, x-line_width, y, width+line_width*2, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr, x-line_width, y, width+line_width*2, height, UNICO_CORNER_NONE);
 
   cairo_rectangle (cr, x, y, width, height);
   cairo_clip (cr);
@@ -101,8 +103,8 @@ unico_draw_check (DRAW_ARGS)
 
   if (!in_menu)
     {
-      unico_cairo_draw_background (engine, cr, x, y, width, height);
-      unico_cairo_draw_frame (engine, cr, x, y, width, height);
+      unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+      unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
     }
 
   if (draw_bullet)
@@ -182,13 +184,13 @@ unico_draw_check (DRAW_ARGS)
 static void
 unico_draw_column_header_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
 unico_draw_column_header_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
@@ -198,7 +200,7 @@ unico_draw_combo_button_background (DRAW_ARGS)
 
   corners = UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT; /* XXX rtl */
 
-  unico_cairo_draw_background_with_corners (engine, cr, x, y, width, height, corners);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, corners);
 }
 
 static void
@@ -208,19 +210,19 @@ unico_draw_combo_button_frame (DRAW_ARGS)
 
   corners = UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT; /* XXX rtl */
 
-  unico_cairo_draw_frame_with_corners (engine, cr, x, y, width, height, corners);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, corners);
 }
 
 static void
 unico_draw_entry_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_entry_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
@@ -365,63 +367,64 @@ unico_draw_frame (DRAW_ARGS,
 static void
 unico_draw_icon_view (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_menu_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
 unico_draw_menu_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
 unico_draw_menubar_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
 unico_draw_menubar_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
 unico_draw_menubaritem_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_menubaritem_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_menuitem_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_menuitem_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  printf ("ciao\n");
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_notebook (DRAW_ARGS,
                      UnicoFrameParameters *frame)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
   unico_draw_frame (engine, cr, x, y, width, height, frame);
 }
 
@@ -456,13 +459,13 @@ unico_draw_progressbar_fill_frame (DRAW_ARGS)
 static void
 unico_draw_progressbar_trough_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_progressbar_trough_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
@@ -483,8 +486,8 @@ unico_draw_radio (DRAW_ARGS)
 
   if (!in_menu)
     {
-      unico_cairo_draw_background (engine, cr, x, y, width, height);
-      unico_cairo_draw_frame (engine, cr, x, y, width, height);
+      unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+      unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
     }
 
   if (draw_bullet)
@@ -542,20 +545,20 @@ unico_draw_radio (DRAW_ARGS)
 static void
 unico_draw_scrollbar_stepper_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_scrollbar_stepper_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
 unico_draw_scrollbar_slider (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height);
-  unico_cairo_draw_frame (engine, cr, x, y, width, height);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
@@ -569,7 +572,7 @@ unico_draw_scrollbar_trough_background (DRAW_ARGS)
   else
     voffset = 1;
 
-  unico_cairo_draw_background (engine, cr, x+hoffset, y+voffset, width-hoffset*2, height-voffset*2);
+  unico_cairo_draw_background (engine, cr, x+hoffset, y+voffset, width-hoffset*2, height-voffset*2, unico_get_corners (engine));
 }
 
 static void
@@ -583,7 +586,7 @@ unico_draw_scrollbar_trough_frame (DRAW_ARGS)
   else
     voffset = 1;
 
-  unico_cairo_draw_frame (engine, cr, x+hoffset, y+voffset, width-hoffset*2, height-voffset*2);
+  unico_cairo_draw_frame (engine, cr, x+hoffset, y+voffset, width-hoffset*2, height-voffset*2, unico_get_corners (engine));
 }
 
 static void
@@ -725,8 +728,8 @@ unico_draw_tab (DRAW_ARGS,
     }
 
   /* XXX don't like this */
-  unico_cairo_draw_background_with_corners (engine, cr, x, y, width-1, height-1, corners);
-  unico_cairo_draw_frame_with_corners (engine, cr, x, y, width-1, height-1, corners);
+  unico_cairo_draw_background (engine, cr, x, y, width-1, height-1, corners);
+  unico_cairo_draw_frame (engine, cr, x, y, width-1, height-1, corners);
 
   cairo_restore (cr);
 }
@@ -734,13 +737,13 @@ unico_draw_tab (DRAW_ARGS,
 static void
 unico_draw_toolbar_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 static void
 unico_draw_toolbar_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame_with_corners (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
 }
 
 void

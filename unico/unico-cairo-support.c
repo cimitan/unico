@@ -32,22 +32,8 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
                              gint x,
                              gint y,
                              gint width,
-                             gint height)
-{
-  unico_cairo_draw_background_with_corners (engine, cr,
-                                            x, y,
-                                            width, height,
-                                            unico_get_corners (engine));
-}
-
-void
-unico_cairo_draw_background_with_corners (GtkThemingEngine *engine,
-                                          cairo_t *cr,
-                                          gint x,
-                                          gint y,
-                                          gint width,
-                                          gint height,
-                                          UnicoCorners corners)
+                             gint height,
+                             UnicoCorners corners)
 {
   GtkStateFlags state;
   UnicoStrokeOuterStyle stroke_outer_style;
@@ -182,22 +168,8 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
                         gint x,
                         gint y,
                         gint width,
-                        gint height)
-{
-  unico_cairo_draw_frame_with_corners (engine, cr,
-                                       x, y,
-                                       width, height,
-                                       unico_get_corners (engine));
-}
-
-void
-unico_cairo_draw_frame_with_corners (GtkThemingEngine *engine,
-                                     cairo_t *cr,
-                                     gint x,
-                                     gint y,
-                                     gint width,
-                                     gint height,
-                                     UnicoCorners corners)
+                        gint height,
+                        UnicoCorners corners)
 {
   GtkStateFlags state;
   UnicoStrokeOuterStyle stroke_outer_style;
