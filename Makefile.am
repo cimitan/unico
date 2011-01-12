@@ -1,9 +1,9 @@
 SUBDIRS = \
-  unico
+	unico
 
 distclean-local:
-  rm -rf *.cache *~
+	rm -rf *.cache *~
 
 EXTRA_DIST = \
-  autogen.sh
+	autogen.sh
 

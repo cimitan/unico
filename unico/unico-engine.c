@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 
 #include "unico.h"
+#include "unico-css-support.h"
 #include "unico-engine.h"
 #include "unico-types.h"
 
@@ -579,6 +580,14 @@ unico_engine_class_init (UnicoEngineClass *klass)
                                                             "Stroke outer gradient",
                                                             "Stroke outer gradient",
                                                             CAIRO_GOBJECT_TYPE_PATTERN, 0));
+
+  gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+                                        g_param_spec_enum ("stroke-outer-style",
+                                                           "Stroke outer style",
+                                                           "Stroke outer style",
+                                                           UNICO_TYPE_STROKE_OUTER_STYLE,
+                                                           UNICO_STROKE_OUTER_STYLE_NONE,
+                                                           0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
                                         g_param_spec_boxed ("text-shadow-color",

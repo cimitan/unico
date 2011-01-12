@@ -58,6 +58,13 @@ typedef struct
 
 typedef enum
 {
+  UNICO_STROKE_OUTER_STYLE_CUSTOM = 0,
+  UNICO_STROKE_OUTER_STYLE_INSET = 1,
+  UNICO_STROKE_OUTER_STYLE_NONE = 2
+} UnicoStrokeOuterStyle;
+
+typedef enum
+{
   UNICO_STYLE_DEFAULT = 0,
   UNICO_NUM_STYLES = 1
 } UnicoStyles;
