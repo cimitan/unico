@@ -1,5 +1,5 @@
-/* The Unico Theme Engine for Gtk+.
- * Copyright (C) 2011 Andrea Cimitan <andrea.cimitan@canonical.com>
+/* The Unico Theming Engine for Gtk+.
+ * Copyright (C) 2011 Canonical Ltd
  *
  * This  library is free  software; you can  redistribute it and/or
  * modify it  under  the terms  of the  GNU Lesser  General  Public
@@ -15,6 +15,9 @@
  * License  along  with  this library;  if not,  write to  the Free
  * Software Foundation, Inc., 51  Franklin St, Fifth Floor, Boston,
  * MA 02110-1301, USA.
+ *
+ * Authored by Andrea Cimitan <andrea.cimitan@canonical.com>
+ *
  */
 
 #ifndef UNICO_DRAW_H
