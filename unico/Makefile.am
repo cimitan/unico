@@ -1,24 +1,46 @@
-INCLUDES = $(GTK_CFLAGS)
-
-enginedir = $(libdir)/gtk-3.0/$(GTK_VERSION)/theming-engines
-
-engine_LTLIBRARIES = libunico.la
-
-libunico_la_SOURCES = \
+noinst_HEADERS = \
 	unico.h \
 	unico-cairo-support.h \
-	unico-cairo-support.c \
 	unico-css-support.h \
-	unico-css-support.c \
 	unico-draw.h \
-	unico-draw.c \
 	unico-engine.h \
-	unico-engine.c \
 	unico-support.c \
-	unico-support.h \
-	unico-theme.c \
 	unico-types.h
 
-libunico_la_LDFLAGS = -module -avoid-version
+source_h =
 
-libunico_la_LIBADD = $(NULL_LIBS)
+source_c = \
+	$(srcdir)/unico-cairo-support.c \
+	$(srcdir)/unico-css-support.c \
+	$(srcdir)/unico-draw.c \
+	$(srcdir)/unico-engine.c \
+	$(srcdir)/unico-support.c \
+	$(srcdir)/unico-theme.c
+
+unicoincludedir = $(includedir)/unico-@UNICO_MAJORMINOR@/unico
+unicoinclude_HEADERS = $(source_h)
+
+unicodir = $(libdir)/gtk-3.0/$(GTK_VERSION)/theming-engines
+
+libunico_@UNICO_MAJORMINOR@_la_SOURCES = $(source_c)
+
+lib_LTLIBRARIES = libunico-@UNICO_MAJORMINOR@.la
+
+libunico_@UNICO_MAJORMINOR@_la_CFLAGS = $(UNICO_CFLAGS)
+
+libunico_@UNICO_MAJORMINOR@_la_LIBADD = $(UNICO_LIBADD)
+
+libunico_@UNICO_MAJORMINOR@_la_LDFLAGS = $(UNICO_LDFLAGS) -module -avoid-version
+
+libunico_@UNICO_MAJORMINOR@_includedir = \
+	$(includedir)/unico-@UNICO_MAJORMINOR@/unico
+
+libunico_@UNICO_MAJORMINOR@_include_HEADERS = \
+	$(source_h) \
+	unico-version.h
+
+EXTRA_DIST = \
+	unico-version.h.in
+
+DISTCLEANFILES = \
+	unico-version.h

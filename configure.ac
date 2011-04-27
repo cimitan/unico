@@ -1,60 +1,160 @@
-AC_INIT([unico], [2.91.0])
-AC_CONFIG_SRCDIR([README])
+AC_PREREQ(2.63)
 
-AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-bzip2 -Wall])
+# Package
 
-# Use AM_SILENT_RULES if present
+AC_INIT([unico],[0.1.0],[https://bugs.launchpad.net/unico],[unico])
+AC_CONFIG_SRCDIR([unico/unico.h])
+AC_CONFIG_MACRO_DIR([build])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE([1.9 foreign dist-bzip2])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
-dnl Initialize maintainer mode
-AM_MAINTAINER_MODE
+# ABI versioning
 
+# CURRENT, REVISION, AGE
+# - library source changed -> increment REVISION
+# - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
+# - interfaces added -> increment AGE
+# - interfaces removed -> AGE = 0
+UNICO_LT_CURRENT=0
+UNICO_LT_REV=12
+UNICO_LT_AGE=0
+UNICO_LT_VERSION="$UNICO_LT_CURRENT:$UNICO_LT_REV:$UNICO_LT_AGE"
+UNICO_LT_LDFLAGS="-version-info $UNICO_LT_VERSION"
+AC_SUBST(UNICO_LT_CURRENT)
+AC_SUBST(UNICO_LT_VERSION)
+AC_SUBST(UNICO_LT_LDFLAGS)
+
+# API versioning
+
+PACKAGE_VERSION_MAJOR=`echo AC_PACKAGE_VERSION | cut -d'.' -f1`
+PACKAGE_VERSION_MINOR=`echo AC_PACKAGE_VERSION | cut -d'.' -f2`
+PACKAGE_VERSION_MICRO=`echo AC_PACKAGE_VERSION | cut -d'.' -f3`
+AC_SUBST(PACKAGE_VERSION_MAJOR)
+AC_SUBST(PACKAGE_VERSION_MINOR)
+AC_SUBST(PACKAGE_VERSION_MICRO)
+
+NANO=`echo AC_PACKAGE_VERSION | cut -d'.' -f4`
+if test x"$NANO" = x || test "x$NANO" = "x0" ; then
+    UNICO_TRUNK="no"
+    PACKAGE_VERSION_NANO="0"
+else
+    UNICO_TRUNK="yes"
+    PACKAGE_VERSION_NANO="$NANO"
+fi
+AC_SUBST(UNICO_TRUNK)
+AC_SUBST(PACKAGE_VERSION_NANO)
+
+UNICO_MAJORMINOR=$PACKAGE_VERSION_MAJOR.$PACKAGE_VERSION_MINOR
+AC_SUBST(UNICO_MAJORMINOR)
+AC_DEFINE_UNQUOTED(UNICO_MAJORMINOR, "UNICO_MAJORMINOR",
+                   [library major.minor version])
+
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
-AC_PROG_INSTALL
-AC_PROG_MAKE_SET
 AM_PROG_CC_C_O
-AM_PATH_GLIB_2_0
+LT_INIT
+AC_C_CONST
+AC_C_INLINE
 
-dnl Initialize libtool
-AM_DISABLE_STATIC
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+# Build dependencies
 
-dnl Initialize intltool
-IT_PROG_INTLTOOL([0.40.0])
+AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums])
+AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
+PKG_PROG_PKG_CONFIG
 
-GETTEXT_PACKAGE=unico
-AC_SUBST([GETTEXT_PACKAGE])
-AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
-AM_GLIB_GNU_GETTEXT
+AC_SUBST(glib_req, 2.26.0)
+AC_SUBST(gtk_req, 3.0.0)
+AC_SUBST(cairo_req, 1.10)
 
-# Don't forget to update the README when changing this.
-PKG_CHECK_MODULES(GTK, gtk+-3.0 >= 2.91.6,,
-                  AC_MSG_ERROR([GTK+-3.0 is required to compile unico]))
+PKG_CHECK_MODULES(DEPS, glib-2.0 >= $glib_req gtk+-3.0 >= $gtk_req cairo >= $cairo_req)
+AC_SUBST(DEPS_CFLAGS)
+AC_SUBST(DEPS_LIBS)
 
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
+# Debug flags
 
-GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-3.0`
+if test x$UNICO_TRUNK = xyes; then
+    DEFAULT_DEBUG="yes"
+else
+    DEFAULT_DEBUG="no"
+fi
+AC_SUBST(DEFAULT_DEBUG)
+AC_ARG_ENABLE([debug],
+              [AS_HELP_STRING([--enable-debug=@<:@no/yes/full@:>@],[Control debug level @<:@default=debug_default@:>@])],
+              [], [enable_debug=$DEFAULT_DEBUG])
+AS_CASE([$enable_debug],
+        [yes],
+        [
+          test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
+          DEBUG_CFLAGS="-D_DEBUG"
+        ],
+        [no],
+        [DEBUG_CFLAGS="-DNDEBUG -DG_DISABLE_CAST_CHECKS -DG_DISABLE_CHECKS -DG_DISABLE_ASSERT"],
+        [AC_MSG_ERROR([Unknown argument for --enable-debug])]
+)
+AC_SUBST(DEBUG_CFLAGS)
+
+# Maintainer flags
+
+if test x$UNICO_TRUNK = xyes; then
+    DEFAULT_MAINTAINER_FLAGS="yes"
+else
+    DEFAULT_MAINTAINER_FLAGS="no"
+fi
+AC_SUBST(DEFAULT_MAINTAINER_FLAGS)
+AC_ARG_ENABLE([maintainer-flags],
+              [AS_HELP_STRING([--enable-maintainer-flags=@<:@no/yes@:>@],[Use strict compiler flags @<:@default=maintainer_flags_default@:>@])],
+              [],
+              [enable_maintainer_flags=$DEFAULT_MAINTAINER_FLAGS])
+AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
+      [
+        AS_COMPILER_FLAGS([MAINTAINER_CFLAGS],
+                          ["-fno-common -Wall -Wextra -Werror -Wempty-body
+                            -Wno-missing-field-initializers -Wstrict-aliasing=2
+                            -Wno-unused-parameter -Wdeclaration-after-statement
+                            -Wpointer-arith -Wcast-align -Wwrite-strings
+                            -Wformat-security -Wformat-nonliteral -Winit-self
+                            -Wmissing-declarations -Wnested-externs -Wundef
+                            -Wold-style-definition -Wswitch-default
+                            -Wredundant-decls"])
+      ]
+)
+AC_SUBST(MAINTAINER_CFLAGS)
+
+# Variables
+
+UNICO_LIBADD="\$(DEPS_LIBS)"
+AC_SUBST(UNICO_LIBADD)
+
+UNICO_CFLAGS="-I\$(top_srcdir) -DUNICO_COMPILATION \$(DEPS_CFLAGS) \$(DEBUG_CFLAGS) \$(MAINTAINER_CFLAGS)"
+AC_SUBST(UNICO_CFLAGS)
+
+UNICO_LDFLAGS="\$(UNICO_LT_LDFLAGS) -export-symbols-regex \^[_]*\(unico_\|Unico\|UNICO_\).* -no-undefined"
+AC_SUBST(UNICO_LDFLAGS)
+
+GTK_VERSION="\$PKG_CONFIG --variable=gtk_binary_version gtk+-3.0"
 AC_SUBST(GTK_VERSION)
 
-AC_SUBST(BUILD_ENGINES)
-
-AM_CONFIG_HEADER([config.h])
+# Files
 
 AC_CONFIG_FILES([
 Makefile
+build/Makefile
 po/Makefile
 unico/Makefile
+unico/unico-version.h
 ])
-
 AC_OUTPUT
 
-echo "
-        unico $VERSION
-        ====================================
+# Summary
 
-        prefix:                   ${prefix}
-        compiler:                 ${CC}
-        cflags:                   ${CFLAGS}
-"
+echo ""
+echo "  unico $PACKAGE_VERSION"
+echo "  ========================="
+echo ""
+echo "  Debug:  ${enable_debug}"
+echo "  Prefix: ${prefix}"
+echo ""
+echo "  Compiler flags: ${CPPFLAGS} ${DEBUG_CFLAGS} ${MAINTAINER_CFLAGS}"
+echo ""
