@@ -273,7 +273,9 @@ unico_engine_render_frame_gap (GtkThemingEngine *engine,
       style_functions->draw_frame (engine, cr, x, y, width, height, &frame);
     }
   else
-    GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
+    GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame_gap (engine, cr,
+                                                                            x, y, width, height,
+                                                                            gap_side, xy0_gap, xy1_gap);
 }
 
 static void
