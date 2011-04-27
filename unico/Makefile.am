@@ -4,7 +4,6 @@ noinst_HEADERS = \
 	unico-css-support.h \
 	unico-draw.h \
 	unico-engine.h \
-	unico-support.c \
 	unico-types.h
 
 source_h =
@@ -21,20 +20,20 @@ unicoincludedir = $(includedir)/unico-@UNICO_MAJORMINOR@/unico
 unicoinclude_HEADERS = $(source_h)
 
 unicodir = $(libdir)/gtk-3.0/$(GTK_VERSION)/theming-engines
-unico_LTLIBRARIES = libunico-@UNICO_MAJORMINOR@.la
+unico_LTLIBRARIES = libunico.la
 
-libunico_@UNICO_MAJORMINOR@_la_SOURCES = $(source_c)
+libunico_la_SOURCES = $(source_c)
 
-libunico_@UNICO_MAJORMINOR@_la_CFLAGS = $(UNICO_CFLAGS)
+libunico_la_CFLAGS = $(UNICO_CFLAGS)
 
-libunico_@UNICO_MAJORMINOR@_la_LIBADD = $(UNICO_LIBADD)
+libunico_la_LIBADD = $(UNICO_LIBADD)
 
-libunico_@UNICO_MAJORMINOR@_la_LDFLAGS = $(UNICO_LDFLAGS) -module -avoid-version
+libunico_la_LDFLAGS = $(UNICO_LDFLAGS)
 
-libunico_@UNICO_MAJORMINOR@_includedir = \
+libunico_includedir = \
 	$(includedir)/unico-@UNICO_MAJORMINOR@/unico
 
-libunico_@UNICO_MAJORMINOR@_include_HEADERS = \
+libunico_include_HEADERS = \
 	$(source_h) \
 	unico-version.h
 

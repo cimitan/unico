@@ -130,7 +130,7 @@ AC_SUBST(UNICO_LIBADD)
 UNICO_CFLAGS="-I\$(top_srcdir) -DUNICO_COMPILATION \$(DEPS_CFLAGS) \$(DEBUG_CFLAGS) \$(MAINTAINER_CFLAGS)"
 AC_SUBST(UNICO_CFLAGS)
 
-UNICO_LDFLAGS="\$(UNICO_LT_LDFLAGS) -export-symbols-regex \^[_]*\(unico_\|Unico\|UNICO_\).* -no-undefined"
+UNICO_LDFLAGS="\$(UNICO_LT_LDFLAGS) -export-symbols-regex \^[_]*\(unico_\|Unico\|UNICO_\).* -no-undefined -module"
 AC_SUBST(UNICO_LDFLAGS)
 
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-3.0`
