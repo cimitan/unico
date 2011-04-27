@@ -21,10 +21,9 @@ unicoincludedir = $(includedir)/unico-@UNICO_MAJORMINOR@/unico
 unicoinclude_HEADERS = $(source_h)
 
 unicodir = $(libdir)/gtk-3.0/$(GTK_VERSION)/theming-engines
+unico_LTLIBRARIES = libunico-@UNICO_MAJORMINOR@.la
 
 libunico_@UNICO_MAJORMINOR@_la_SOURCES = $(source_c)
-
-lib_LTLIBRARIES = libunico-@UNICO_MAJORMINOR@.la
 
 libunico_@UNICO_MAJORMINOR@_la_CFLAGS = $(UNICO_CFLAGS)
 
