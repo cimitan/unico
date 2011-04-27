@@ -30,126 +30,126 @@
 G_BEGIN_DECLS
 
 G_GNUC_INTERNAL void unico_cairo_draw_background (GtkThemingEngine *engine,
-                                                  cairo_t *cr,
-                                                  gint x,
-                                                  gint y,
-                                                  gint width,
-                                                  gint height,
-                                                  UnicoCorners corners);
+                                                  cairo_t          *cr,
+                                                  gint              x,
+                                                  gint              y,
+                                                  gint              width,
+                                                  gint              height,
+                                                  UnicoCorners      corners);
 
 G_GNUC_INTERNAL void unico_cairo_draw_background_from_path (GtkThemingEngine *engine,
-                                                            cairo_t *cr,
-                                                            gdouble x,
-                                                            gdouble y,
-                                                            gdouble width,
-                                                            gdouble height);
+                                                            cairo_t          *cr,
+                                                            gdouble           x,
+                                                            gdouble           y,
+                                                            gdouble           width,
+                                                            gdouble           height);
 
 G_GNUC_INTERNAL void unico_cairo_draw_background_rect (GtkThemingEngine *engine,
-                                                       cairo_t *cr,
-                                                       gdouble x,
-                                                       gdouble y,
-                                                       gdouble width,
-                                                       gdouble height,
-                                                       gint radius,
-                                                       UnicoCorners corners);
+                                                       cairo_t          *cr,
+                                                       gdouble           x,
+                                                       gdouble           y,
+                                                       gdouble           width,
+                                                       gdouble           height,
+                                                       gint              radius,
+                                                       UnicoCorners      corners);
 
 G_GNUC_INTERNAL void unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
-                                                        cairo_t *cr,
-                                                        gdouble x,
-                                                        gdouble y,
-                                                        gdouble width,
-                                                        gdouble height);
+                                                        cairo_t          *cr,
+                                                        gdouble           x,
+                                                        gdouble           y,
+                                                        gdouble           width,
+                                                        gdouble           height);
 
 G_GNUC_INTERNAL void unico_cairo_draw_border_rect (GtkThemingEngine *engine,
-                                                   cairo_t *cr,
-                                                   gdouble x,
-                                                   gdouble y,
-                                                   gdouble width,
-                                                   gdouble height,
-                                                   gint radius,
-                                                   UnicoCorners corners);
+                                                   cairo_t          *cr,
+                                                   gdouble           x,
+                                                   gdouble           y,
+                                                   gdouble           width,
+                                                   gdouble           height,
+                                                   gint              radius,
+                                                   UnicoCorners      corners);
 
 G_GNUC_INTERNAL void unico_cairo_draw_frame (GtkThemingEngine *engine,
-                                             cairo_t *cr,
-                                             gint x,
-                                             gint y,
-                                             gint width,
-                                             gint height,
-                                             UnicoCorners corners);
+                                             cairo_t          *cr,
+                                             gint              x,
+                                             gint              y,
+                                             gint              width,
+                                             gint              height,
+                                             UnicoCorners      corners);
 
 G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
-                                                              cairo_t *cr,
-                                                              gdouble x,
-                                                              gdouble y,
-                                                              gdouble width,
-                                                              gdouble height);
+                                                              cairo_t          *cr,
+                                                              gdouble           x,
+                                                              gdouble           y,
+                                                              gdouble           width,
+                                                              gdouble           height);
 
 G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
-                                                         cairo_t *cr,
-                                                         gdouble x,
-                                                         gdouble y,
-                                                         gdouble width,
-                                                         gdouble height,
-                                                         gint radius,
-                                                         UnicoCorners corners);
+                                                         cairo_t          *cr,
+                                                         gdouble           x,
+                                                         gdouble           y,
+                                                         gdouble           width,
+                                                         gdouble           height,
+                                                         gint              radius,
+                                                         UnicoCorners      corners);
 
 G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
-                                                              cairo_t *cr,
-                                                              gdouble x,
-                                                              gdouble y,
-                                                              gdouble width,
-                                                              gdouble height);
+                                                              cairo_t          *cr,
+                                                              gdouble           x,
+                                                              gdouble           y,
+                                                              gdouble           width,
+                                                              gdouble           height);
 
 G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
-                                                         cairo_t *cr,
-                                                         gdouble x,
-                                                         gdouble y,
-                                                         gdouble width,
-                                                         gdouble height,
-                                                         gint radius,
-                                                         UnicoCorners corners);
+                                                         cairo_t          *cr,
+                                                         gdouble           x,
+                                                         gdouble           y,
+                                                         gdouble           width,
+                                                         gdouble           height,
+                                                         gint              radius,
+                                                         UnicoCorners      corners);
 
 G_GNUC_INTERNAL void unico_cairo_exchange_axis (cairo_t *cr,
-                                                gint *x,
-                                                gint *y,
-                                                gint *width,
-                                                gint *height);
+                                                gint    *x,
+                                                gint    *y,
+                                                gint    *width,
+                                                gint    *height);
 
-G_GNUC_INTERNAL void unico_cairo_rounded_rect (cairo_t *cr,
-                                               gdouble x,
-                                               gdouble y,
-                                               gdouble width,
-                                               gdouble height,
-                                               gint radius,
+G_GNUC_INTERNAL void unico_cairo_rounded_rect (cairo_t     *cr,
+                                               gdouble      x,
+                                               gdouble      y,
+                                               gdouble      width,
+                                               gdouble      height,
+                                               gint         radius,
                                                UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_rounded_rect_inner (cairo_t *cr,
-                                                     gdouble x,
-                                                     gdouble y,
-                                                     gdouble width,
-                                                     gdouble height,
-                                                     gint radius,
+G_GNUC_INTERNAL void unico_cairo_rounded_rect_inner (cairo_t     *cr,
+                                                     gdouble      x,
+                                                     gdouble      y,
+                                                     gdouble      width,
+                                                     gdouble      height,
+                                                     gint         radius,
                                                      UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_rounded_rect_inverted (cairo_t *cr,
-                                                        gdouble x,
-                                                        gdouble y,
-                                                        gdouble width,
-                                                        gdouble height,
-                                                        gint radius,
+G_GNUC_INTERNAL void unico_cairo_rounded_rect_inverted (cairo_t     *cr,
+                                                        gdouble      x,
+                                                        gdouble      y,
+                                                        gdouble      width,
+                                                        gdouble      height,
+                                                        gint         radius,
                                                         UnicoCorners corners);
 
-G_GNUC_INTERNAL void unico_cairo_rounded_rect_inverted_inner (cairo_t *cr,
-                                                              gdouble x,
-                                                              gdouble y,
-                                                              gdouble width,
-                                                              gdouble height,
-                                                              gint radius,
+G_GNUC_INTERNAL void unico_cairo_rounded_rect_inverted_inner (cairo_t      *cr,
+                                                              gdouble      x,
+                                                              gdouble      y,
+                                                              gdouble      width,
+                                                              gdouble      height,
+                                                              gint         radius,
                                                               UnicoCorners corners);
 
 G_GNUC_INTERNAL void unico_cairo_set_source_color_with_alpha (cairo_t *cr,
                                                               GdkRGBA *color,
-                                                              gdouble alpha);
+                                                              gdouble  alpha);
 
 G_END_DECLS
 

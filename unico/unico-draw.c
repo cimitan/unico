@@ -32,8 +32,6 @@
                                              (rect).width  = (_w); \
                                              (rect).height = (_h);
 
-#define DEBUG printf("%s \n", __func__);
-
 static void
 unico_draw_button_background (DRAW_ARGS)
 {
@@ -64,24 +62,26 @@ unico_draw_cell (DRAW_ARGS)
   if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE)
     offset = line_width;
 
-  unico_cairo_draw_background (engine, cr, x-line_width, y, width+line_width*2, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr,
+                               x - line_width, y, width + line_width * 2, height,
+                               UNICO_CORNER_NONE);
 
   cairo_rectangle (cr, x, y, width, height);
   cairo_clip (cr);
 
   unico_cairo_draw_stroke_outer_rect (engine, cr,
-                                      x-line_width, y,
-                                      width+line_width*2, height,
+                                      x - line_width, y,
+                                      width + line_width * 2, height,
                                       0, UNICO_CORNER_NONE);
 
   unico_cairo_draw_stroke_inner_rect (engine, cr,
-                                      x-line_width, y+line_width+offset,
-                                      width+line_width*2, height-line_width*2-offset*2,
+                                      x - line_width, y + line_width + offset,
+                                      width + line_width * 2, height - line_width * 2 - offset * 2,
                                       0, UNICO_CORNER_NONE);
 
   unico_cairo_draw_border_rect (engine, cr,
-                                x-line_width, y+offset,
-                                width+line_width*2, height-offset*2,
+                                x - line_width, y + offset,
+                                width + line_width * 2, height - offset * 2,
                                 0, UNICO_CORNER_NONE);
 }
 
@@ -120,8 +120,8 @@ unico_draw_check (DRAW_ARGS)
           cairo_save (cr);
 
           cairo_set_line_width (cr, 2.0);
-          cairo_move_to (cr, 3, (double)height/2);
-          cairo_line_to (cr, width-3, (double)height/2);
+          cairo_move_to (cr, 3, (double) height / 2.0);
+          cairo_line_to (cr, width - 3, (double) height / 2.0);
 
           cairo_restore (cr);
         }
@@ -131,7 +131,7 @@ unico_draw_check (DRAW_ARGS)
 
           if (in_menu)
             {
-              cairo_scale (cr, (double)width/18.0, (double)height/18.0);
+              cairo_scale (cr, (double) width / 18.0, (double) height / 18.0);
               cairo_translate (cr, 2.0, 3.0);
             }
           else
@@ -142,7 +142,7 @@ unico_draw_check (DRAW_ARGS)
                                       "-unico-bullet-outline-color", &bullet_outline_color,
                                       NULL);
 
-              cairo_scale (cr, (double)width/18.0, (double)height/18.0);
+              cairo_scale (cr, (double) width / 18.0, (double) height / 18.0);
 
               cairo_move_to (cr, 5.0, 5.65);
               cairo_line_to (cr, 8.95, 9.57);
@@ -226,46 +226,46 @@ unico_draw_entry_frame (DRAW_ARGS)
 }
 
 static void
-unico_get_frame_gap_clip (gint x,
-                          gint y,
-                          gint width,
-                          gint height,
-                          GdkRectangle *bevel,
-                          GdkRectangle *border,
-                          UnicoFrameParameters *frame)
+get_frame_gap_clip (gint                  x,
+                    gint                  y,
+                    gint                  width,
+                    gint                  height,
+                    GdkRectangle         *bevel,
+                    GdkRectangle         *border,
+                    UnicoFrameParameters *frame)
 {
   switch (frame->gap_side)
     {
       case GTK_POS_TOP:
         {
-          UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, 0.0,
-                          frame->gap_width-3, 2.0);
-          UNICO_RECT_SET (*border, 1.0+frame->gap_x, 0.0,
-                          frame->gap_width-3, 2.0);
+          UNICO_RECT_SET (*bevel, 2.0 + frame->gap_x, 0.0,
+                          frame->gap_width - 3.0, 2.0);
+          UNICO_RECT_SET (*border, 1.0 + frame->gap_x, 0.0,
+                          frame->gap_width - 3.0, 2.0);
           break;
         }
       case GTK_POS_BOTTOM:
         {
-          UNICO_RECT_SET (*bevel, 2.0+frame->gap_x, height-2.0,
-                          frame->gap_width-3, 2.0);
-          UNICO_RECT_SET (*border, 1.0+frame->gap_x, height-1.0,
-                          frame->gap_width-3, 2.0);
+          UNICO_RECT_SET (*bevel, 2.0 + frame->gap_x, height - 2.0,
+                          frame->gap_width - 3.0, 2.0);
+          UNICO_RECT_SET (*border, 1.0 + frame->gap_x, height - 1.0,
+                          frame->gap_width - 3.0, 2.0);
           break;
         }
       case GTK_POS_LEFT:
         {
-          UNICO_RECT_SET (*bevel, 0.0, 2.0+frame->gap_x,
-                          2.0, frame->gap_width-3);
-          UNICO_RECT_SET (*border, 0.0, 1.0+frame->gap_x,
-                          1.0, frame->gap_width-3);
+          UNICO_RECT_SET (*bevel, 0.0, 2.0 + frame->gap_x,
+                          2.0, frame->gap_width - 3.0);
+          UNICO_RECT_SET (*border, 0.0, 1.0 + frame->gap_x,
+                          1.0, frame->gap_width - 3.0);
           break;
         }
       case GTK_POS_RIGHT:
         {
-          UNICO_RECT_SET (*bevel, width-2.0, 2.0+frame->gap_x,
-                          2.0, frame->gap_width-3);
-          UNICO_RECT_SET (*border, width-1.0, 1.0+frame->gap_x,
-                          1.0, frame->gap_width-3);
+          UNICO_RECT_SET (*bevel, width - 2.0, 2.0 + frame->gap_x,
+                          2.0, frame->gap_width - 3.0);
+          UNICO_RECT_SET (*border, width - 1.0, 1.0 + frame->gap_x,
+                          1.0, frame->gap_width - 3.0);
           break;
         }
     }
@@ -286,8 +286,8 @@ unico_draw_frame (DRAW_ARGS,
   unico_get_border_radius (engine, &radius);
 
   if (frame->gap_x != -1)
-    unico_get_frame_gap_clip (x, y, width, height,
-                              &bevel_clip, &frame_clip, frame);
+    get_frame_gap_clip (x, y, width, height,
+                        &bevel_clip, &frame_clip, frame);
 
   cairo_save (cr);
 
@@ -312,19 +312,19 @@ unico_draw_frame (DRAW_ARGS,
       if (frame->shadow == GTK_SHADOW_ETCHED_IN)
         unico_cairo_draw_stroke_inner_rect (engine, cr,
                                             line_width, line_width,
-                                            width-line_width*2, height-line_width*2,
-                                            radius-line_width, corners);
+                                            width - line_width * 2, height - line_width * 2,
+                                            radius - line_width, corners);
       else
         unico_cairo_draw_stroke_inner_rect (engine, cr,
                                             0, 0,
-                                            width-line_width*2, height-line_width*2,
-                                            radius-line_width, corners);
+                                            width - line_width * 2, height - line_width * 2,
+                                            radius - line_width, corners);
     }
   else if (frame->shadow != GTK_SHADOW_NONE)
     unico_cairo_draw_stroke_inner_rect (engine, cr,
                                         line_width, line_width,
-                                        width-line_width*2, height-line_width*2,
-                                        radius-line_width, corners);
+                                        width - line_width * 2, height - line_width * 2,
+                                        radius - line_width, corners);
 
   /* restore the previous clip region */
   cairo_restore    (cr);
@@ -346,13 +346,13 @@ unico_draw_frame (DRAW_ARGS,
       if (frame->shadow == GTK_SHADOW_ETCHED_OUT)
         unico_cairo_draw_border_rect (engine, cr,
                                       line_width, line_width,
-                                      width-line_width*2, height-line_width*2,
-                                      radius-line_width, corners);
+                                      width - line_width * 2, height - line_width * 2,
+                                      radius - line_width, corners);
       else
         unico_cairo_draw_border_rect (engine, cr,
                                       0, 0,
-                                      width-line_width*2, height-line_width*2,
-                                      radius-line_width, corners);
+                                      width - line_width * 2, height - line_width * 2,
+                                      radius - line_width, corners);
     }
   else
     {
@@ -438,8 +438,8 @@ unico_draw_progressbar_fill_background (DRAW_ARGS)
   unico_get_border_radius (engine, &radius);
 
   unico_cairo_draw_background_rect (engine, cr,
-                                    x+line_width, y+line_width,
-                                    width-line_width*2, height-line_width*2,
+                                    x + line_width, y + line_width,
+                                    width - line_width * 2, height - line_width * 2,
                                     radius, unico_get_corners (engine));
 }
 
@@ -505,8 +505,8 @@ unico_draw_radio (DRAW_ARGS)
           cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
           cairo_set_line_width (cr, 2.0);
 
-          cairo_move_to(cr, 5, (double)height/2);
-          cairo_line_to(cr, width-5, (double)height/2);
+          cairo_move_to(cr, 5, (double) height / 2.0);
+          cairo_line_to(cr, width - 5, (double) height / 2.0);
 
           gdk_cairo_set_source_rgba (cr, bullet_color);
           cairo_stroke (cr);
@@ -516,7 +516,8 @@ unico_draw_radio (DRAW_ARGS)
       else
         {
           if (in_menu)
-            cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+            cairo_arc (cr, x + (double) width / 2.0, y + (double) height / 2.0,
+                           (double) (width + height) / 4.0 - 4, 0, G_PI * 2);
           else
             {
               GdkRGBA *bullet_outline_color;
@@ -525,11 +526,13 @@ unico_draw_radio (DRAW_ARGS)
                                       "-unico-bullet-outline-color", &bullet_outline_color,
                                       NULL);
 
-              cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-4, 0, G_PI*2);
+              cairo_arc (cr, x + (double) width / 2.0, y + (double) height / 2.0,
+                             (double) (width + height) / 4.0 - 4, 0, G_PI * 2);
               gdk_cairo_set_source_rgba (cr, bullet_outline_color);
               cairo_fill (cr);
 
-              cairo_arc (cr, x+(double)width/2, y+(double)height/2, (double)(width+height)/4-5, 0, G_PI*2);
+              cairo_arc (cr, x + (double) width / 2.0, y + (double) height / 2.0,
+                             (double) (width + height) / 4.0 - 5, 0, G_PI * 2);
 
               gdk_rgba_free (bullet_outline_color);
             }
@@ -572,7 +575,9 @@ unico_draw_scrollbar_trough_background (DRAW_ARGS)
   else
     voffset = 1;
 
-  unico_cairo_draw_background (engine, cr, x+hoffset, y+voffset, width-hoffset*2, height-voffset*2, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
+                               unico_get_corners (engine));
 }
 
 static void
@@ -586,23 +591,25 @@ unico_draw_scrollbar_trough_frame (DRAW_ARGS)
   else
     voffset = 1;
 
-  unico_cairo_draw_frame (engine, cr, x+hoffset, y+voffset, width-hoffset*2, height-voffset*2, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
+                          unico_get_corners (engine));
 }
 
 static void
-unico_draw_slider_button_path (cairo_t *cr,
-                               gint x,
-                               gint y,
-                               gint width,
-                               gint height,
-                               gint radius)
+draw_slider_button_path (cairo_t *cr,
+                         gint     x,
+                         gint     y,
+                         gint     width,
+                         gint     height,
+                         gint     radius)
 {
-  cairo_move_to (cr, x+radius, y);
-  cairo_arc (cr, x+width-radius, y+radius, radius, G_PI*1.5, G_PI*2);
-  cairo_line_to (cr, x+width, y+height-width/2.0);
-  cairo_line_to (cr, x+width/2.0, y+height);
-  cairo_line_to (cr, x, y+height-width/2.0);
-  cairo_arc (cr, x+radius, y+radius, radius, G_PI, G_PI*1.5);
+  cairo_move_to (cr, x + radius, y);
+  cairo_arc (cr, x + width - radius, y + radius, radius, G_PI * 1.5, G_PI * 2);
+  cairo_line_to (cr, x + width, y + height - width / 2.0);
+  cairo_line_to (cr, x + width / 2.0, y + height);
+  cairo_line_to (cr, x, y + height - width / 2.0);
+  cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 1.5);
 }
 
 static void
@@ -618,7 +625,7 @@ unico_draw_slider_button (DRAW_ARGS,
   corners = unico_get_corners (engine);
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
-  radius = MIN (radius, MIN (width/2.0, height/2.0));
+  radius = MIN (radius, MIN (width / 2.0, height / 2.0));
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
@@ -638,29 +645,49 @@ unico_draw_slider_button (DRAW_ARGS,
 
   cairo_translate (cr, x, y);
 
-  unico_draw_slider_button_path (cr, offset, offset, width-offset*2, height-offset*2, radius);
-  unico_cairo_draw_background_from_path (engine, cr, offset, offset, width-offset*2, height-offset*2);
+  draw_slider_button_path (cr, offset,
+                               offset,
+                               width - offset * 2,
+                               height - offset * 2,
+                               radius);
+  unico_cairo_draw_background_from_path (engine, cr,
+                                         offset,
+                                         offset,
+                                         width - offset * 2,
+                                         height - offset * 2);
 
-  unico_draw_slider_button_path (cr, line_width/2.0, line_width/2.0,
-                                     width-line_width, height-line_width,
-                                     radius);
+  draw_slider_button_path (cr, line_width / 2.0,
+                               line_width / 2.0,
+                               width - line_width,
+                               height - line_width,
+                               radius);
   unico_cairo_draw_stroke_outer_from_path (engine, cr,
-                                           line_width/2.0, line_width/2.0,
-                                           width-line_width, height-line_width);
+                                           line_width / 2.0,
+                                           line_width / 2.0,
+                                           width - line_width,
+                                           height - line_width);
 
-  unico_draw_slider_button_path (cr, line_width/2.0+offset+line_width, line_width/2.0+offset+line_width,
-                                     width-line_width-offset*2-line_width*2, height-line_width-offset*2-line_width*2,
-                                     radius);
+  draw_slider_button_path (cr, line_width / 2.0 + offset + line_width,
+                               line_width / 2.0 + offset + line_width,
+                               width - line_width - offset * 2 - line_width * 2,
+                               height - line_width - offset * 2 - line_width * 2,
+                               radius);
   unico_cairo_draw_stroke_inner_from_path (engine, cr,
-                                           line_width/2.0+offset+line_width, line_width/2.0+offset+line_width,
-                                           width-line_width-offset*2-line_width*2, height-line_width-offset*2-line_width*2);
+                                           line_width / 2.0 + offset + line_width,
+                                           line_width / 2.0 + offset + line_width,
+                                           width - line_width - offset * 2 - line_width * 2,
+                                           height - line_width - offset * 2 - line_width * 2);
 
-  unico_draw_slider_button_path (cr, line_width/2.0+offset, line_width/2.0+offset,
-                                     width-line_width-offset*2, height-line_width-offset*2,
-                                     radius);
+  draw_slider_button_path (cr, line_width / 2.0 + offset,
+                               line_width / 2.0 + offset,
+                               width - line_width - offset * 2,
+                               height - line_width - offset * 2,
+                               radius);
   unico_cairo_draw_border_from_path (engine, cr,
-                                     line_width/2.0+offset, line_width/2.0+offset,
-                                     width-line_width-offset*2, height-line_width-offset*2);
+                                     line_width / 2.0 + offset,
+                                     line_width / 2.0 + offset,
+                                     width - line_width - offset * 2,
+                                     height - line_width - offset * 2);
 
   cairo_restore (cr);
 }
@@ -703,33 +730,33 @@ unico_draw_tab (DRAW_ARGS,
     {
       case GTK_POS_TOP:
         {
-          height += line_width*2;
+          height += line_width * 2;
           corners = UNICO_CORNER_BOTTOMLEFT | UNICO_CORNER_BOTTOMRIGHT;
           break;
         }
       case GTK_POS_BOTTOM:
         {
-          height += line_width*2;
+          height += line_width * 2;
           corners = UNICO_CORNER_TOPLEFT | UNICO_CORNER_TOPRIGHT;
           break;
         }
       case GTK_POS_LEFT:
         {
-          width += line_width*2;
+          width += line_width * 2;
           corners = UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT;
           break;
         }
       case GTK_POS_RIGHT:
         {
-          width += line_width*2;
+          width += line_width * 2;
           corners = UNICO_CORNER_TOPLEFT | UNICO_CORNER_BOTTOMLEFT;
           break;
         }
     }
 
   /* XXX don't like this */
-  unico_cairo_draw_background (engine, cr, x, y, width-1, height-1, corners);
-  unico_cairo_draw_frame (engine, cr, x, y, width-1, height-1, corners);
+  unico_cairo_draw_background (engine, cr, x, y, width - 1, height - 1, corners);
+  unico_cairo_draw_frame (engine, cr, x, y, width - 1, height - 1, corners);
 
   cairo_restore (cr);
 }

@@ -40,11 +40,11 @@ G_DEFINE_DYNAMIC_TYPE (UnicoEngine, unico_engine, GTK_TYPE_THEMING_ENGINE)
 
 static void
 unico_engine_render_activity (GtkThemingEngine *engine,
-                              cairo_t *cr,
-                              gdouble x,
-                              gdouble y,
-                              gdouble width,
-                              gdouble height)
+                              cairo_t          *cr,
+                              gdouble           x,
+                              gdouble           y,
+                              gdouble           width,
+                              gdouble           height)
 {
   UnicoStyleFunctions *style_functions;
 
@@ -63,22 +63,22 @@ unico_engine_render_activity (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_arrow (GtkThemingEngine *engine,
-                           cairo_t *cr,
-                           gdouble angle,
-                           gdouble x,
-                           gdouble y,
-                           gdouble size)
+                           cairo_t          *cr,
+                           gdouble           angle,
+                           gdouble           x,
+                           gdouble           y,
+                           gdouble           size)
 {
   GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_arrow (engine, cr, angle, x, y, size);
 }
 
 static void
 unico_engine_render_background (GtkThemingEngine *engine,
-                                cairo_t *cr,
-                                gdouble x,
-                                gdouble y,
-                                gdouble width,
-                                gdouble height)
+                                cairo_t          *cr,
+                                gdouble           x,
+                                gdouble           y,
+                                gdouble           width,
+                                gdouble           height)
 {
   UnicoStyleFunctions *style_functions;
   const GtkWidgetPath *path;
@@ -130,11 +130,11 @@ unico_engine_render_background (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_check (GtkThemingEngine *engine,
-                           cairo_t *cr,
-                           gdouble x,
-                           gdouble y,
-                           gdouble width,
-                           gdouble height)
+                           cairo_t          *cr,
+                           gdouble           x,
+                           gdouble           y,
+                           gdouble           width,
+                           gdouble           height)
 {
   UnicoStyleFunctions *style_functions;
 
@@ -147,12 +147,12 @@ unico_engine_render_check (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_extension (GtkThemingEngine *engine,
-                               cairo_t *cr,
-                               gdouble x,
-                               gdouble y,
-                               gdouble width,
-                               gdouble height,
-                               GtkPositionType gap_side)
+                               cairo_t          *cr,
+                               gdouble           x,
+                               gdouble           y,
+                               gdouble           width,
+                               gdouble           height,
+                               GtkPositionType   gap_side)
 {
   UnicoStyleFunctions *style_functions;
 
@@ -174,22 +174,22 @@ unico_engine_render_extension (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_focus (GtkThemingEngine *engine,
-                           cairo_t *cr,
-                           gdouble x,
-                           gdouble y,
-                           gdouble width,
-                           gdouble height)
+                           cairo_t          *cr,
+                           gdouble           x,
+                           gdouble           y,
+                           gdouble           width,
+                           gdouble           height)
 {
   GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_focus (engine, cr, x, y, width, height);
 }
 
 static void
 unico_engine_render_frame (GtkThemingEngine *engine,
-                           cairo_t *cr,
-                           gdouble x,
-                           gdouble y,
-                           gdouble width,
-                           gdouble height)
+                           cairo_t          *cr,
+                           gdouble           x,
+                           gdouble           y,
+                           gdouble           width,
+                           gdouble           height)
 {
   UnicoStyleFunctions *style_functions;
   const GtkWidgetPath *path;
@@ -237,14 +237,14 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_frame_gap (GtkThemingEngine *engine,
-                               cairo_t *cr,
-                               gdouble x,
-                               gdouble y,
-                               gdouble width,
-                               gdouble height,
-                               GtkPositionType gap_side,
-                               gdouble xy0_gap,
-                               gdouble xy1_gap)
+                               cairo_t          *cr,
+                               gdouble           x,
+                               gdouble           y,
+                               gdouble           width,
+                               gdouble           height,
+                               GtkPositionType   gap_side,
+                               gdouble           xy0_gap,
+                               gdouble           xy1_gap)
 {
   UnicoStyleFunctions *style_functions;
 
@@ -278,18 +278,18 @@ unico_engine_render_frame_gap (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_handle (GtkThemingEngine *engine,
-                            cairo_t *cr,
-                            gdouble x,
-                            gdouble y,
-                            gdouble width,
-                            gdouble height)
+                            cairo_t          *cr,
+                            gdouble           x,
+                            gdouble           y,
+                            gdouble           width,
+                            gdouble           height)
 {
   GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_handle (engine, cr, x, y, width, height);
 }
 
 static GdkPixbuf*
-unico_pixbuf_set_transparency (GdkPixbuf *pixbuf,
-                               gdouble alpha_percent)
+pixbuf_set_transparency (GdkPixbuf *pixbuf,
+                         gdouble    alpha_percent)
 {
   GdkPixbuf *target;
   guchar *data, *current;
@@ -326,9 +326,9 @@ unico_pixbuf_set_transparency (GdkPixbuf *pixbuf,
 }
 
 static GdkPixbuf*
-unico_pixbuf_scale_or_ref (GdkPixbuf *src,
-                           gint width,
-                           gint height)
+pixbuf_scale_or_ref (GdkPixbuf *src,
+                     gint       width,
+                     gint       height)
 {
   if (width == gdk_pixbuf_get_width (src) &&
       height == gdk_pixbuf_get_height (src))
@@ -340,9 +340,9 @@ unico_pixbuf_scale_or_ref (GdkPixbuf *src,
 }
 
 static GdkPixbuf*
-unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
+unico_engine_render_icon_pixbuf (GtkThemingEngine    *engine,
                                  const GtkIconSource *source,
-                                 GtkIconSize size)
+                                 GtkIconSize          size)
 {
   GdkPixbuf *scaled;
   GdkPixbuf *stated;
@@ -370,7 +370,7 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
    * leave it alone.
    */
   if (size != (GtkIconSize)-1 && gtk_icon_source_get_size_wildcarded (source))
-    scaled = unico_pixbuf_scale_or_ref (base_pixbuf, width, height);
+    scaled = pixbuf_scale_or_ref (base_pixbuf, width, height);
   else
     scaled = g_object_ref (base_pixbuf);
 
@@ -379,7 +379,7 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
     {
       if (state & GTK_STATE_FLAG_INSENSITIVE)
         {
-          stated = unico_pixbuf_set_transparency (scaled, 0.3);
+          stated = pixbuf_set_transparency (scaled, 0.3);
           gdk_pixbuf_saturate_and_pixelate (stated, stated, 0.1, FALSE);
 
           g_object_unref (scaled);
@@ -403,10 +403,10 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_layout (GtkThemingEngine *engine,
-                            cairo_t *cr,
-                            gdouble x,
-                            gdouble y,
-                            PangoLayout *layout)
+                            cairo_t          *cr,
+                            gdouble           x,
+                            gdouble           y,
+                            PangoLayout      *layout)
 {
   GdkRGBA *color;
   GtkStateFlags state;
@@ -458,11 +458,11 @@ unico_engine_render_layout (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_option (GtkThemingEngine *engine,
-                            cairo_t *cr,
-                            gdouble x,
-                            gdouble y,
-                            gdouble width,
-                            gdouble height)
+                            cairo_t          *cr,
+                            gdouble           x,
+                            gdouble           y,
+                            gdouble           width,
+                            gdouble           height)
 {
   UnicoStyleFunctions *style_functions;
 
@@ -475,12 +475,12 @@ unico_engine_render_option (GtkThemingEngine *engine,
 
 static void
 unico_engine_render_slider (GtkThemingEngine *engine,
-                            cairo_t *cr,
-                            gdouble x,
-                            gdouble y,
-                            gdouble width,
-                            gdouble height,
-                            GtkOrientation orientation)
+                            cairo_t          *cr,
+                            gdouble           x,
+                            gdouble           y,
+                            gdouble           width,
+                            gdouble           height,
+                            GtkOrientation    orientation)
 {
   UnicoStyleFunctions *style_functions;
 

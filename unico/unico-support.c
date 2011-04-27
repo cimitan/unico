@@ -26,7 +26,7 @@
 #include "unico-types.h"
 
 void
-unico_lookup_functions (UnicoEngine *engine,
+unico_lookup_functions (UnicoEngine          *engine,
                         UnicoStyleFunctions **functions)
 {
   if (functions)
@@ -57,7 +57,8 @@ unico_get_corners (GtkThemingEngine *engine)
 }
 
 void
-unico_get_line_width (GtkThemingEngine *engine, gdouble *line_width)
+unico_get_line_width (GtkThemingEngine *engine,
+                      gdouble          *line_width)
 {
   GtkBorder *border;
   GtkStateFlags state;
@@ -74,7 +75,8 @@ unico_get_line_width (GtkThemingEngine *engine, gdouble *line_width)
 }
 
 void
-unico_get_border_radius (GtkThemingEngine *engine, gint *radius)
+unico_get_border_radius (GtkThemingEngine *engine,
+                         gint             *radius)
 {
   GtkStateFlags state;
 

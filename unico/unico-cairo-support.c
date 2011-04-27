@@ -28,12 +28,12 @@
 
 void
 unico_cairo_draw_background (GtkThemingEngine *engine,
-                             cairo_t *cr,
-                             gint x,
-                             gint y,
-                             gint width,
-                             gint height,
-                             UnicoCorners corners)
+                             cairo_t          *cr,
+                             gint              x,
+                             gint              y,
+                             gint              width,
+                             gint              height,
+                             UnicoCorners      corners)
 {
   GtkStateFlags state;
   UnicoStrokeOuterStyle stroke_outer_style;
@@ -54,18 +54,18 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
     offset = line_width;
 
   unico_cairo_draw_background_rect (engine, cr,
-                                    x+offset, y+offset,
-                                    width-offset*2, height-offset*2,
+                                    x + offset, y + offset,
+                                    width - offset * 2, height - offset * 2,
                                     radius, corners);
 }
 
 void
 unico_cairo_draw_background_from_path (GtkThemingEngine *engine,
-                                       cairo_t *cr,
-                                       gdouble x,
-                                       gdouble y,
-                                       gdouble width,
-                                       gdouble height)
+                                       cairo_t          *cr,
+                                       gdouble           x,
+                                       gdouble           y,
+                                       gdouble           width,
+                                       gdouble           height)
 {
   GtkStateFlags state;
   GdkRGBA *background_color;
@@ -86,7 +86,7 @@ unico_cairo_draw_background_from_path (GtkThemingEngine *engine,
       if (background_pat)
         {
           cairo_matrix_t matrix;
-          cairo_matrix_init_scale (&matrix, 1.0/width, 1.0/height);
+          cairo_matrix_init_scale (&matrix, 1.0 / width, 1.0 / height);
           cairo_pattern_set_matrix (background_pat, &matrix);
           cairo_set_source (cr, background_pat);
           cairo_pattern_destroy (background_pat);
@@ -104,13 +104,13 @@ unico_cairo_draw_background_from_path (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_background_rect (GtkThemingEngine *engine,
-                                  cairo_t *cr,
-                                  gdouble x,
-                                  gdouble y,
-                                  gdouble width,
-                                  gdouble height,
-                                  gint radius,
-                                  UnicoCorners corners)
+                                  cairo_t          *cr,
+                                  gdouble           x,
+                                  gdouble           y,
+                                  gdouble           width,
+                                  gdouble           height,
+                                  gint              radius,
+                                  UnicoCorners      corners)
 {
   unico_cairo_rounded_rect (cr, x, y, width, height, radius, corners);
   unico_cairo_draw_background_from_path (engine, cr, x, y, width, height);
@@ -118,11 +118,11 @@ unico_cairo_draw_background_rect (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
-                                   cairo_t *cr,
-                                   gdouble x,
-                                   gdouble y,
-                                   gdouble width,
-                                   gdouble height)
+                                   cairo_t          *cr,
+                                   gdouble           x,
+                                   gdouble           y,
+                                   gdouble           width,
+                                   gdouble           height)
 {
   GtkStateFlags state;
   GdkRGBA *border_color;
@@ -146,7 +146,7 @@ unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
       if (border_pat)
         {
           cairo_matrix_t matrix;
-          cairo_matrix_init_scale (&matrix, 1.0/(width-line_width), 1.0/(height-line_width));
+          cairo_matrix_init_scale (&matrix, 1.0 / (width - line_width), 1.0 / (height - line_width));
           cairo_pattern_set_matrix (border_pat, &matrix);
           cairo_set_source (cr, border_pat);
           cairo_pattern_destroy (border_pat);
@@ -164,12 +164,12 @@ unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_frame (GtkThemingEngine *engine,
-                        cairo_t *cr,
-                        gint x,
-                        gint y,
-                        gint width,
-                        gint height,
-                        UnicoCorners corners)
+                        cairo_t          *cr,
+                        gint              x,
+                        gint              y,
+                        gint              width,
+                        gint              height,
+                        UnicoCorners      corners)
 {
   GtkStateFlags state;
   UnicoStrokeOuterStyle stroke_outer_style;
@@ -193,29 +193,29 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
       unico_cairo_draw_stroke_outer_rect (engine, cr,
                                           x, y,
                                           width, height,
-                                          radius+line_width, corners);
+                                          radius + line_width, corners);
     }
 
   unico_cairo_draw_stroke_inner_rect (engine, cr,
-                                      x+offset+line_width, y+offset+line_width,
-                                      width-offset*2-line_width*2, height-offset*2-line_width*2,
-                                      radius-line_width, corners);
+                                      x + offset + line_width, y + offset + line_width,
+                                      width - offset * 2 - line_width * 2, height - offset * 2 - line_width * 2,
+                                      radius - line_width, corners);
 
   unico_cairo_draw_border_rect (engine, cr,
-                                x+offset, y+offset,
-                                width-offset*2, height-offset*2,
+                                x + offset, y + offset,
+                                width - offset * 2, height - offset * 2,
                                 radius, corners);
 }
 
 void
 unico_cairo_draw_border_rect (GtkThemingEngine *engine,
-                              cairo_t *cr,
-                              gdouble x,
-                              gdouble y,
-                              gdouble width,
-                              gdouble height,
-                              gint radius,
-                              UnicoCorners corners)
+                              cairo_t          *cr,
+                              gdouble           x,
+                              gdouble           y,
+                              gdouble           width,
+                              gdouble           height,
+                              gint              radius,
+                              UnicoCorners      corners)
 {
   gdouble line_width;
 
@@ -233,11 +233,11 @@ unico_cairo_draw_border_rect (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
-                                         cairo_t *cr,
-                                         gdouble x,
-                                         gdouble y,
-                                         gdouble width,
-                                         gdouble height)
+                                         cairo_t          *cr,
+                                         gdouble           x,
+                                         gdouble           y,
+                                         gdouble           width,
+                                         gdouble           height)
 {
   GtkStateFlags state;
   GdkRGBA *stroke_inner_color;
@@ -261,7 +261,7 @@ unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
       if (stroke_inner_pat)
         {
           cairo_matrix_t matrix;
-          cairo_matrix_init_scale (&matrix, 1.0/(width-line_width), 1.0/(height-line_width));
+          cairo_matrix_init_scale (&matrix, 1.0 / (width - line_width), 1.0 / (height - line_width));
           cairo_pattern_set_matrix (stroke_inner_pat, &matrix);
           cairo_set_source (cr, stroke_inner_pat);
           cairo_pattern_destroy (stroke_inner_pat);
@@ -279,13 +279,13 @@ unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
-                                    cairo_t *cr,
-                                    gdouble x,
-                                    gdouble y,
-                                    gdouble width,
-                                    gdouble height,
-                                    gint radius,
-                                    UnicoCorners corners)
+                                    cairo_t          *cr,
+                                    gdouble           x,
+                                    gdouble           y,
+                                    gdouble           width,
+                                    gdouble           height,
+                                    gint              radius,
+                                    UnicoCorners      corners)
 {
   gdouble line_width;
 
@@ -303,11 +303,11 @@ unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
-                                         cairo_t *cr,
-                                         gdouble x,
-                                         gdouble y,
-                                         gdouble width,
-                                         gdouble height)
+                                         cairo_t          *cr,
+                                         gdouble           x,
+                                         gdouble           y,
+                                         gdouble           width,
+                                         gdouble           height)
 {
   GtkStateFlags state;
   GdkRGBA *stroke_outer_color;
@@ -334,7 +334,7 @@ unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
       if (stroke_outer_pat)
         {
           cairo_matrix_t matrix;
-          cairo_matrix_init_scale (&matrix, 1.0/(width-line_width), 1.0/(height-line_width));
+          cairo_matrix_init_scale (&matrix, 1.0 / (width - line_width), 1.0 / (height - line_width));
           cairo_pattern_set_matrix (stroke_outer_pat, &matrix);
           cairo_set_source (cr, stroke_outer_pat);
           cairo_pattern_destroy (stroke_outer_pat);
@@ -353,13 +353,13 @@ unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
 
 void
 unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
-                                    cairo_t *cr,
-                                    gdouble x,
-                                    gdouble y,
-                                    gdouble width,
-                                    gdouble height,
-                                    gint radius,
-                                    UnicoCorners corners)
+                                    cairo_t          *cr,
+                                    gdouble           x,
+                                    gdouble           y,
+                                    gdouble           width,
+                                    gdouble           height,
+                                    gint              radius,
+                                    UnicoCorners      corners)
 {
   gdouble line_width;
 
@@ -377,10 +377,10 @@ unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
 
 void
 unico_cairo_exchange_axis (cairo_t *cr,
-                           gint *x,
-                           gint *y,
-                           gint *width,
-                           gint *height)
+                           gint    *x,
+                           gint    *y,
+                           gint    *width,
+                           gint    *height)
 {
   gint tmp;
   cairo_matrix_t matrix;
@@ -399,12 +399,12 @@ unico_cairo_exchange_axis (cairo_t *cr,
 }
 
 void
-unico_cairo_rounded_rect (cairo_t *cr,
-                          gdouble x,
-                          gdouble y,
-                          gdouble width,
-                          gdouble height,
-                          gint radius,
+unico_cairo_rounded_rect (cairo_t     *cr,
+                          gdouble      x,
+                          gdouble      y,
+                          gdouble      width,
+                          gdouble      height,
+                          gint         radius,
                           UnicoCorners corners)
 {
   if (radius <= 0)
@@ -413,61 +413,61 @@ unico_cairo_rounded_rect (cairo_t *cr,
       return;
     }
 
-  radius = MIN (radius, MIN (width/2.0, height/2.0));
+  radius = MIN (radius, MIN (width / 2.0, height / 2.0));
 
   if (corners & UNICO_CORNER_TOPLEFT)
-    cairo_move_to (cr, x+radius, y);
+    cairo_move_to (cr, x + radius, y);
   else
     cairo_move_to (cr, x, y);
 
   if (corners & UNICO_CORNER_TOPRIGHT)
-    cairo_arc (cr, x+width-radius, y+radius, radius, G_PI*1.5, G_PI*2);
+    cairo_arc (cr, x + width - radius, y + radius, radius, G_PI * 1.5, G_PI * 2);
   else
-    cairo_line_to (cr, x+width, y);
+    cairo_line_to (cr, x + width, y);
 
   if (corners & UNICO_CORNER_BOTTOMRIGHT)
-    cairo_arc (cr, x+width-radius, y+height-radius, radius, 0.0, G_PI*0.5);
+    cairo_arc (cr, x + width - radius, y + height - radius, radius, 0.0, G_PI * 0.5);
   else
-    cairo_line_to (cr, x+width, y+height);
+    cairo_line_to (cr, x + width, y + height);
 
   if (corners & UNICO_CORNER_BOTTOMLEFT)
-    cairo_arc (cr, x+radius, y+height-radius, radius, G_PI*0.5, G_PI);
+    cairo_arc (cr, x + radius, y + height - radius, radius, G_PI * 0.5, G_PI);
   else
-    cairo_line_to (cr, x, y+height);
+    cairo_line_to (cr, x, y + height);
 
   if (corners & UNICO_CORNER_TOPLEFT)
-    cairo_arc (cr, x+radius, y+radius, radius, G_PI, G_PI*1.5);
+    cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 1.5);
   else
     cairo_line_to (cr, x, y);
 }
 
 void
-unico_cairo_rounded_rect_inner (cairo_t *cr,
-                                gdouble x,
-                                gdouble y,
-                                gdouble width,
-                                gdouble height,
-                                gint radius,
+unico_cairo_rounded_rect_inner (cairo_t     *cr,
+                                gdouble      x,
+                                gdouble      y,
+                                gdouble      width,
+                                gdouble      height,
+                                gint         radius,
                                 UnicoCorners corners)
 {
   gdouble line_width;
 
   line_width = cairo_get_line_width (cr);
 
-  unico_cairo_rounded_rect (cr, x+(line_width/2.0),
-                                y+(line_width/2.0),
-                                width-line_width,
-                                height-line_width,
+  unico_cairo_rounded_rect (cr, x + (line_width / 2.0),
+                                y + (line_width / 2.0),
+                                width - line_width,
+                                height - line_width,
                                 radius, corners);
 }
 
 void
-unico_cairo_rounded_rect_inverted (cairo_t *cr,
-                                   gdouble x,
-                                   gdouble y,
-                                   gdouble width,
-                                   gdouble height,
-                                   gint radius,
+unico_cairo_rounded_rect_inverted (cairo_t     *cr,
+                                   gdouble      x,
+                                   gdouble      y,
+                                   gdouble      width,
+                                   gdouble      height,
+                                   gint         radius,
                                    UnicoCorners corners)
 {
   if (radius <= 0)
@@ -476,7 +476,7 @@ unico_cairo_rounded_rect_inverted (cairo_t *cr,
       return;
     }
 
-  radius = MIN (radius, MIN (width/2.0, height/2.0));
+  radius = MIN (radius, MIN (width / 2.0, height / 2.0));
 
   cairo_translate (cr, x, y);
 
@@ -486,22 +486,22 @@ unico_cairo_rounded_rect_inverted (cairo_t *cr,
     cairo_move_to (cr, 0, 0);
 
   if (corners & UNICO_CORNER_BOTTOMLEFT)
-    cairo_arc (cr, radius, height+radius, radius, G_PI, G_PI*1.5);
+    cairo_arc (cr, radius, height + radius, radius, G_PI, G_PI * 1.5);
   else
     cairo_line_to (cr, 0, height);
 
   if (corners & UNICO_CORNER_BOTTOMRIGHT)
-    cairo_arc (cr, width-radius, height+radius, radius, G_PI*1.5, G_PI*2.0);
+    cairo_arc (cr, width - radius, height + radius, radius, G_PI * 1.5, G_PI * 2.0);
   else
     cairo_line_to (cr, width, height);
 
   if (corners & UNICO_CORNER_TOPRIGHT)
-    cairo_arc (cr, width-radius, -radius, radius, 0.0, G_PI*0.5);
+    cairo_arc (cr, width - radius, -radius, radius, 0.0, G_PI * 0.5);
   else
     cairo_line_to (cr, width, 0);
 
   if (corners & UNICO_CORNER_TOPLEFT)
-    cairo_arc (cr, radius, -radius, radius, G_PI*0.5, G_PI);
+    cairo_arc (cr, radius, -radius, radius, G_PI * 0.5, G_PI);
   else
     cairo_line_to (cr, 0, 0);
 
@@ -509,29 +509,29 @@ unico_cairo_rounded_rect_inverted (cairo_t *cr,
 }
 
 void
-unico_cairo_rounded_rect_inverted_inner (cairo_t *cr,
-                                         gdouble x,
-                                         gdouble y,
-                                         gdouble width,
-                                         gdouble height,
-                                         gint radius,
+unico_cairo_rounded_rect_inverted_inner (cairo_t     *cr,
+                                         gdouble      x,
+                                         gdouble      y,
+                                         gdouble      width,
+                                         gdouble      height,
+                                         gint         radius,
                                          UnicoCorners corners)
 {
   gdouble line_width;
 
   line_width = cairo_get_line_width (cr);
 
-  unico_cairo_rounded_rect_inverted (cr, x+(line_width/2.0),
-                                         y+(line_width/2.0),
-                                         width-line_width,
-                                         height-line_width,
+  unico_cairo_rounded_rect_inverted (cr, x + (line_width / 2.0),
+                                         y + (line_width / 2.0),
+                                         width - line_width,
+                                         height - line_width,
                                          radius, corners);
 }
 
 void
 unico_cairo_set_source_color_with_alpha (cairo_t *cr,
                                          GdkRGBA *color,
-                                         gdouble alpha)
+                                         gdouble  alpha)
 {
   g_return_if_fail (cr && color);
 
