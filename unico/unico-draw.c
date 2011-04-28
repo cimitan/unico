@@ -55,7 +55,7 @@ unico_draw_cell (DRAW_ARGS)
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-stroke-outer-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &stroke_outer_style,
                           NULL);
 
   offset = 0;
@@ -629,7 +629,7 @@ unico_draw_slider_button (DRAW_ARGS,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-stroke-outer-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &stroke_outer_style,
                           NULL);
 
   offset = 0;

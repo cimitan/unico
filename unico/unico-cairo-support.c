@@ -46,7 +46,7 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-stroke-outer-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &stroke_outer_style,
                           NULL);
 
   offset = 0;
@@ -182,7 +182,7 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-stroke-outer-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &stroke_outer_style,
                           NULL);
 
   offset = 0;
@@ -246,8 +246,8 @@ unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-stroke-inner-color", &stroke_inner_color,
-                          "-unico-stroke-inner-gradient", &stroke_inner_pat,
+                          "-unico-inner-stroke-color", &stroke_inner_color,
+                          "-unico-inner-stroke-gradient", &stroke_inner_pat,
                           NULL);
 
   cairo_save (cr);
@@ -317,9 +317,9 @@ unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-stroke-outer-color", &stroke_outer_color,
-                          "-unico-stroke-outer-gradient", &stroke_outer_pat,
-                          "-unico-stroke-outer-style", &stroke_outer_style,
+                          "-unico-outer-stroke-color", &stroke_outer_color,
+                          "-unico-outer-stroke-gradient", &stroke_outer_pat,
+                          "-unico-outer-stroke-style", &stroke_outer_style,
                           NULL);
 
   cairo_save (cr);

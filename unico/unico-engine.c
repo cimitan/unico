@@ -563,33 +563,33 @@ unico_engine_class_init (UnicoEngineClass *klass)
                                                             GDK_TYPE_RGBA, 0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
-                                        g_param_spec_boxed ("stroke-inner-color",
-                                                            "Stroke inner color",
-                                                            "Stroke inner color",
+                                        g_param_spec_boxed ("inner-stroke-color",
+                                                            "Inner stroke color",
+                                                            "Inner stroke color",
                                                             GDK_TYPE_RGBA, 0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
-                                        g_param_spec_boxed ("stroke-inner-gradient",
-                                                            "Stroke inner gradient",
-                                                            "Stroke inner gradient",
+                                        g_param_spec_boxed ("inner-stroke-gradient",
+                                                            "Inner stroke gradient",
+                                                            "Inner stroke gradient",
                                                             CAIRO_GOBJECT_TYPE_PATTERN, 0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
-                                        g_param_spec_boxed ("stroke-outer-color",
-                                                            "Stroke outer color",
-                                                            "Stroke outer color",
+                                        g_param_spec_boxed ("outer-stroke-color",
+                                                            "Outer stroke color",
+                                                            "Outer stroke color",
                                                             GDK_TYPE_RGBA, 0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
-                                        g_param_spec_boxed ("stroke-outer-gradient",
-                                                            "Stroke outer gradient",
-                                                            "Stroke outer gradient",
+                                        g_param_spec_boxed ("outer-stroke-gradient",
+                                                            "Outer stroke gradient",
+                                                            "Outer stroke gradient",
                                                             CAIRO_GOBJECT_TYPE_PATTERN, 0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
-                                        g_param_spec_enum ("stroke-outer-style",
-                                                           "Stroke outer style",
-                                                           "Stroke outer style",
+                                        g_param_spec_enum ("outer-stroke-style",
+                                                           "Outer stroke style",
+                                                           "Outer stroke style",
                                                            UNICO_TYPE_STROKE_OUTER_STYLE,
                                                            UNICO_STROKE_OUTER_STYLE_NONE,
                                                            0));
