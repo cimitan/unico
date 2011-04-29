@@ -459,6 +459,46 @@ unico_engine_render_layout (GtkThemingEngine *engine,
 }
 
 static void
+unico_engine_render_line (GtkThemingEngine *engine,
+                          cairo_t          *cr,
+                          gdouble           x0,
+                          gdouble           y0,
+                          gdouble           x1,
+                          gdouble           y1)
+{
+  const GtkWidgetPath *path;
+
+  UNICO_CAIRO_INIT
+
+  path = gtk_theming_engine_get_path (engine);
+
+  /* FIXME we need better theming here. */
+  if ((gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MARK) &&
+       gtk_widget_path_is_type (path, GTK_TYPE_SCALE)) ||
+      (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SEPARATOR) &&
+       gtk_widget_path_is_type (path, GTK_TYPE_TREE_VIEW)))
+    {
+      GdkRGBA bg;
+      GtkStateFlags state;
+
+      state = gtk_theming_engine_get_state (engine);
+      gtk_theming_engine_get_background_color (engine, state, &bg);
+
+      cairo_save (cr);
+
+      cairo_move_to (cr, x0 + 0.5, y0 + 0.5);
+      cairo_line_to (cr, x1 + 0.5, y1 + 0.5);
+
+      gdk_cairo_set_source_rgba (cr, &bg);
+      cairo_stroke (cr);
+
+      cairo_restore (cr);
+    }
+  else
+    GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_line (engine, cr, x0, y0, x1, y1);
+}
+
+static void
 unico_engine_render_option (GtkThemingEngine *engine,
                             cairo_t          *cr,
                             gdouble           x,
@@ -535,6 +575,7 @@ unico_engine_class_init (UnicoEngineClass *klass)
   engine_class->render_handle      = unico_engine_render_handle;
   engine_class->render_icon_pixbuf = unico_engine_render_icon_pixbuf;
   engine_class->render_layout      = unico_engine_render_layout;
+  engine_class->render_line        = unico_engine_render_line;
   engine_class->render_option      = unico_engine_render_option;
   engine_class->render_slider      = unico_engine_render_slider;
 
