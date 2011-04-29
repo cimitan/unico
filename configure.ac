@@ -10,31 +10,6 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.9 foreign dist-bzip2])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
-# ABI versioning
-
-# CURRENT, REVISION, AGE
-# - library source changed -> increment REVISION
-# - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
-# - interfaces added -> increment AGE
-# - interfaces removed -> AGE = 0
-UNICO_LT_CURRENT=0
-UNICO_LT_REV=12
-UNICO_LT_AGE=0
-UNICO_LT_VERSION="$UNICO_LT_CURRENT:$UNICO_LT_REV:$UNICO_LT_AGE"
-UNICO_LT_LDFLAGS="-version-info $UNICO_LT_VERSION"
-AC_SUBST(UNICO_LT_CURRENT)
-AC_SUBST(UNICO_LT_VERSION)
-AC_SUBST(UNICO_LT_LDFLAGS)
-
-# API versioning
-
-PACKAGE_VERSION_MAJOR=`echo AC_PACKAGE_VERSION | cut -d'.' -f1`
-PACKAGE_VERSION_MINOR=`echo AC_PACKAGE_VERSION | cut -d'.' -f2`
-PACKAGE_VERSION_MICRO=`echo AC_PACKAGE_VERSION | cut -d'.' -f3`
-AC_SUBST(PACKAGE_VERSION_MAJOR)
-AC_SUBST(PACKAGE_VERSION_MINOR)
-AC_SUBST(PACKAGE_VERSION_MICRO)
-
 NANO=`echo AC_PACKAGE_VERSION | cut -d'.' -f4`
 if test x"$NANO" = x || test "x$NANO" = "x0" ; then
     UNICO_TRUNK="no"
@@ -45,11 +20,6 @@ else
 fi
 AC_SUBST(UNICO_TRUNK)
 AC_SUBST(PACKAGE_VERSION_NANO)
-
-UNICO_MAJORMINOR=$PACKAGE_VERSION_MAJOR.$PACKAGE_VERSION_MINOR
-AC_SUBST(UNICO_MAJORMINOR)
-AC_DEFINE_UNQUOTED(UNICO_MAJORMINOR, "UNICO_MAJORMINOR",
-                   [library major.minor version])
 
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
@@ -65,7 +35,7 @@ AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
 PKG_PROG_PKG_CONFIG
 
 AC_SUBST(glib_req, 2.26.0)
-AC_SUBST(gtk_req, 3.0.0)
+AC_SUBST(gtk_req, 3.0.8)
 AC_SUBST(cairo_req, 1.10)
 
 PKG_CHECK_MODULES(DEPS, glib-2.0 >= $glib_req gtk+-3.0 >= $gtk_req cairo >= $cairo_req)
@@ -130,7 +100,7 @@ AC_SUBST(UNICO_LIBADD)
 UNICO_CFLAGS="-I\$(top_srcdir) -DUNICO_COMPILATION \$(DEPS_CFLAGS) \$(DEBUG_CFLAGS) \$(MAINTAINER_CFLAGS)"
 AC_SUBST(UNICO_CFLAGS)
 
-UNICO_LDFLAGS="\$(UNICO_LT_LDFLAGS) -export-symbols-regex \^[_]*\(unico_\|Unico\|UNICO_\).* -no-undefined -module"
+UNICO_LDFLAGS="-module -avoid-version -no-undefined"
 AC_SUBST(UNICO_LDFLAGS)
 
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-3.0`
@@ -143,7 +113,6 @@ Makefile
 build/Makefile
 po/Makefile
 unico/Makefile
-unico/unico-version.h
 ])
 AC_OUTPUT
 
