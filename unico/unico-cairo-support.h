@@ -77,14 +77,14 @@ G_GNUC_INTERNAL void unico_cairo_draw_frame (GtkThemingEngine *engine,
                                              gint              height,
                                              UnicoCorners      corners);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_inner_stroke_from_path (GtkThemingEngine *engine,
                                                               cairo_t          *cr,
                                                               gdouble           x,
                                                               gdouble           y,
                                                               gdouble           width,
                                                               gdouble           height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_inner_stroke_rect (GtkThemingEngine *engine,
                                                          cairo_t          *cr,
                                                          gdouble           x,
                                                          gdouble           y,
@@ -93,14 +93,14 @@ G_GNUC_INTERNAL void unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engin
                                                          gint              radius,
                                                          UnicoCorners      corners);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_outer_stroke_from_path (GtkThemingEngine *engine,
                                                               cairo_t          *cr,
                                                               gdouble           x,
                                                               gdouble           y,
                                                               gdouble           width,
                                                               gdouble           height);
 
-G_GNUC_INTERNAL void unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
+G_GNUC_INTERNAL void unico_cairo_draw_outer_stroke_rect (GtkThemingEngine *engine,
                                                          cairo_t          *cr,
                                                          gdouble           x,
                                                          gdouble           y,

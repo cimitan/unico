@@ -25,20 +25,20 @@
 #include "unico-css-support.h"
 
 GType
-unico_stroke_outer_style_get_type (void)
+unico_outer_stroke_style_get_type (void)
 {
   static GType etype = 0;
 
   if (G_UNLIKELY (etype == 0))
     {
       static const GEnumValue values[] = {
-        { UNICO_STROKE_OUTER_STYLE_CUSTOM, "UNICO_STROKE_OUTER_STYLE_CUSTOM", "custom" },
-        { UNICO_STROKE_OUTER_STYLE_INSET, "UNICO_STROKE_OUTER_STYLE_INSET", "inset" },
-        { UNICO_STROKE_OUTER_STYLE_NONE, "UNICO_STROKE_OUTER_STYLE_NONE", "none" },
+        { UNICO_OUTER_STROKE_STYLE_CUSTOM, "UNICO_OUTER_STROKE_STYLE_CUSTOM", "custom" },
+        { UNICO_OUTER_STROKE_STYLE_INSET, "UNICO_OUTER_STROKE_STYLE_INSET", "inset" },
+        { UNICO_OUTER_STROKE_STYLE_NONE, "UNICO_OUTER_STROKE_STYLE_NONE", "none" },
         { 0, NULL, NULL }
       };
 
-      etype = g_enum_register_static (g_intern_static_string ("UnicoStrokeOuterStyle"), values);
+      etype = g_enum_register_static (g_intern_static_string ("UnicoOuterStrokeStyle"), values);
     }
 
   return etype;

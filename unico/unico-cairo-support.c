@@ -36,7 +36,7 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
                              UnicoCorners      corners)
 {
   GtkStateFlags state;
-  UnicoStrokeOuterStyle stroke_outer_style;
+  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width;
   gdouble offset;
   gint radius;
@@ -46,11 +46,11 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-outer-stroke-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
   offset = 0;
-  if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE)
+  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
     offset = line_width;
 
   unico_cairo_draw_background_rect (engine, cr,
@@ -172,7 +172,7 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
                         UnicoCorners      corners)
 {
   GtkStateFlags state;
-  UnicoStrokeOuterStyle stroke_outer_style;
+  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width;
   gdouble offset;
   gint radius;
@@ -182,21 +182,21 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-outer-stroke-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
   offset = 0;
-  if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE)
+  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
     {
       offset = line_width;
 
-      unico_cairo_draw_stroke_outer_rect (engine, cr,
+      unico_cairo_draw_outer_stroke_rect (engine, cr,
                                           x, y,
                                           width, height,
                                           radius + line_width, corners);
     }
 
-  unico_cairo_draw_stroke_inner_rect (engine, cr,
+  unico_cairo_draw_inner_stroke_rect (engine, cr,
                                       x + offset + line_width, y + offset + line_width,
                                       width - offset * 2 - line_width * 2, height - offset * 2 - line_width * 2,
                                       radius - line_width, corners);
@@ -232,7 +232,7 @@ unico_cairo_draw_border_rect (GtkThemingEngine *engine,
 }
 
 void
-unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
+unico_cairo_draw_inner_stroke_from_path (GtkThemingEngine *engine,
                                          cairo_t          *cr,
                                          gdouble           x,
                                          gdouble           y,
@@ -240,14 +240,14 @@ unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
                                          gdouble           height)
 {
   GtkStateFlags state;
-  GdkRGBA *stroke_inner_color;
-  cairo_pattern_t *stroke_inner_pat;
+  GdkRGBA *inner_stroke_color;
+  cairo_pattern_t *inner_stroke_pat;
   gdouble line_width;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-inner-stroke-color", &stroke_inner_color,
-                          "-unico-inner-stroke-gradient", &stroke_inner_pat,
+                          "-unico-inner-stroke-color", &inner_stroke_color,
+                          "-unico-inner-stroke-gradient", &inner_stroke_pat,
                           NULL);
 
   cairo_save (cr);
@@ -256,29 +256,29 @@ unico_cairo_draw_stroke_inner_from_path (GtkThemingEngine *engine,
 
   line_width = cairo_get_line_width (cr);
 
-  if (stroke_inner_pat || stroke_inner_color)
+  if (inner_stroke_pat || inner_stroke_color)
     {
-      if (stroke_inner_pat)
+      if (inner_stroke_pat)
         {
           cairo_matrix_t matrix;
           cairo_matrix_init_scale (&matrix, 1.0 / (width - line_width), 1.0 / (height - line_width));
-          cairo_pattern_set_matrix (stroke_inner_pat, &matrix);
-          cairo_set_source (cr, stroke_inner_pat);
-          cairo_pattern_destroy (stroke_inner_pat);
+          cairo_pattern_set_matrix (inner_stroke_pat, &matrix);
+          cairo_set_source (cr, inner_stroke_pat);
+          cairo_pattern_destroy (inner_stroke_pat);
         }
       else
-        gdk_cairo_set_source_rgba (cr, stroke_inner_color);
+        gdk_cairo_set_source_rgba (cr, inner_stroke_color);
 
       cairo_stroke (cr);
     }
 
   cairo_restore (cr);
 
-  gdk_rgba_free (stroke_inner_color);
+  gdk_rgba_free (inner_stroke_color);
 }
 
 void
-unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
+unico_cairo_draw_inner_stroke_rect (GtkThemingEngine *engine,
                                     cairo_t          *cr,
                                     gdouble           x,
                                     gdouble           y,
@@ -296,13 +296,13 @@ unico_cairo_draw_stroke_inner_rect (GtkThemingEngine *engine,
   cairo_set_line_width (cr, line_width);
 
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
-  unico_cairo_draw_stroke_inner_from_path (engine, cr, x, y, width, height);
+  unico_cairo_draw_inner_stroke_from_path (engine, cr, x, y, width, height);
 
   cairo_restore (cr);
 }
 
 void
-unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
+unico_cairo_draw_outer_stroke_from_path (GtkThemingEngine *engine,
                                          cairo_t          *cr,
                                          gdouble           x,
                                          gdouble           y,
@@ -310,16 +310,16 @@ unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
                                          gdouble           height)
 {
   GtkStateFlags state;
-  GdkRGBA *stroke_outer_color;
-  UnicoStrokeOuterStyle stroke_outer_style;
-  cairo_pattern_t *stroke_outer_pat;
+  GdkRGBA *outer_stroke_color;
+  UnicoOuterStrokeStyle outer_stroke_style;
+  cairo_pattern_t *outer_stroke_pat;
   gdouble line_width;
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-outer-stroke-color", &stroke_outer_color,
-                          "-unico-outer-stroke-gradient", &stroke_outer_pat,
-                          "-unico-outer-stroke-style", &stroke_outer_style,
+                          "-unico-outer-stroke-color", &outer_stroke_color,
+                          "-unico-outer-stroke-gradient", &outer_stroke_pat,
+                          "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
   cairo_save (cr);
@@ -328,31 +328,31 @@ unico_cairo_draw_stroke_outer_from_path (GtkThemingEngine *engine,
 
   line_width = cairo_get_line_width (cr);
 
-  if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE &&
-      (stroke_outer_pat || stroke_outer_color))
+  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE &&
+      (outer_stroke_pat || outer_stroke_color))
     {
-      if (stroke_outer_pat)
+      if (outer_stroke_pat)
         {
           cairo_matrix_t matrix;
           cairo_matrix_init_scale (&matrix, 1.0 / (width - line_width), 1.0 / (height - line_width));
-          cairo_pattern_set_matrix (stroke_outer_pat, &matrix);
-          cairo_set_source (cr, stroke_outer_pat);
-          cairo_pattern_destroy (stroke_outer_pat);
+          cairo_pattern_set_matrix (outer_stroke_pat, &matrix);
+          cairo_set_source (cr, outer_stroke_pat);
+          cairo_pattern_destroy (outer_stroke_pat);
           cairo_identity_matrix (cr);
         }
       else
-        gdk_cairo_set_source_rgba (cr, stroke_outer_color);
+        gdk_cairo_set_source_rgba (cr, outer_stroke_color);
 
       cairo_stroke (cr);
     }
 
   cairo_restore (cr);
 
-  gdk_rgba_free (stroke_outer_color);
+  gdk_rgba_free (outer_stroke_color);
 }
 
 void
-unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
+unico_cairo_draw_outer_stroke_rect (GtkThemingEngine *engine,
                                     cairo_t          *cr,
                                     gdouble           x,
                                     gdouble           y,
@@ -370,7 +370,7 @@ unico_cairo_draw_stroke_outer_rect (GtkThemingEngine *engine,
   cairo_set_line_width (cr, line_width);
 
   unico_cairo_rounded_rect_inner (cr, x, y, width, height, radius, corners);
-  unico_cairo_draw_stroke_outer_from_path (engine, cr, x, y, width, height);
+  unico_cairo_draw_outer_stroke_from_path (engine, cr, x, y, width, height);
 
   cairo_restore (cr);
 }

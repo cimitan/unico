@@ -48,18 +48,18 @@ static void
 unico_draw_cell (DRAW_ARGS)
 {
   GtkStateFlags state;
-  UnicoStrokeOuterStyle stroke_outer_style;
+  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width, offset;
 
   unico_get_line_width (engine, &line_width);
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-outer-stroke-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
   offset = 0;
-  if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE)
+  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
     offset = line_width;
 
   unico_cairo_draw_background (engine, cr,
@@ -69,12 +69,12 @@ unico_draw_cell (DRAW_ARGS)
   cairo_rectangle (cr, x, y, width, height);
   cairo_clip (cr);
 
-  unico_cairo_draw_stroke_outer_rect (engine, cr,
+  unico_cairo_draw_outer_stroke_rect (engine, cr,
                                       x - line_width, y,
                                       width + line_width * 2, height,
                                       0, UNICO_CORNER_NONE);
 
-  unico_cairo_draw_stroke_inner_rect (engine, cr,
+  unico_cairo_draw_inner_stroke_rect (engine, cr,
                                       x - line_width, y + line_width + offset,
                                       width + line_width * 2, height - line_width * 2 - offset * 2,
                                       0, UNICO_CORNER_NONE);
@@ -310,18 +310,18 @@ unico_draw_frame (DRAW_ARGS,
       frame->shadow == GTK_SHADOW_ETCHED_OUT)
     {
       if (frame->shadow == GTK_SHADOW_ETCHED_IN)
-        unico_cairo_draw_stroke_inner_rect (engine, cr,
+        unico_cairo_draw_inner_stroke_rect (engine, cr,
                                             line_width, line_width,
                                             width - line_width * 2, height - line_width * 2,
                                             radius - line_width, corners);
       else
-        unico_cairo_draw_stroke_inner_rect (engine, cr,
+        unico_cairo_draw_inner_stroke_rect (engine, cr,
                                             0, 0,
                                             width - line_width * 2, height - line_width * 2,
                                             radius - line_width, corners);
     }
   else if (frame->shadow != GTK_SHADOW_NONE)
-    unico_cairo_draw_stroke_inner_rect (engine, cr,
+    unico_cairo_draw_inner_stroke_rect (engine, cr,
                                         line_width, line_width,
                                         width - line_width * 2, height - line_width * 2,
                                         radius - line_width, corners);
@@ -618,7 +618,7 @@ unico_draw_slider_button (DRAW_ARGS,
 {
   GtkStateFlags state;
   UnicoCorners corners;
-  UnicoStrokeOuterStyle stroke_outer_style;
+  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width, offset;
   gint radius;
 
@@ -629,11 +629,11 @@ unico_draw_slider_button (DRAW_ARGS,
 
   state = gtk_theming_engine_get_state (engine);
   gtk_theming_engine_get (engine, state,
-                          "-unico-outer-stroke-style", &stroke_outer_style,
+                          "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
   offset = 0;
-  if (stroke_outer_style != UNICO_STROKE_OUTER_STYLE_NONE)
+  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
     offset = line_width;
 
   cairo_set_line_width (cr, line_width);
@@ -661,7 +661,7 @@ unico_draw_slider_button (DRAW_ARGS,
                                width - line_width,
                                height - line_width,
                                radius);
-  unico_cairo_draw_stroke_outer_from_path (engine, cr,
+  unico_cairo_draw_outer_stroke_from_path (engine, cr,
                                            line_width / 2.0,
                                            line_width / 2.0,
                                            width - line_width,
@@ -672,7 +672,7 @@ unico_draw_slider_button (DRAW_ARGS,
                                width - line_width - offset * 2 - line_width * 2,
                                height - line_width - offset * 2 - line_width * 2,
                                radius);
-  unico_cairo_draw_stroke_inner_from_path (engine, cr,
+  unico_cairo_draw_inner_stroke_from_path (engine, cr,
                                            line_width / 2.0 + offset + line_width,
                                            line_width / 2.0 + offset + line_width,
                                            width - line_width - offset * 2 - line_width * 2,

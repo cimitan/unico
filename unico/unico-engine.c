@@ -685,8 +685,8 @@ unico_engine_class_init (UnicoEngineClass *klass)
                                         g_param_spec_enum ("outer-stroke-style",
                                                            "Outer stroke style",
                                                            "Outer stroke style",
-                                                           UNICO_TYPE_STROKE_OUTER_STYLE,
-                                                           UNICO_STROKE_OUTER_STYLE_NONE,
+                                                           UNICO_TYPE_OUTER_STROKE_STYLE,
+                                                           UNICO_OUTER_STROKE_STYLE_NONE,
                                                            0));
 
   gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
