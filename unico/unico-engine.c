@@ -146,6 +146,59 @@ unico_engine_render_check (GtkThemingEngine *engine,
 }
 
 static void
+unico_engine_render_expander (GtkThemingEngine *engine,
+                              cairo_t          *cr,
+                              gdouble           x,
+                              gdouble           y,
+                              gdouble           width,
+                              gdouble           height)
+{
+  /* FIXME put the code in unico-draw.c */
+  GdkRGBA border, bg, fg;
+  GtkStateFlags state;
+  gint side;
+
+  side = MIN (width, height);
+
+  x += ((int) width / 2) - (side / 2);
+  y += ((int) height / 2) - (side / 2);
+
+  state = gtk_theming_engine_get_state (engine);
+
+  gtk_theming_engine_get_border_color (engine, state, &border);
+  gtk_theming_engine_get_background_color (engine, state, &bg);
+  gtk_theming_engine_get_color (engine, state, &fg);
+
+  cairo_save (cr);
+
+  cairo_set_line_width (cr, 1);
+
+  unico_cairo_rounded_rect (cr, x + 0.5, y + 0.5, side, side, 2);
+  gdk_cairo_set_source_rgba (cr, &bg);
+  cairo_fill_preserve (cr);
+
+  gdk_cairo_set_source_rgba (cr, &border);
+  cairo_stroke (cr);
+
+  cairo_set_line_width (cr, 1);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+  gdk_cairo_set_source_rgba (cr, &fg);
+
+  cairo_move_to (cr, x + 3, y + side / 2 + 0.5);
+  cairo_line_to (cr, x + side - 2, y + side / 2 + 0.5);
+
+  if ((state & GTK_STATE_FLAG_ACTIVE) == 0)
+  {
+    cairo_move_to (cr, x + side / 2 + 0.5, y + 3);
+    cairo_line_to (cr, x + side / 2 + 0.5, y + side - 2);
+  }
+
+  cairo_stroke (cr);
+
+  cairo_restore (cr);
+}
+
+static void
 unico_engine_render_extension (GtkThemingEngine *engine,
                                cairo_t          *cr,
                                gdouble           x,
@@ -568,6 +621,7 @@ unico_engine_class_init (UnicoEngineClass *klass)
   engine_class->render_arrow       = unico_engine_render_arrow;
   engine_class->render_background  = unico_engine_render_background;
   engine_class->render_check       = unico_engine_render_check;
+  engine_class->render_expander    = unico_engine_render_expander;
   engine_class->render_extension   = unico_engine_render_extension;
   engine_class->render_focus       = unico_engine_render_focus;
   engine_class->render_frame       = unico_engine_render_frame;
