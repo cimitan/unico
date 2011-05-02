@@ -257,8 +257,7 @@ unico_engine_render_frame (GtkThemingEngine *engine,
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR) ||
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
     style_functions->draw_toolbar_frame (engine, cr, x, y, width, height);
-  else if (gtk_widget_path_is_type (path, GTK_TYPE_COMBO_BOX) ||
-           gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX))
+  else if (gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
     style_functions->draw_combo_button_frame (engine, cr, x, y, width, height);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -442,7 +441,6 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine    *engine,
       else if (state & GTK_STATE_FLAG_PRELIGHT)
         {
           stated = gdk_pixbuf_copy (scaled);
-
           gdk_pixbuf_saturate_and_pixelate (scaled, stated, 1.2, FALSE);
 
           g_object_unref (scaled);

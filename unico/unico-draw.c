@@ -416,7 +416,6 @@ unico_draw_menuitem_background (DRAW_ARGS)
 static void
 unico_draw_menuitem_frame (DRAW_ARGS)
 {
-  printf ("ciao\n");
   unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
