@@ -46,14 +46,6 @@ typedef enum
 
 typedef struct
 {
-	GtkShadowType   shadow;
-	GtkPositionType gap_side;
-	gint            gap_x;
-	gint            gap_width;
-} UnicoFrameParameters;
-
-typedef struct
-{
   gboolean lower;
   gboolean horizontal;
   gboolean fill_level;
@@ -99,8 +91,10 @@ struct _UnicoStyleFunctions
 
   void (*draw_entry_frame) (DRAW_ARGS);
 
-  void (*draw_frame) (DRAW_ARGS,
-                      UnicoFrameParameters *frame);
+  void (*draw_frame_gap) (DRAW_ARGS,
+                          GtkPositionType gap_side,
+                          gdouble         xy0_gap,
+                          gdouble         xy1_gap);
 
   void (*draw_icon_view) (DRAW_ARGS);
 
@@ -121,7 +115,9 @@ struct _UnicoStyleFunctions
   void (*draw_menuitem_frame) (DRAW_ARGS);
 
   void (*draw_notebook) (DRAW_ARGS,
-                         UnicoFrameParameters *frame);
+                         GtkPositionType gap_side,
+                         gdouble         xy0_gap,
+                         gdouble         xy1_gap);
 
   void (*draw_progressbar_fill_background) (DRAW_ARGS);
 

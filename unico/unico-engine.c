@@ -305,25 +305,9 @@ unico_engine_render_frame_gap (GtkThemingEngine *engine,
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
 
   if (gtk_theming_engine_has_class (engine, "notebook"))
-    {
-      UnicoFrameParameters frame;
-
-      frame.gap_side = gap_side;
-      frame.gap_x = xy0_gap;
-      frame.gap_width = xy1_gap-xy0_gap;
-
-      style_functions->draw_notebook (engine, cr, x, y, width, height, &frame);
-    }
+    style_functions->draw_notebook (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
   else if (gtk_theming_engine_has_class (engine, "frame"))
-    {
-      UnicoFrameParameters frame;
-
-      frame.gap_side = gap_side;
-      frame.gap_x = xy0_gap;
-      frame.gap_width = xy1_gap-xy0_gap;
-
-      style_functions->draw_frame (engine, cr, x, y, width, height, &frame);
-    }
+    style_functions->draw_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_frame_gap (engine, cr,
                                                                             x, y, width, height,

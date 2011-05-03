@@ -226,57 +226,69 @@ unico_draw_entry_frame (DRAW_ARGS)
 }
 
 static void
-get_frame_gap_clip (gint                  x,
-                    gint                  y,
-                    gint                  width,
-                    gint                  height,
-                    GdkRectangle         *bevel,
-                    GdkRectangle         *border,
-                    UnicoFrameParameters *frame)
+get_frame_gap_clip (DRAW_ARGS,
+                    GtkPositionType gap_side,
+                    gdouble         xy0_gap,
+                    gdouble         xy1_gap)
 {
-  switch (frame->gap_side)
+  GtkStateFlags state;
+  gint border_width, radius;
+  gdouble x0, y0, x1, y1, xc, yc, wc, hc;
+
+  xc = yc = wc = hc = 0;
+  state = gtk_theming_engine_get_state (engine);
+
+  unico_get_border_radius (engine, &radius);
+  border_width = 2 * cairo_get_line_width (cr);
+
+  /* FIXME We might need to play with GtkJunctionSides. */
+
+  switch (gap_side)
     {
       case GTK_POS_TOP:
-        {
-          UNICO_RECT_SET (*bevel, 2.0 + frame->gap_x, 0.0,
-                          frame->gap_width - 3.0, 2.0);
-          UNICO_RECT_SET (*border, 1.0 + frame->gap_x, 0.0,
-                          frame->gap_width - 3.0, 2.0);
-          break;
-        }
+        xc = x + xy0_gap + border_width;
+        yc = y;
+        wc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+        hc = border_width;
+
+        break;
       case GTK_POS_BOTTOM:
-        {
-          UNICO_RECT_SET (*bevel, 2.0 + frame->gap_x, height - 2.0,
-                          frame->gap_width - 3.0, 2.0);
-          UNICO_RECT_SET (*border, 1.0 + frame->gap_x, height - 1.0,
-                          frame->gap_width - 3.0, 2.0);
-          break;
-        }
+        xc = x + xy0_gap + border_width;
+        yc = y + height - border_width;
+        wc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+        hc = border_width;
+
+        break;
       case GTK_POS_LEFT:
-        {
-          UNICO_RECT_SET (*bevel, 0.0, 2.0 + frame->gap_x,
-                          2.0, frame->gap_width - 3.0);
-          UNICO_RECT_SET (*border, 0.0, 1.0 + frame->gap_x,
-                          1.0, frame->gap_width - 3.0);
-          break;
-        }
+        xc = x;
+        yc = y + xy0_gap + border_width;
+        wc = border_width;
+        hc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+
+        break;
       case GTK_POS_RIGHT:
-        {
-          UNICO_RECT_SET (*bevel, width - 2.0, 2.0 + frame->gap_x,
-                          2.0, frame->gap_width - 3.0);
-          UNICO_RECT_SET (*border, width - 1.0, 1.0 + frame->gap_x,
-                          1.0, frame->gap_width - 3.0);
-          break;
-        }
+        xc = x + width - border_width;
+        yc = y + xy0_gap + border_width;
+        wc = border_width;
+        hc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+
+        break;
     }
+
+  cairo_clip_extents (cr, &x0, &y0, &x1, &y1);
+  cairo_rectangle (cr, x0, y0, x1 - x0, yc - y0);
+  cairo_rectangle (cr, x0, yc, xc - x0, hc);
+  cairo_rectangle (cr, xc + wc, yc, x1 - (xc + wc), hc);
+  cairo_rectangle (cr, x0, yc + hc, x1 - x0, y1 - (yc + hc));
+  cairo_clip (cr);
 }
 
 static void
-unico_draw_frame (DRAW_ARGS,
-                  UnicoFrameParameters *frame)
+unico_draw_frame_gap (DRAW_ARGS,
+                      GtkPositionType gap_side,
+                      gdouble         xy0_gap,
+                      gdouble         xy1_gap)
 {
-  GdkRectangle bevel_clip = {0, 0, 0, 0};
-  GdkRectangle frame_clip = {0, 0, 0, 0};
   UnicoCorners corners;
   gdouble line_width;
   gint radius;
@@ -285,81 +297,22 @@ unico_draw_frame (DRAW_ARGS,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  if (frame->gap_x != -1)
-    get_frame_gap_clip (x, y, width, height,
-                        &bevel_clip, &frame_clip, frame);
-
   cairo_save (cr);
+
+  if (xy0_gap != -1)
+    get_frame_gap_clip (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
 
   cairo_translate (cr, x, y);
 
-  cairo_save (cr);
+  /* FIXME Maybe we need to add a check for the GtkBorderStyle,
+   * old GTK_SHADOW_IN corresponds to GTK_BORDER_STYLE_INSET. */
 
-  /* Set clip for the bevel */
-  if (frame->gap_x != -1)
-    {
-      /* Set clip for gap */
-      cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-      cairo_rectangle      (cr, 0, 0, width, height);
-      cairo_rectangle      (cr, bevel_clip.x, bevel_clip.y, bevel_clip.width, bevel_clip.height);
-      cairo_clip           (cr);
-    }
-
-  /* Draw the bevel */
-  if (frame->shadow == GTK_SHADOW_ETCHED_IN ||
-      frame->shadow == GTK_SHADOW_ETCHED_OUT)
-    {
-      if (frame->shadow == GTK_SHADOW_ETCHED_IN)
-        unico_cairo_draw_inner_stroke_rect (engine, cr,
-                                            line_width, line_width,
-                                            width - line_width * 2, height - line_width * 2,
-                                            radius - line_width, corners);
-      else
-        unico_cairo_draw_inner_stroke_rect (engine, cr,
-                                            0, 0,
-                                            width - line_width * 2, height - line_width * 2,
-                                            radius - line_width, corners);
-    }
-  else if (frame->shadow != GTK_SHADOW_NONE)
-    unico_cairo_draw_inner_stroke_rect (engine, cr,
-                                        line_width, line_width,
-                                        width - line_width * 2, height - line_width * 2,
-                                        radius - line_width, corners);
-
-  /* restore the previous clip region */
-  cairo_restore    (cr);
-  cairo_save       (cr);
-
-  if (frame->gap_x != -1)
-    {
-      /* Set clip for gap */
-      cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-      cairo_rectangle      (cr, 0, 0, width, height);
-      cairo_rectangle      (cr, frame_clip.x, frame_clip.y, frame_clip.width, frame_clip.height);
-      cairo_clip           (cr);
-    }
-
-  /* Draw frame */
-  if (frame->shadow == GTK_SHADOW_ETCHED_IN ||
-      frame->shadow == GTK_SHADOW_ETCHED_OUT)
-    {
-      if (frame->shadow == GTK_SHADOW_ETCHED_OUT)
-        unico_cairo_draw_border_rect (engine, cr,
+  unico_cairo_draw_inner_stroke_rect (engine, cr,
                                       line_width, line_width,
                                       width - line_width * 2, height - line_width * 2,
                                       radius - line_width, corners);
-      else
-        unico_cairo_draw_border_rect (engine, cr,
-                                      0, 0,
-                                      width - line_width * 2, height - line_width * 2,
-                                      radius - line_width, corners);
-    }
-  else
-    {
-      unico_cairo_draw_border_rect (engine, cr, 0, 0, width, height, radius, corners);
-    }
 
-  cairo_restore (cr);
+  unico_cairo_draw_border_rect (engine, cr, 0, 0, width, height, radius, corners);
 
   cairo_restore (cr);
 }
@@ -368,7 +321,7 @@ static void
 unico_draw_icon_view (DRAW_ARGS)
 {
   unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame_gap (engine, cr, x, y, width, height, unico_get_corners (engine));
 }
 
 static void
@@ -421,10 +374,12 @@ unico_draw_menuitem_frame (DRAW_ARGS)
 
 static void
 unico_draw_notebook (DRAW_ARGS,
-                     UnicoFrameParameters *frame)
+                     GtkPositionType gap_side,
+                     gdouble         xy0_gap,
+                     gdouble         xy1_gap)
 {
   unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
-  unico_draw_frame (engine, cr, x, y, width, height, frame);
+  unico_draw_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
 }
 
 static void
@@ -787,7 +742,7 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_combo_button_frame            = unico_draw_combo_button_frame;
   functions->draw_entry_background              = unico_draw_entry_background;
   functions->draw_entry_frame                   = unico_draw_entry_frame;
-  functions->draw_frame                         = unico_draw_frame;
+  functions->draw_frame_gap                     = unico_draw_frame_gap;
   functions->draw_icon_view                     = unico_draw_icon_view;
   functions->draw_menu_background               = unico_draw_menu_background;
   functions->draw_menu_frame                    = unico_draw_menu_frame;
