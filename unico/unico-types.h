@@ -32,17 +32,13 @@
 
 G_BEGIN_DECLS
 
-typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
-
-typedef enum
-{
-  UNICO_CORNER_NONE        = 0,
-  UNICO_CORNER_TOPLEFT     = 1,
-  UNICO_CORNER_TOPRIGHT    = 2,
-  UNICO_CORNER_BOTTOMLEFT  = 4,
-  UNICO_CORNER_BOTTOMRIGHT = 8,
-  UNICO_CORNER_ALL         = 15
-} UnicoCorners;
+enum {
+  SIDE_LEFT   = 1,
+  SIDE_BOTTOM = 1 << 1,
+  SIDE_RIGHT  = 1 << 2,
+  SIDE_TOP    = 1 << 3,
+  SIDE_ALL    = 0xF
+};
 
 typedef struct
 {
@@ -64,10 +60,7 @@ typedef enum
   UNICO_NUM_STYLES = 1
 } UnicoStyles;
 
-typedef struct
-{
-	GtkPositionType gap_side;
-} UnicoTabParameters;
+typedef struct _UnicoStyleFunctions UnicoStyleFunctions;
 
 struct _UnicoStyleFunctions
 {
@@ -143,7 +136,7 @@ struct _UnicoStyleFunctions
                               UnicoSliderParameters *slider);
 
   void (*draw_tab) (DRAW_ARGS,
-                    UnicoTabParameters *tab);
+                    GtkPositionType gap_side);
 
   void (*draw_toolbar_background) (DRAW_ARGS);
 

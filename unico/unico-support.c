@@ -33,29 +33,6 @@ unico_lookup_functions (UnicoEngine          *engine,
     *functions = &engine->style_functions[UNICO_STYLE_DEFAULT];
 }
 
-UnicoCorners
-unico_get_corners (GtkThemingEngine *engine)
-{
-  GtkJunctionSides sides;
-  UnicoCorners corners = UNICO_CORNER_ALL;
-
-  sides = gtk_theming_engine_get_junction_sides (engine);
-
-  if (sides == 0)
-    return UNICO_CORNER_ALL;
-
-  if (sides & GTK_JUNCTION_LEFT)
-    corners &= ~(UNICO_CORNER_TOPLEFT | UNICO_CORNER_BOTTOMLEFT);
-  if (sides & GTK_JUNCTION_RIGHT)
-    corners &= ~(UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT);
-  if (sides & GTK_JUNCTION_BOTTOM)
-    corners &= ~(UNICO_CORNER_BOTTOMLEFT | UNICO_CORNER_BOTTOMRIGHT);
-  if (sides & GTK_JUNCTION_TOP)
-    corners &= ~(UNICO_CORNER_TOPLEFT | UNICO_CORNER_TOPRIGHT);
-
-  return corners;
-}
-
 void
 unico_get_line_width (GtkThemingEngine *engine,
                       gdouble          *line_width)

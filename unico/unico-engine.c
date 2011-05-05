@@ -38,6 +38,51 @@
 
 G_DEFINE_DYNAMIC_TYPE (UnicoEngine, unico_engine, GTK_TYPE_THEMING_ENGINE)
 
+static gboolean
+render_from_assets_common (GtkThemingEngine *engine,
+                           cairo_t          *cr,
+                           gdouble           x,
+                           gdouble           y,
+                           gdouble           width,
+                           gdouble           height)
+{
+  GtkStateFlags flags;
+  GValue value = { 0, };
+  cairo_pattern_t *asset = NULL;
+  cairo_surface_t *surface = NULL;
+  gboolean retval = FALSE;
+
+  flags = gtk_theming_engine_get_state (engine);
+
+	gtk_theming_engine_get_property (engine, "background-image", flags, &value);
+
+  asset = g_value_dup_boxed (&value);
+  g_value_unset (&value);
+
+  if (asset != NULL)
+    cairo_pattern_get_surface (asset, &surface);
+
+  if (surface != NULL)
+    {
+      cairo_save (cr);
+
+      cairo_scale (cr, width / cairo_image_surface_get_width (surface),
+                       height / cairo_image_surface_get_height (surface));
+      cairo_set_source_surface (cr, surface, x, y);
+      cairo_paint (cr);
+
+      cairo_restore (cr);
+
+      retval = TRUE;
+    }
+
+  if (asset != NULL)
+    cairo_pattern_destroy (asset);
+
+  return retval;
+}
+
+
 static void
 unico_engine_render_activity (GtkThemingEngine *engine,
                               cairo_t          *cr,
@@ -142,6 +187,12 @@ unico_engine_render_check (GtkThemingEngine *engine,
 
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
 
+	if (!gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM))
+	  {
+	    if (render_from_assets_common (engine, cr, x, y, width, height))
+		    return;
+	  }
+
   style_functions->draw_check (engine, cr, x, y, width, height);
 }
 
@@ -155,7 +206,7 @@ unico_engine_render_expander (GtkThemingEngine *engine,
 {
   /* FIXME put the code in unico-draw.c */
   GdkRGBA border, bg, fg;
-  GtkStateFlags state;
+  GtkStateFlags flags;
   gint side;
 
   side = MIN (width, height);
@@ -163,17 +214,17 @@ unico_engine_render_expander (GtkThemingEngine *engine,
   x += ((int) width / 2) - (side / 2);
   y += ((int) height / 2) - (side / 2);
 
-  state = gtk_theming_engine_get_state (engine);
+  flags = gtk_theming_engine_get_state (engine);
 
-  gtk_theming_engine_get_border_color (engine, state, &border);
-  gtk_theming_engine_get_background_color (engine, state, &bg);
-  gtk_theming_engine_get_color (engine, state, &fg);
+  gtk_theming_engine_get_border_color (engine, flags, &border);
+  gtk_theming_engine_get_background_color (engine, flags, &bg);
+  gtk_theming_engine_get_color (engine, flags, &fg);
 
   cairo_save (cr);
 
   cairo_set_line_width (cr, 1);
 
-  unico_cairo_rounded_rect (cr, x + 0.5, y + 0.5, side, side, 2);
+  unico_cairo_round_rect (cr, x + 0.5, y + 0.5, side, side, 2, SIDE_ALL, 0);
   gdk_cairo_set_source_rgba (cr, &bg);
   cairo_fill_preserve (cr);
 
@@ -187,7 +238,7 @@ unico_engine_render_expander (GtkThemingEngine *engine,
   cairo_move_to (cr, x + 3, y + side / 2 + 0.5);
   cairo_line_to (cr, x + side - 2, y + side / 2 + 0.5);
 
-  if ((state & GTK_STATE_FLAG_ACTIVE) == 0)
+  if ((flags & GTK_STATE_FLAG_ACTIVE) == 0)
   {
     cairo_move_to (cr, x + side / 2 + 0.5, y + 3);
     cairo_line_to (cr, x + side / 2 + 0.5, y + side - 2);
@@ -214,13 +265,7 @@ unico_engine_render_extension (GtkThemingEngine *engine,
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
 
   if (gtk_theming_engine_has_region (engine, GTK_STYLE_REGION_TAB, NULL))
-    {
-      UnicoTabParameters tab;
-
-      tab.gap_side = gap_side;
-
-      style_functions->draw_tab (engine, cr, x, y, width, height, &tab);
-    }
+    style_functions->draw_tab (engine, cr, x, y, width, height, gap_side);
   else
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_extension (engine, cr, x, y, width, height, gap_side);
 }
@@ -257,7 +302,8 @@ unico_engine_render_frame (GtkThemingEngine *engine,
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR) ||
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
     style_functions->draw_toolbar_frame (engine, cr, x, y, width, height);
-  else if (gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
+           gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
     style_functions->draw_combo_button_frame (engine, cr, x, y, width, height);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -387,14 +433,14 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine    *engine,
   GdkPixbuf *base_pixbuf;
   GdkScreen *screen;
   GtkSettings *settings;
-  GtkStateFlags state;
+  GtkStateFlags flags;
   gint width = 1;
   gint height = 1;
 
   base_pixbuf = gtk_icon_source_get_pixbuf (source);
   screen = gtk_theming_engine_get_screen (engine);
   settings = gtk_settings_get_for_screen (screen);
-  state = gtk_theming_engine_get_state (engine);
+  flags = gtk_theming_engine_get_state (engine);
 
   g_return_val_if_fail (base_pixbuf != NULL, NULL);
 
@@ -415,14 +461,14 @@ unico_engine_render_icon_pixbuf (GtkThemingEngine    *engine,
   /* If the state was wildcarded, then generate a state. */
   if (gtk_icon_source_get_state_wildcarded (source))
     {
-      if (state & GTK_STATE_FLAG_INSENSITIVE)
+      if (flags & GTK_STATE_FLAG_INSENSITIVE)
         {
           stated = pixbuf_set_transparency (scaled, 0.3);
           gdk_pixbuf_saturate_and_pixelate (stated, stated, 0.1, FALSE);
 
           g_object_unref (scaled);
         }
-      else if (state & GTK_STATE_FLAG_PRELIGHT)
+      else if (flags & GTK_STATE_FLAG_PRELIGHT)
         {
           stated = gdk_pixbuf_copy (scaled);
           gdk_pixbuf_saturate_and_pixelate (scaled, stated, 1.2, FALSE);
@@ -446,14 +492,14 @@ unico_engine_render_layout (GtkThemingEngine *engine,
                             PangoLayout      *layout)
 {
   GdkRGBA *color;
-  GtkStateFlags state;
+  GtkStateFlags flags;
 
   UNICO_CAIRO_INIT
 
   cairo_translate (cr, x, y);
 
-  state = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, state,
+  flags = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, flags,
                           "color", &color,
                           NULL);
 
@@ -464,11 +510,11 @@ unico_engine_render_layout (GtkThemingEngine *engine,
       unico_cairo_set_source_color_with_alpha (cr, color, 0.6);
     }
 
-  if (state & GTK_STATE_FLAG_INSENSITIVE)
+  if (flags & GTK_STATE_FLAG_INSENSITIVE)
     {
       GdkRGBA *text_shadow_color;
 
-      gtk_theming_engine_get (engine, state,
+      gtk_theming_engine_get (engine, flags,
                               "-unico-text-shadow-color", &text_shadow_color,
                               NULL);
 
@@ -514,10 +560,10 @@ unico_engine_render_line (GtkThemingEngine *engine,
        gtk_widget_path_is_type (path, GTK_TYPE_TREE_VIEW)))
     {
       GdkRGBA bg;
-      GtkStateFlags state;
+      GtkStateFlags flags;
 
-      state = gtk_theming_engine_get_state (engine);
-      gtk_theming_engine_get_background_color (engine, state, &bg);
+      flags = gtk_theming_engine_get_state (engine);
+      gtk_theming_engine_get_background_color (engine, flags, &bg);
 
       cairo_save (cr);
 
@@ -546,6 +592,12 @@ unico_engine_render_option (GtkThemingEngine *engine,
   UNICO_CAIRO_INIT
 
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
+
+	if (!gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM))
+	  {
+	    if (render_from_assets_common (engine, cr, x, y, width, height))
+		    return;
+	  }
 
   style_functions->draw_radio (engine, cr, x, y, width, height);
 }

@@ -35,26 +35,32 @@
 static void
 unico_draw_button_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, 0);
 }
 
 static void
 unico_draw_button_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, 0);
 }
 
 static void
 unico_draw_cell (DRAW_ARGS)
 {
-  GtkStateFlags state;
+  GtkStateFlags flags;
   UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width, offset;
+  gint radius;
 
+  unico_get_border_radius (engine, &radius);
   unico_get_line_width (engine, &line_width);
 
-  state = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, state,
+  flags = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, flags,
                           "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
@@ -64,7 +70,7 @@ unico_draw_cell (DRAW_ARGS)
 
   unico_cairo_draw_background (engine, cr,
                                x - line_width, y, width + line_width * 2, height,
-                               UNICO_CORNER_NONE);
+                               0, gtk_theming_engine_get_junction_sides (engine));
 
   cairo_rectangle (cr, x, y, width, height);
   cairo_clip (cr);
@@ -72,46 +78,50 @@ unico_draw_cell (DRAW_ARGS)
   unico_cairo_draw_outer_stroke_rect (engine, cr,
                                       x - line_width, y,
                                       width + line_width * 2, height,
-                                      0, UNICO_CORNER_NONE);
+                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));
 
   unico_cairo_draw_inner_stroke_rect (engine, cr,
                                       x - line_width, y + line_width + offset,
                                       width + line_width * 2, height - line_width * 2 - offset * 2,
-                                      0, UNICO_CORNER_NONE);
+                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));
 
   unico_cairo_draw_border_rect (engine, cr,
                                 x - line_width, y + offset,
                                 width + line_width * 2, height - offset * 2,
-                                0, UNICO_CORNER_NONE);
+                                radius, 0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_check (DRAW_ARGS)
 {
-  GtkStateFlags state;
+  GtkStateFlags flags;
   gboolean in_cell, in_menu;
   gboolean draw_bullet, inconsistent;
 
-  state = gtk_theming_engine_get_state (engine);
+  flags = gtk_theming_engine_get_state (engine);
 
   in_cell = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL);
   in_menu = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU);
 
-  inconsistent = (state & GTK_STATE_FLAG_INCONSISTENT) != 0;
-  draw_bullet = (state & GTK_STATE_FLAG_ACTIVE) != 0;
+  inconsistent = (flags & GTK_STATE_FLAG_INCONSISTENT) != 0;
+  draw_bullet = (flags & GTK_STATE_FLAG_ACTIVE) != 0;
   draw_bullet |= inconsistent;
 
   if (!in_menu)
     {
-      unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
-      unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+      unico_cairo_draw_background (engine, cr,
+                                   x, y, width, height,
+                                   0, gtk_theming_engine_get_junction_sides (engine));
+      unico_cairo_draw_frame (engine, cr,
+                              x, y, width, height,
+                              0, gtk_theming_engine_get_junction_sides (engine));
     }
 
   if (draw_bullet)
     {
       GdkRGBA *bullet_color;
 
-      gtk_theming_engine_get (engine, state,
+      gtk_theming_engine_get (engine, flags,
                               "-unico-bullet-color", &bullet_color,
                               NULL);
 
@@ -138,7 +148,7 @@ unico_draw_check (DRAW_ARGS)
             {
               GdkRGBA *bullet_outline_color;
 
-              gtk_theming_engine_get (engine, state,
+              gtk_theming_engine_get (engine, flags,
                                       "-unico-bullet-outline-color", &bullet_outline_color,
                                       NULL);
 
@@ -184,103 +194,47 @@ unico_draw_check (DRAW_ARGS)
 static void
 unico_draw_column_header_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_column_header_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_combo_button_background (DRAW_ARGS)
 {
-  UnicoCorners corners;
-
-  corners = UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT; /* XXX rtl */
-
-  unico_cairo_draw_background (engine, cr, x, y, width, height, corners);
+  /* FIXME use GTK_JUNCTION_RIGHT for RTL. */
+  unico_cairo_draw_background (engine, cr, x, y, width, height, 0, GTK_JUNCTION_LEFT);
 }
 
 static void
 unico_draw_combo_button_frame (DRAW_ARGS)
 {
-  UnicoCorners corners;
-
-  corners = UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT; /* XXX rtl */
-
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, corners);
+  /* FIXME use GTK_JUNCTION_RIGHT for RTL. */
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, 0, GTK_JUNCTION_LEFT);
 }
 
 static void
 unico_draw_entry_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_entry_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
-}
-
-static void
-get_frame_gap_clip (DRAW_ARGS,
-                    GtkPositionType gap_side,
-                    gdouble         xy0_gap,
-                    gdouble         xy1_gap)
-{
-  GtkStateFlags state;
-  gint border_width, radius;
-  gdouble x0, y0, x1, y1, xc, yc, wc, hc;
-
-  xc = yc = wc = hc = 0;
-  state = gtk_theming_engine_get_state (engine);
-
-  unico_get_border_radius (engine, &radius);
-  border_width = 2 * cairo_get_line_width (cr);
-
-  /* FIXME We might need to play with GtkJunctionSides. */
-
-  switch (gap_side)
-    {
-      case GTK_POS_TOP:
-        xc = x + xy0_gap + border_width;
-        yc = y;
-        wc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
-        hc = border_width;
-
-        break;
-      case GTK_POS_BOTTOM:
-        xc = x + xy0_gap + border_width;
-        yc = y + height - border_width;
-        wc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
-        hc = border_width;
-
-        break;
-      case GTK_POS_LEFT:
-        xc = x;
-        yc = y + xy0_gap + border_width;
-        wc = border_width;
-        hc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
-
-        break;
-      case GTK_POS_RIGHT:
-        xc = x + width - border_width;
-        yc = y + xy0_gap + border_width;
-        wc = border_width;
-        hc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
-
-        break;
-    }
-
-  cairo_clip_extents (cr, &x0, &y0, &x1, &y1);
-  cairo_rectangle (cr, x0, y0, x1 - x0, yc - y0);
-  cairo_rectangle (cr, x0, yc, xc - x0, hc);
-  cairo_rectangle (cr, xc + wc, yc, x1 - (xc + wc), hc);
-  cairo_rectangle (cr, x0, yc + hc, x1 - x0, y1 - (yc + hc));
-  cairo_clip (cr);
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -289,18 +243,85 @@ unico_draw_frame_gap (DRAW_ARGS,
                       gdouble         xy0_gap,
                       gdouble         xy1_gap)
 {
-  UnicoCorners corners;
+  GtkJunctionSides junction;
+  GtkStateFlags flags;
+  gint border_width, radius;
+  gdouble x0, y0, x1, y1, xc, yc, wc, hc;
   gdouble line_width;
-  gint radius;
 
-  corners = unico_get_corners (engine);
+  xc = yc = wc = hc = 0;
+  flags = gtk_theming_engine_get_state (engine);
+
+  junction = gtk_theming_engine_get_junction_sides (engine);
+
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
+  border_width = 2 * cairo_get_line_width (cr);
 
   cairo_save (cr);
 
-  if (xy0_gap != -1)
-    get_frame_gap_clip (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
+  switch (gap_side)
+    {
+    case GTK_POS_TOP:
+      xc = x + xy0_gap + border_width;
+      yc = y;
+      wc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+      hc = border_width;
+
+      if (xy0_gap < radius)
+        junction |= GTK_JUNCTION_CORNER_TOPLEFT;
+
+      if (xy1_gap > width - radius)
+        junction |= GTK_JUNCTION_CORNER_TOPRIGHT;
+
+      break;
+    case GTK_POS_BOTTOM:
+      xc = x + xy0_gap + border_width;
+      yc = y + height - border_width;
+      wc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+      hc = border_width;
+
+      if (xy0_gap < radius)
+        junction |= GTK_JUNCTION_CORNER_BOTTOMLEFT;
+
+      if (xy1_gap > width - radius)
+        junction |= GTK_JUNCTION_CORNER_BOTTOMRIGHT;
+
+      break;
+    case GTK_POS_LEFT:
+      xc = x;
+      yc = y + xy0_gap + border_width;
+      wc = border_width;
+      hc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+
+      if (xy0_gap < radius)
+        junction |= GTK_JUNCTION_CORNER_TOPLEFT;
+
+      if (xy1_gap > height - radius)
+        junction |= GTK_JUNCTION_CORNER_BOTTOMLEFT;
+
+      break;
+    case GTK_POS_RIGHT:
+      xc = x + width - border_width;
+      yc = y + xy0_gap + border_width;
+      wc = border_width;
+      hc = MAX (xy1_gap - xy0_gap - 2 * border_width, 0);
+
+      if (xy0_gap < radius)
+        junction |= GTK_JUNCTION_CORNER_TOPRIGHT;
+
+      if (xy1_gap > height - radius)
+        junction |= GTK_JUNCTION_CORNER_BOTTOMRIGHT;
+
+      break;
+    }
+
+  cairo_clip_extents (cr, &x0, &y0, &x1, &y1);
+  cairo_rectangle (cr, x0, y0, x1 - x0, yc - y0);
+  cairo_rectangle (cr, x0, yc, xc - x0, hc);
+  cairo_rectangle (cr, xc + wc, yc, x1 - (xc + wc), hc);
+  cairo_rectangle (cr, x0, yc + hc, x1 - x0, y1 - (yc + hc));
+  cairo_clip (cr);
 
   cairo_translate (cr, x, y);
 
@@ -310,9 +331,9 @@ unico_draw_frame_gap (DRAW_ARGS,
   unico_cairo_draw_inner_stroke_rect (engine, cr,
                                       line_width, line_width,
                                       width - line_width * 2, height - line_width * 2,
-                                      radius - line_width, corners);
+                                      radius - line_width, 0, junction);
 
-  unico_cairo_draw_border_rect (engine, cr, 0, 0, width, height, radius, corners);
+  unico_cairo_draw_border_rect (engine, cr, 0, 0, width, height, radius, 0, junction);
 
   cairo_restore (cr);
 }
@@ -320,56 +341,76 @@ unico_draw_frame_gap (DRAW_ARGS,
 static void
 unico_draw_icon_view (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
-  unico_cairo_draw_frame_gap (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
+  unico_cairo_draw_frame_gap (engine, cr,
+                              x, y, width, height,
+                              0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menu_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menu_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menubar_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menubar_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menubaritem_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menubaritem_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menuitem_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_menuitem_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -378,7 +419,9 @@ unico_draw_notebook (DRAW_ARGS,
                      gdouble         xy0_gap,
                      gdouble         xy1_gap)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
   unico_draw_frame_gap (engine, cr, x, y, width, height, gap_side, xy0_gap, xy1_gap);
 }
 
@@ -394,7 +437,7 @@ unico_draw_progressbar_fill_background (DRAW_ARGS)
   unico_cairo_draw_background_rect (engine, cr,
                                     x + line_width, y + line_width,
                                     width - line_width * 2, height - line_width * 2,
-                                    radius, unico_get_corners (engine));
+                                    radius, 0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -407,48 +450,56 @@ unico_draw_progressbar_fill_frame (DRAW_ARGS)
   unico_cairo_draw_border_rect (engine, cr,
                                 x, y,
                                 width, height,
-                                radius, unico_get_corners (engine));
+                                radius, 0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_progressbar_trough_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_progressbar_trough_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_radio (DRAW_ARGS)
 {
-  GtkStateFlags state;
+  GtkStateFlags flags;
   gboolean in_cell, in_menu;
   gboolean draw_bullet, inconsistent;
 
-  state = gtk_theming_engine_get_state (engine);
+  flags = gtk_theming_engine_get_state (engine);
 
   in_cell = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL);
   in_menu = gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU);
 
-  inconsistent = (state & GTK_STATE_FLAG_INCONSISTENT) != 0;
-  draw_bullet = (state & GTK_STATE_FLAG_ACTIVE) != 0;
+  inconsistent = (flags & GTK_STATE_FLAG_INCONSISTENT) != 0;
+  draw_bullet = (flags & GTK_STATE_FLAG_ACTIVE) != 0;
   draw_bullet |= inconsistent;
 
   if (!in_menu)
     {
-      unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
-      unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+      unico_cairo_draw_background (engine, cr,
+                                   x, y, width, height,
+                                   0, gtk_theming_engine_get_junction_sides (engine));
+      unico_cairo_draw_frame (engine, cr,
+                              x, y, width, height,
+                              0, gtk_theming_engine_get_junction_sides (engine));
     }
 
   if (draw_bullet)
     {
       GdkRGBA *bullet_color;
 
-      gtk_theming_engine_get (engine, state,
+      gtk_theming_engine_get (engine, flags,
                               "-unico-bullet-color", &bullet_color,
                               NULL);
 
@@ -476,7 +527,7 @@ unico_draw_radio (DRAW_ARGS)
             {
               GdkRGBA *bullet_outline_color;
 
-              gtk_theming_engine_get (engine, state,
+              gtk_theming_engine_get (engine, flags,
                                       "-unico-bullet-outline-color", &bullet_outline_color,
                                       NULL);
 
@@ -502,20 +553,27 @@ unico_draw_radio (DRAW_ARGS)
 static void
 unico_draw_scrollbar_stepper_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_scrollbar_stepper_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height, 0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_scrollbar_slider (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, unico_get_corners (engine));
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, unico_get_corners (engine));
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -531,7 +589,7 @@ unico_draw_scrollbar_trough_background (DRAW_ARGS)
 
   unico_cairo_draw_background (engine, cr,
                                x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
-                               unico_get_corners (engine));
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -547,7 +605,7 @@ unico_draw_scrollbar_trough_frame (DRAW_ARGS)
 
   unico_cairo_draw_frame (engine, cr,
                           x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
-                          unico_get_corners (engine));
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -570,19 +628,17 @@ static void
 unico_draw_slider_button (DRAW_ARGS,
                           UnicoSliderParameters *slider)
 {
-  GtkStateFlags state;
-  UnicoCorners corners;
+  GtkStateFlags flags;
   UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width, offset;
   gint radius;
 
-  corners = unico_get_corners (engine);
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
   radius = MIN (radius, MIN (width / 2.0, height / 2.0));
 
-  state = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, state,
+  flags = gtk_theming_engine_get_state (engine);
+  gtk_theming_engine_get (engine, flags,
                           "-unico-outer-stroke-style", &outer_stroke_style,
                           NULL);
 
@@ -648,69 +704,54 @@ unico_draw_slider_button (DRAW_ARGS,
 
 static void
 unico_draw_tab (DRAW_ARGS,
-                UnicoTabParameters *tab)
+                GtkPositionType gap_side)
 {
-  GtkStateFlags state;
-  UnicoCorners corners;
-  gdouble line_width;
-  gint radius;
-
-  state = gtk_theming_engine_get_state (engine);
-  unico_get_line_width (engine, &line_width);
-  unico_get_border_radius (engine, &radius);
+  GtkJunctionSides junction = 0;
+  guint hidden_side = 0;
 
   cairo_save (cr);
 
-  cairo_rectangle (cr, x, y, width, height);
-  cairo_clip (cr);
-
-  /* Make the tabs slightly bigger than they should be, to create a gap */
-  if (tab->gap_side == GTK_POS_TOP || tab->gap_side == GTK_POS_BOTTOM)
+  switch (gap_side)
     {
-      height += 3.0;
+    case GTK_POS_LEFT:
+      junction = GTK_JUNCTION_LEFT;
+      hidden_side = SIDE_LEFT;
 
-      if (tab->gap_side == GTK_POS_TOP)
-        cairo_translate (cr, 0.0, -3.0); /* gap at the other side */
+      cairo_translate (cr, x + width, y);
+      cairo_rotate (cr, G_PI / 2);
+      break;
+    case GTK_POS_RIGHT:
+      junction = GTK_JUNCTION_RIGHT;
+      hidden_side = SIDE_RIGHT;
+
+      cairo_translate (cr, x, y + height);
+      cairo_rotate (cr, - G_PI / 2);
+      break;
+    case GTK_POS_TOP:
+      junction = GTK_JUNCTION_TOP;
+      hidden_side = SIDE_TOP;
+
+      cairo_translate (cr, x + width, y + height);
+      cairo_rotate (cr, G_PI);
+      break;
+    case GTK_POS_BOTTOM:
+      junction = GTK_JUNCTION_BOTTOM;
+      hidden_side = SIDE_BOTTOM;
+
+      cairo_translate (cr, x, y);
+      break;
     }
+
+  if (gap_side == GTK_POS_TOP ||
+      gap_side == GTK_POS_BOTTOM)
+    unico_cairo_draw_background (engine, cr, 0, 0, width, height, 0, GTK_JUNCTION_BOTTOM);
   else
-    {
-      width += 3.0;
+    unico_cairo_draw_background (engine, cr, 0, 0, height, width, 0, GTK_JUNCTION_BOTTOM);
+  cairo_restore (cr);
 
-      if (tab->gap_side == GTK_POS_LEFT)
-        cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
-    }
+  cairo_save (cr);
 
-  switch (tab->gap_side)
-    {
-      case GTK_POS_TOP:
-        {
-          height += line_width * 2;
-          corners = UNICO_CORNER_BOTTOMLEFT | UNICO_CORNER_BOTTOMRIGHT;
-          break;
-        }
-      case GTK_POS_BOTTOM:
-        {
-          height += line_width * 2;
-          corners = UNICO_CORNER_TOPLEFT | UNICO_CORNER_TOPRIGHT;
-          break;
-        }
-      case GTK_POS_LEFT:
-        {
-          width += line_width * 2;
-          corners = UNICO_CORNER_TOPRIGHT | UNICO_CORNER_BOTTOMRIGHT;
-          break;
-        }
-      case GTK_POS_RIGHT:
-        {
-          width += line_width * 2;
-          corners = UNICO_CORNER_TOPLEFT | UNICO_CORNER_BOTTOMLEFT;
-          break;
-        }
-    }
-
-  /* XXX don't like this */
-  unico_cairo_draw_background (engine, cr, x, y, width - 1, height - 1, corners);
-  unico_cairo_draw_frame (engine, cr, x, y, width - 1, height - 1, corners);
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, hidden_side, junction);
 
   cairo_restore (cr);
 }
@@ -718,13 +759,17 @@ unico_draw_tab (DRAW_ARGS,
 static void
 unico_draw_toolbar_background (DRAW_ARGS)
 {
-  unico_cairo_draw_background (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_toolbar_frame (DRAW_ARGS)
 {
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, UNICO_CORNER_NONE);
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 void
