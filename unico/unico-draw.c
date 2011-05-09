@@ -33,62 +33,56 @@
                                              (rect).height = (_h);
 
 static void
-unico_draw_button_background (DRAW_ARGS)
-{
-  unico_cairo_draw_background (engine, cr,
-                               x, y, width, height,
-                               0, 0);
-}
-
-static void
-unico_draw_button_frame (DRAW_ARGS)
-{
-  unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height,
-                          0, 0);
-}
-
-static void
 unico_draw_cell (DRAW_ARGS)
 {
-  GtkStateFlags flags;
-  UnicoOuterStrokeStyle outer_stroke_style;
-  gdouble line_width, offset;
-  gint radius;
+/*  GtkStateFlags flags;*/
+/*  UnicoOuterStrokeStyle outer_stroke_style;*/
+/*  gdouble line_width, offset;*/
+/*  gint radius;*/
 
-  unico_get_border_radius (engine, &radius);
-  unico_get_line_width (engine, &line_width);
-
-  flags = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, flags,
-                          "-unico-outer-stroke-style", &outer_stroke_style,
-                          NULL);
-
-  offset = 0;
-  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
-    offset = line_width;
+/*  unico_get_border_radius (engine, &radius);*/
+/*  unico_get_line_width (engine, &line_width);*/
 
   unico_cairo_draw_background (engine, cr,
-                               x - line_width, y, width + line_width * 2, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
+                               x, y, width, height,
+                               0, GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM);
 
-  cairo_rectangle (cr, x, y, width, height);
-  cairo_clip (cr);
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM);
 
-  unico_cairo_draw_outer_stroke_rect (engine, cr,
-                                      x - line_width, y,
-                                      width + line_width * 2, height,
-                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));
 
-  unico_cairo_draw_inner_stroke_rect (engine, cr,
-                                      x - line_width, y + line_width + offset,
-                                      width + line_width * 2, height - line_width * 2 - offset * 2,
-                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));
 
-  unico_cairo_draw_border_rect (engine, cr,
-                                x - line_width, y + offset,
-                                width + line_width * 2, height - offset * 2,
-                                radius, 0, gtk_theming_engine_get_junction_sides (engine));
+/*  flags = gtk_theming_engine_get_state (engine);*/
+/*  gtk_theming_engine_get (engine, flags,*/
+/*                          "-unico-outer-stroke-style", &outer_stroke_style,*/
+/*                          NULL);*/
+
+/*  offset = 0;*/
+/*  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)*/
+/*    offset = line_width;*/
+
+/*  unico_cairo_draw_background (engine, cr,*/
+/*                               x - line_width, y, width + line_width * 2, height,*/
+/*                               0, gtk_theming_engine_get_junction_sides (engine));*/
+
+/*  cairo_rectangle (cr, x, y, width, height);*/
+/*  cairo_clip (cr);*/
+
+/*  unico_cairo_draw_outer_stroke_rect (engine, cr,*/
+/*                                      x - line_width, y,*/
+/*                                      width + line_width * 2, height,*/
+/*                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));*/
+
+/*  unico_cairo_draw_inner_stroke_rect (engine, cr,*/
+/*                                      x - line_width, y + line_width + offset,*/
+/*                                      width + line_width * 2, height - line_width * 2 - offset * 2,*/
+/*                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));*/
+
+/*  unico_cairo_draw_border_rect (engine, cr,*/
+/*                                x - line_width, y + offset,*/
+/*                                width + line_width * 2, height - offset * 2,*/
+/*                                radius, 0, gtk_theming_engine_get_junction_sides (engine));*/
 }
 
 static void
@@ -192,37 +186,21 @@ unico_draw_check (DRAW_ARGS)
 }
 
 static void
-unico_draw_column_header_background (DRAW_ARGS)
-{
-  unico_cairo_draw_background (engine, cr,
-                               x, y, width, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_column_header_frame (DRAW_ARGS)
-{
-  unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height,
-                          0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
 unico_draw_combo_button_background (DRAW_ARGS)
 {
-  /* FIXME use GTK_JUNCTION_RIGHT for RTL. */
-  unico_cairo_draw_background (engine, cr, x, y, width, height, 0, GTK_JUNCTION_LEFT);
+  /* Playground for junctions. */
+  unico_cairo_draw_background (engine, cr, x, y, width, height, 0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
 unico_draw_combo_button_frame (DRAW_ARGS)
 {
-  /* FIXME use GTK_JUNCTION_RIGHT for RTL. */
-  unico_cairo_draw_frame (engine, cr, x, y, width, height, 0, GTK_JUNCTION_LEFT);
+  /* Playground for junctions. */
+  unico_cairo_draw_frame (engine, cr, x, y, width, height, 0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
-unico_draw_entry_background (DRAW_ARGS)
+unico_draw_common_background (DRAW_ARGS)
 {
   unico_cairo_draw_background (engine, cr,
                                x, y, width, height,
@@ -230,7 +208,7 @@ unico_draw_entry_background (DRAW_ARGS)
 }
 
 static void
-unico_draw_entry_frame (DRAW_ARGS)
+unico_draw_common_frame (DRAW_ARGS)
 {
   unico_cairo_draw_frame (engine, cr,
                           x, y, width, height,
@@ -350,43 +328,11 @@ unico_draw_icon_view (DRAW_ARGS)
 }
 
 static void
-unico_draw_menu_background (DRAW_ARGS)
-{
-  unico_cairo_draw_background (engine, cr,
-                               x, y, width, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_menu_frame (DRAW_ARGS)
-{
-  unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height,
-                          0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_menubar_background (DRAW_ARGS)
-{
-  unico_cairo_draw_background (engine, cr,
-                               x, y, width, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_menubar_frame (DRAW_ARGS)
-{
-  unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height,
-                          0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
 unico_draw_menubaritem_background (DRAW_ARGS)
 {
   unico_cairo_draw_background (engine, cr,
                                x, y, width, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
+                               0, GTK_JUNCTION_BOTTOM);
 }
 
 static void
@@ -394,23 +340,7 @@ unico_draw_menubaritem_frame (DRAW_ARGS)
 {
   unico_cairo_draw_frame (engine, cr,
                           x, y, width, height,
-                          0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_menuitem_background (DRAW_ARGS)
-{
-  unico_cairo_draw_background (engine, cr,
-                               x, y, width, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_menuitem_frame (DRAW_ARGS)
-{
-  unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height,
-                          0, gtk_theming_engine_get_junction_sides (engine));
+                          0, GTK_JUNCTION_BOTTOM);
 }
 
 static void
@@ -428,42 +358,16 @@ unico_draw_notebook (DRAW_ARGS,
 static void
 unico_draw_progressbar_fill_background (DRAW_ARGS)
 {
-  gdouble line_width;
-  gint radius;
-
-  unico_get_line_width (engine, &line_width);
-  unico_get_border_radius (engine, &radius);
-
-  unico_cairo_draw_background_rect (engine, cr,
-                                    x + line_width, y + line_width,
-                                    width - line_width * 2, height - line_width * 2,
-                                    radius, 0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_progressbar_fill_frame (DRAW_ARGS)
-{
-  gint radius;
-
-  unico_get_border_radius (engine, &radius);
-
-  unico_cairo_draw_border_rect (engine, cr,
-                                x, y,
-                                width, height,
-                                radius, 0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_progressbar_trough_background (DRAW_ARGS)
-{
+  /* Playground for effects. */
   unico_cairo_draw_background (engine, cr,
                                x, y, width, height,
                                0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
-unico_draw_progressbar_trough_frame (DRAW_ARGS)
+unico_draw_progressbar_fill_frame (DRAW_ARGS)
 {
+  /* Playground for effects. */
   unico_cairo_draw_frame (engine, cr,
                           x, y, width, height,
                           0, gtk_theming_engine_get_junction_sides (engine));
@@ -562,7 +466,8 @@ static void
 unico_draw_scrollbar_stepper_frame (DRAW_ARGS)
 {
   unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height, 0, gtk_theming_engine_get_junction_sides (engine));
+                          x, y, width, height,
+                          0, gtk_theming_engine_get_junction_sides (engine));
 }
 
 static void
@@ -582,7 +487,7 @@ unico_draw_scrollbar_trough_background (DRAW_ARGS)
   gint hoffset = 0;
   gint voffset = 0;
 
-  if (width>height)
+  if (width > height)
     hoffset = 1;
   else
     voffset = 1;
@@ -655,6 +560,8 @@ unico_draw_slider_button (DRAW_ARGS,
 
   cairo_translate (cr, x, y);
 
+  cairo_translate (cr, 0.5, 0.5);
+
   draw_slider_button_path (cr, offset,
                                offset,
                                width - offset * 2,
@@ -670,7 +577,7 @@ unico_draw_slider_button (DRAW_ARGS,
                                line_width / 2.0,
                                width - line_width,
                                height - line_width,
-                               radius);
+                               radius + 1);
   unico_cairo_draw_outer_stroke_from_path (engine, cr,
                                            line_width / 2.0,
                                            line_width / 2.0,
@@ -681,7 +588,7 @@ unico_draw_slider_button (DRAW_ARGS,
                                line_width / 2.0 + offset + line_width,
                                width - line_width - offset * 2 - line_width * 2,
                                height - line_width - offset * 2 - line_width * 2,
-                               radius);
+                               radius - 1);
   unico_cairo_draw_inner_stroke_from_path (engine, cr,
                                            line_width / 2.0 + offset + line_width,
                                            line_width / 2.0 + offset + line_width,
@@ -756,52 +663,24 @@ unico_draw_tab (DRAW_ARGS,
   cairo_restore (cr);
 }
 
-static void
-unico_draw_toolbar_background (DRAW_ARGS)
-{
-  unico_cairo_draw_background (engine, cr,
-                               x, y, width, height,
-                               0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_toolbar_frame (DRAW_ARGS)
-{
-  unico_cairo_draw_frame (engine, cr,
-                          x, y, width, height,
-                          0, gtk_theming_engine_get_junction_sides (engine));
-}
-
 void
 unico_register_style_default (UnicoStyleFunctions *functions)
 {
   g_assert (functions);
 
-  functions->draw_button_background             = unico_draw_button_background;
-  functions->draw_button_frame                  = unico_draw_button_frame;
   functions->draw_cell                          = unico_draw_cell;
   functions->draw_check                         = unico_draw_check;
-  functions->draw_column_header_background      = unico_draw_column_header_background;
-  functions->draw_column_header_frame           = unico_draw_column_header_frame;
   functions->draw_combo_button_background       = unico_draw_combo_button_background;
   functions->draw_combo_button_frame            = unico_draw_combo_button_frame;
-  functions->draw_entry_background              = unico_draw_entry_background;
-  functions->draw_entry_frame                   = unico_draw_entry_frame;
+  functions->draw_common_background             = unico_draw_common_background;
+  functions->draw_common_frame                  = unico_draw_common_frame;
   functions->draw_frame_gap                     = unico_draw_frame_gap;
   functions->draw_icon_view                     = unico_draw_icon_view;
-  functions->draw_menu_background               = unico_draw_menu_background;
-  functions->draw_menu_frame                    = unico_draw_menu_frame;
-  functions->draw_menubar_background            = unico_draw_menubar_background;
-  functions->draw_menubar_frame                 = unico_draw_menubar_frame;
   functions->draw_menubaritem_background        = unico_draw_menubaritem_background;
   functions->draw_menubaritem_frame             = unico_draw_menubaritem_frame;
-  functions->draw_menuitem_background           = unico_draw_menuitem_background;
-  functions->draw_menuitem_frame                = unico_draw_menuitem_frame;
   functions->draw_notebook                      = unico_draw_notebook;
   functions->draw_progressbar_fill_background   = unico_draw_progressbar_fill_background;
   functions->draw_progressbar_fill_frame        = unico_draw_progressbar_fill_frame;
-  functions->draw_progressbar_trough_background = unico_draw_progressbar_trough_background;
-  functions->draw_progressbar_trough_frame      = unico_draw_progressbar_trough_frame;
   functions->draw_radio                         = unico_draw_radio;
   functions->draw_scrollbar_slider              = unico_draw_scrollbar_slider;
   functions->draw_scrollbar_stepper_background  = unico_draw_scrollbar_stepper_background;
@@ -810,6 +689,4 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_scrollbar_trough_frame        = unico_draw_scrollbar_trough_frame;
   functions->draw_slider_button                 = unico_draw_slider_button;
   functions->draw_tab                           = unico_draw_tab;
-  functions->draw_toolbar_background            = unico_draw_toolbar_background;
-  functions->draw_toolbar_frame                 = unico_draw_toolbar_frame;
 }
