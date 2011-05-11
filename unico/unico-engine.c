@@ -130,11 +130,14 @@ unico_engine_render_background (GtkThemingEngine *engine,
 {
   UnicoStyleFunctions *style_functions;
   const GtkWidgetPath *path;
+  GtkRegionFlags flags;
+  gint len;
 
   UNICO_CAIRO_INIT
 
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
   path = gtk_theming_engine_get_path (engine);
+  len = gtk_widget_path_length (path);
 
 /*  if ((gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR)) ||*/
 /*      (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR)) ||*/
@@ -147,7 +150,10 @@ unico_engine_render_background (GtkThemingEngine *engine,
 /*    style_functions->draw_common_background (engine, cr, x, y, width, height);*/
 /*  else */
   if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
-      gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
+      gtk_widget_path_iter_has_region (path, len - 2, GTK_STYLE_REGION_COLUMN_HEADER, &flags))
+    style_functions->draw_column_header_background (engine, cr, x, y, width, height, flags);    
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
+           gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
     style_functions->draw_combo_button_background (engine, cr, x, y, width, height);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -284,11 +290,14 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 {
   UnicoStyleFunctions *style_functions;
   const GtkWidgetPath *path;
+  GtkRegionFlags flags;
+  gint len;
 
   UNICO_CAIRO_INIT
 
   unico_lookup_functions (UNICO_ENGINE (engine), &style_functions);
   path = gtk_theming_engine_get_path (engine);
+  len = gtk_widget_path_length (path);
 
 /*  if ((gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR)) ||*/
 /*      (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TOOLBAR)) ||*/
@@ -300,7 +309,10 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 /*      (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU)))*/
 /*    style_functions->draw_common_frame (engine, cr, x, y, width, height);*/
 /*  else*/
-  if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SEPARATOR))
+  if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
+      gtk_widget_path_iter_has_region (path, len - 2, GTK_STYLE_REGION_COLUMN_HEADER, &flags))
+    style_functions->draw_column_header_frame (engine, cr, x, y, width, height, flags);    
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SEPARATOR))
     style_functions->draw_separator (engine, cr, x, y, width, height);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))

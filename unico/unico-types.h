@@ -68,6 +68,12 @@ struct _UnicoStyleFunctions
 
   void (*draw_check) (DRAW_ARGS);
 
+  void (*draw_column_header_background) (DRAW_ARGS,
+                                         GtkRegionFlags flags);
+
+  void (*draw_column_header_frame) (DRAW_ARGS,
+                                    GtkRegionFlags flags);
+
   void (*draw_combo_button_background) (DRAW_ARGS);
 
   void (*draw_combo_button_frame) (DRAW_ARGS);

@@ -51,8 +51,6 @@ unico_draw_cell (DRAW_ARGS)
                           x, y, width, height,
                           0, GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM);
 
-
-
 /*  flags = gtk_theming_engine_get_state (engine);*/
 /*  gtk_theming_engine_get (engine, flags,*/
 /*                          "-unico-outer-stroke-style", &outer_stroke_style,*/
@@ -183,6 +181,42 @@ unico_draw_check (DRAW_ARGS)
 
       gdk_rgba_free (bullet_color);
     }
+}
+
+static void
+unico_draw_column_header_background (DRAW_ARGS,
+                                     GtkRegionFlags flags)
+{
+  GtkJunctionSides junction;
+
+  if ((flags & GTK_REGION_FIRST) != 0)
+    junction = GTK_JUNCTION_RIGHT | GTK_JUNCTION_CORNER_BOTTOMLEFT;
+  else if ((flags & GTK_REGION_LAST) != 0)
+    junction = GTK_JUNCTION_LEFT | GTK_JUNCTION_CORNER_BOTTOMRIGHT;
+  else
+    junction = GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM;
+
+  unico_cairo_draw_background (engine, cr,
+                               x, y, width, height,
+                               0, junction);
+}
+
+static void
+unico_draw_column_header_frame (DRAW_ARGS, 
+                                GtkRegionFlags flags)
+{
+  GtkJunctionSides junction;
+
+  if ((flags & GTK_REGION_FIRST) != 0)
+    junction = GTK_JUNCTION_RIGHT | GTK_JUNCTION_CORNER_BOTTOMLEFT;
+  else if ((flags & GTK_REGION_LAST) != 0)
+    junction = GTK_JUNCTION_LEFT | GTK_JUNCTION_CORNER_BOTTOMRIGHT;
+  else
+    junction = GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM;
+
+  unico_cairo_draw_frame (engine, cr,
+                          x, y, width, height,
+                          0, junction);
 }
 
 static void
@@ -705,6 +739,8 @@ unico_register_style_default (UnicoStyleFunctions *functions)
 
   functions->draw_cell                          = unico_draw_cell;
   functions->draw_check                         = unico_draw_check;
+  functions->draw_column_header_background      = unico_draw_column_header_background;
+  functions->draw_column_header_frame           = unico_draw_column_header_frame;
   functions->draw_combo_button_background       = unico_draw_combo_button_background;
   functions->draw_combo_button_frame            = unico_draw_combo_button_frame;
   functions->draw_common_background             = unico_draw_common_background;
