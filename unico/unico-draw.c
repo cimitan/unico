@@ -503,7 +503,7 @@ unico_draw_scrollbar_trough_frame (DRAW_ARGS)
   gint hoffset = 0;
   gint voffset = 0;
 
-  if (width>height)
+  if (width > height)
     hoffset = 1;
   else
     voffset = 1;
@@ -511,6 +511,40 @@ unico_draw_scrollbar_trough_frame (DRAW_ARGS)
   unico_cairo_draw_frame (engine, cr,
                           x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
                           0, gtk_theming_engine_get_junction_sides (engine));
+}
+
+static void
+unico_draw_separator (DRAW_ARGS)
+{
+  GtkStateFlags flags;
+  gdouble line_width;
+
+  flags = gtk_theming_engine_get_state (engine);
+  unico_get_line_width (engine, &line_width);
+
+  /* FIXME right code should be
+   * if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_VERTICAL))
+   * but doesn't work for separator tool item. */
+  if (width > height)
+    {
+      cairo_move_to (cr, x, y + height / 2 + line_width / 2);
+      cairo_line_to (cr, x + width, y + height / 2 + line_width / 2);
+      unico_cairo_draw_inner_stroke_from_path (engine, cr, x, y + height / 2 + line_width / 2, width, line_width);
+
+      cairo_move_to (cr, x, y + height / 2 - line_width / 2);
+      cairo_line_to (cr, x + width, y + height / 2 - line_width / 2);
+      unico_cairo_draw_border_from_path (engine, cr, x, y + height / 2 - line_width / 2, width, line_width);
+    }
+  else
+    {  
+      cairo_move_to (cr, x + width / 2 + line_width / 2, y);
+      cairo_line_to (cr, x + width / 2 + line_width / 2, y + height);
+      unico_cairo_draw_inner_stroke_from_path (engine, cr, x + width / 2 + line_width / 2, y, line_width, height);
+
+      cairo_move_to (cr, x + width / 2 - line_width / 2, y);
+      cairo_line_to (cr, x + width / 2 - line_width / 2, y + height);
+      unico_cairo_draw_border_from_path (engine, cr, x + width / 2 - line_width / 2, y, line_width, height);
+    }
 }
 
 static void
@@ -560,6 +594,7 @@ unico_draw_slider_button (DRAW_ARGS,
 
   cairo_translate (cr, x, y);
 
+  /* Is there a way to avoid this translation? */
   cairo_translate (cr, 0.5, 0.5);
 
   draw_slider_button_path (cr, offset,
@@ -687,6 +722,7 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_scrollbar_stepper_frame       = unico_draw_scrollbar_stepper_frame;
   functions->draw_scrollbar_trough_background   = unico_draw_scrollbar_trough_background;
   functions->draw_scrollbar_trough_frame        = unico_draw_scrollbar_trough_frame;
+  functions->draw_separator                     = unico_draw_separator;
   functions->draw_slider_button                 = unico_draw_slider_button;
   functions->draw_tab                           = unico_draw_tab;
 }

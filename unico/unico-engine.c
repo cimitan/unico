@@ -217,7 +217,7 @@ unico_engine_render_expander (GtkThemingEngine *engine,
 
   cairo_set_line_width (cr, 1);
 
-  unico_cairo_round_rect (cr, x + 0.5, y + 0.5, side, side, 2, SIDE_ALL, 0);
+  unico_cairo_round_rect (cr, x + 0.5, y + 0.5, side, side, 2, 0, 0);
   gdk_cairo_set_source_rgba (cr, &bg);
   cairo_fill_preserve (cr);
 
@@ -300,8 +300,10 @@ unico_engine_render_frame (GtkThemingEngine *engine,
 /*      (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENU)))*/
 /*    style_functions->draw_common_frame (engine, cr, x, y, width, height);*/
 /*  else*/
-  if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
-      gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
+  if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SEPARATOR))
+    style_functions->draw_separator (engine, cr, x, y, width, height);
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
+           gtk_widget_path_has_parent (path, GTK_TYPE_COMBO_BOX_TEXT))
     style_functions->draw_combo_button_frame (engine, cr, x, y, width, height);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_BUTTON) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SCROLLBAR))
@@ -530,36 +532,7 @@ unico_engine_render_line (GtkThemingEngine *engine,
                           gdouble           x1,
                           gdouble           y1)
 {
-  const GtkWidgetPath *path;
-
-  UNICO_CAIRO_INIT
-
-  path = gtk_theming_engine_get_path (engine);
-
-  /* FIXME we need better theming here. */
-  if ((gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MARK) &&
-       gtk_widget_path_is_type (path, GTK_TYPE_SCALE)) ||
-      (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_SEPARATOR) &&
-       gtk_widget_path_is_type (path, GTK_TYPE_TREE_VIEW)))
-    {
-      GdkRGBA bg;
-      GtkStateFlags flags;
-
-      flags = gtk_theming_engine_get_state (engine);
-      gtk_theming_engine_get_background_color (engine, flags, &bg);
-
-      cairo_save (cr);
-
-      cairo_move_to (cr, x0 + 0.5, y0 + 0.5);
-      cairo_line_to (cr, x1 + 0.5, y1 + 0.5);
-
-      gdk_cairo_set_source_rgba (cr, &bg);
-      cairo_stroke (cr);
-
-      cairo_restore (cr);
-    }
-  else
-    GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_line (engine, cr, x0, y0, x1, y1);
+  GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_line (engine, cr, x0, y0, x1, y1);
 }
 
 static void
