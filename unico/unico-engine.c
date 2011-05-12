@@ -163,8 +163,9 @@ unico_engine_render_background (GtkThemingEngine *engine,
     style_functions->draw_menubaritem_background (engine, cr, x, y, width, height);
   else if (gtk_widget_path_is_type (path, GTK_TYPE_ICON_VIEW))
       style_functions->draw_icon_view (engine, cr, x, y, width, height);
-  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL))
-      style_functions->draw_cell (engine, cr, x, y, width, height);
+  else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_VIEW) &&
+           gtk_theming_engine_has_region (engine, GTK_STYLE_REGION_COLUMN, &flags))
+      style_functions->draw_cell (engine, cr, x, y, width, height, flags);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_DOCK))
     GTK_THEMING_ENGINE_CLASS (unico_engine_parent_class)->render_background (engine, cr, x, y, width, height);
   else

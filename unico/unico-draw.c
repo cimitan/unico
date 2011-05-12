@@ -33,54 +33,25 @@
                                              (rect).height = (_h);
 
 static void
-unico_draw_cell (DRAW_ARGS)
+unico_draw_cell (DRAW_ARGS,
+                 GtkRegionFlags flags)
 {
-/*  GtkStateFlags flags;*/
-/*  UnicoOuterStrokeStyle outer_stroke_style;*/
-/*  gdouble line_width, offset;*/
-/*  gint radius;*/
+  GtkJunctionSides junction;
 
-/*  unico_get_border_radius (engine, &radius);*/
-/*  unico_get_line_width (engine, &line_width);*/
+  if ((flags & GTK_REGION_FIRST) != 0)
+    junction = GTK_JUNCTION_RIGHT;
+  else if ((flags & GTK_REGION_LAST) != 0)
+    junction = GTK_JUNCTION_LEFT;
+  else
+    junction = GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM;
 
   unico_cairo_draw_background (engine, cr,
                                x, y, width, height,
-                               0, GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM);
+                               0, junction);
 
   unico_cairo_draw_frame (engine, cr,
                           x, y, width, height,
-                          0, GTK_JUNCTION_TOP | GTK_JUNCTION_BOTTOM);
-
-/*  flags = gtk_theming_engine_get_state (engine);*/
-/*  gtk_theming_engine_get (engine, flags,*/
-/*                          "-unico-outer-stroke-style", &outer_stroke_style,*/
-/*                          NULL);*/
-
-/*  offset = 0;*/
-/*  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)*/
-/*    offset = line_width;*/
-
-/*  unico_cairo_draw_background (engine, cr,*/
-/*                               x - line_width, y, width + line_width * 2, height,*/
-/*                               0, gtk_theming_engine_get_junction_sides (engine));*/
-
-/*  cairo_rectangle (cr, x, y, width, height);*/
-/*  cairo_clip (cr);*/
-
-/*  unico_cairo_draw_outer_stroke_rect (engine, cr,*/
-/*                                      x - line_width, y,*/
-/*                                      width + line_width * 2, height,*/
-/*                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));*/
-
-/*  unico_cairo_draw_inner_stroke_rect (engine, cr,*/
-/*                                      x - line_width, y + line_width + offset,*/
-/*                                      width + line_width * 2, height - line_width * 2 - offset * 2,*/
-/*                                      radius, 0, gtk_theming_engine_get_junction_sides (engine));*/
-
-/*  unico_cairo_draw_border_rect (engine, cr,*/
-/*                                x - line_width, y + offset,*/
-/*                                width + line_width * 2, height - offset * 2,*/
-/*                                radius, 0, gtk_theming_engine_get_junction_sides (engine));*/
+                          0, junction);
 }
 
 static void
