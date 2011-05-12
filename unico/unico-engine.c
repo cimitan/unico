@@ -161,9 +161,6 @@ unico_engine_render_background (GtkThemingEngine *engine,
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     style_functions->draw_menubaritem_background (engine, cr, x, y, width, height);
-  else if (gtk_widget_path_is_type (path, GTK_TYPE_SCROLLBAR) &&
-           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
-    style_functions->draw_scrollbar_trough_background (engine, cr, x, y, width, height);
   else if (gtk_widget_path_is_type (path, GTK_TYPE_ICON_VIEW))
       style_functions->draw_icon_view (engine, cr, x, y, width, height);
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_CELL))
@@ -323,9 +320,6 @@ unico_engine_render_frame (GtkThemingEngine *engine,
   else if (gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUITEM) &&
            gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_MENUBAR))
     style_functions->draw_menubaritem_frame (engine, cr, x, y, width, height);
-  else if (gtk_widget_path_is_type (path, GTK_TYPE_SCROLLBAR) &&
-           gtk_theming_engine_has_class (engine, GTK_STYLE_CLASS_TROUGH))
-    style_functions->draw_scrollbar_trough_frame (engine, cr, x, y, width, height);
   else
     style_functions->draw_common_frame (engine, cr, x, y, width, height);
 }

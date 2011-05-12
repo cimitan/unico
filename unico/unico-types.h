@@ -110,10 +110,6 @@ struct _UnicoStyleFunctions
 
   void (*draw_scrollbar_stepper_frame) (DRAW_ARGS);
 
-  void (*draw_scrollbar_trough_background) (DRAW_ARGS);
-
-  void (*draw_scrollbar_trough_frame) (DRAW_ARGS);
-
   void (*draw_separator) (DRAW_ARGS);
 
   void (*draw_slider_button) (DRAW_ARGS,

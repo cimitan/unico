@@ -516,38 +516,6 @@ unico_draw_scrollbar_slider (DRAW_ARGS)
 }
 
 static void
-unico_draw_scrollbar_trough_background (DRAW_ARGS)
-{
-  gint hoffset = 0;
-  gint voffset = 0;
-
-  if (width > height)
-    hoffset = 1;
-  else
-    voffset = 1;
-
-  unico_cairo_draw_background (engine, cr,
-                               x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
-                               0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
-unico_draw_scrollbar_trough_frame (DRAW_ARGS)
-{
-  gint hoffset = 0;
-  gint voffset = 0;
-
-  if (width > height)
-    hoffset = 1;
-  else
-    voffset = 1;
-
-  unico_cairo_draw_frame (engine, cr,
-                          x + hoffset, y + voffset, width - hoffset * 2, height - voffset * 2,
-                          0, gtk_theming_engine_get_junction_sides (engine));
-}
-
-static void
 unico_draw_separator (DRAW_ARGS)
 {
   GtkStateFlags flags;
@@ -767,8 +735,6 @@ unico_register_style_default (UnicoStyleFunctions *functions)
   functions->draw_scrollbar_slider              = unico_draw_scrollbar_slider;
   functions->draw_scrollbar_stepper_background  = unico_draw_scrollbar_stepper_background;
   functions->draw_scrollbar_stepper_frame       = unico_draw_scrollbar_stepper_frame;
-  functions->draw_scrollbar_trough_background   = unico_draw_scrollbar_trough_background;
-  functions->draw_scrollbar_trough_frame        = unico_draw_scrollbar_trough_frame;
   functions->draw_separator                     = unico_draw_separator;
   functions->draw_slider_button                 = unico_draw_slider_button;
   functions->draw_tab                           = unico_draw_tab;
