@@ -36,8 +36,6 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
                              guint             hidden_side,
                              GtkJunctionSides  junction)
 {
-  GtkStateFlags flags;
-  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width;
   gdouble offset;
   gint radius;
@@ -45,13 +43,8 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  flags = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, flags,
-                          "-unico-outer-stroke-style", &outer_stroke_style,
-                          NULL);
-
   offset = 0;
-  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
+  if (unico_has_outer_stroke (engine))
     offset = line_width;
 
   unico_cairo_draw_background_rect (engine, cr,
@@ -568,7 +561,7 @@ unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
     gdk_cairo_set_source_rgba (cr, &border_color);
 
   switch (border_style)
-    {
+  {
     case GTK_BORDER_STYLE_NONE:
       break;
     /* FIXME Need to implement those two styles. */
@@ -577,7 +570,7 @@ unico_cairo_draw_border_from_path (GtkThemingEngine *engine,
     case GTK_BORDER_STYLE_SOLID:
       cairo_stroke (cr);
       break;
-    }
+  }
 
   if (border_pat)
     {
@@ -745,8 +738,6 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
                         guint             hidden_side,
                         GtkJunctionSides  junction)
 {
-  GtkStateFlags flags;
-  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width;
   gdouble offset;
   gint radius;
@@ -754,13 +745,8 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
 
-  flags = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, flags,
-                          "-unico-outer-stroke-style", &outer_stroke_style,
-                          NULL);
-
   offset = 0;
-  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
+  if (unico_has_outer_stroke (engine))
     {
       offset = line_width;
 

@@ -268,12 +268,12 @@ unico_draw_frame_gap (DRAW_ARGS,
 
   unico_get_line_width (engine, &line_width);
   unico_get_border_radius (engine, &radius);
-  border_width = 2 * cairo_get_line_width (cr);
+  border_width = 3 * cairo_get_line_width (cr);
 
   cairo_save (cr);
 
   switch (gap_side)
-    {
+  {
     case GTK_POS_TOP:
       xc = x + xy0_gap + border_width;
       yc = y;
@@ -326,7 +326,7 @@ unico_draw_frame_gap (DRAW_ARGS,
         junction |= GTK_JUNCTION_CORNER_BOTTOMRIGHT;
 
       break;
-    }
+  }
 
   cairo_clip_extents (cr, &x0, &y0, &x1, &y1);
   cairo_rectangle (cr, x0, y0, x1 - x0, yc - y0);
@@ -340,12 +340,12 @@ unico_draw_frame_gap (DRAW_ARGS,
   /* FIXME Maybe we need to add a check for the GtkBorderStyle,
    * old GTK_SHADOW_IN corresponds to GTK_BORDER_STYLE_INSET. */
 
-  unico_cairo_draw_inner_stroke_rect (engine, cr,
-                                      line_width, line_width,
-                                      width - line_width * 2, height - line_width * 2,
-                                      radius - line_width, 0, junction);
+/*  unico_cairo_draw_inner_stroke_rect (engine, cr,*/
+/*                                      line_width, line_width,*/
+/*                                      width - line_width * 2, height - line_width * 2,*/
+/*                                      radius - line_width, 0, junction);*/
 
-  unico_cairo_draw_border_rect (engine, cr, 0, 0, width, height, radius, 0, junction);
+  unico_cairo_draw_frame (engine, cr, 0, 0, width, height, 0, junction);
 
   cairo_restore (cr);
 }
@@ -601,8 +601,6 @@ static void
 unico_draw_slider_button (DRAW_ARGS,
                           UnicoSliderParameters *slider)
 {
-  GtkStateFlags flags;
-  UnicoOuterStrokeStyle outer_stroke_style;
   gdouble line_width, offset;
   gint radius;
 
@@ -610,13 +608,8 @@ unico_draw_slider_button (DRAW_ARGS,
   unico_get_border_radius (engine, &radius);
   radius = MIN (radius, MIN (width / 2.0, height / 2.0));
 
-  flags = gtk_theming_engine_get_state (engine);
-  gtk_theming_engine_get (engine, flags,
-                          "-unico-outer-stroke-style", &outer_stroke_style,
-                          NULL);
-
   offset = 0;
-  if (outer_stroke_style != UNICO_OUTER_STROKE_STYLE_NONE)
+  if (unico_has_outer_stroke (engine))
     offset = line_width;
 
   cairo_set_line_width (cr, line_width);
@@ -682,16 +675,28 @@ static void
 unico_draw_tab (DRAW_ARGS,
                 GtkPositionType gap_side)
 {
+  GtkStateFlags flags;
   GtkJunctionSides junction = 0;
+  gdouble line_width;
+  gdouble offset;
   guint hidden_side = 0;
+
+  flags = gtk_theming_engine_get_state (engine);
+  unico_get_line_width (engine, &line_width);
+
+  offset = 0;
+  if (unico_has_outer_stroke (engine) && (flags & GTK_STATE_FLAG_ACTIVE))
+    offset = line_width;
 
   cairo_save (cr);
 
   switch (gap_side)
-    {
+  {
     case GTK_POS_LEFT:
       junction = GTK_JUNCTION_LEFT;
       hidden_side = SIDE_LEFT;
+
+      x -= line_width * 2 + offset;
 
       cairo_translate (cr, x + width, y);
       cairo_rotate (cr, G_PI / 2);
@@ -700,12 +705,16 @@ unico_draw_tab (DRAW_ARGS,
       junction = GTK_JUNCTION_RIGHT;
       hidden_side = SIDE_RIGHT;
 
+      width += line_width * 2 + offset;
+
       cairo_translate (cr, x, y + height);
       cairo_rotate (cr, - G_PI / 2);
       break;
     case GTK_POS_TOP:
       junction = GTK_JUNCTION_TOP;
       hidden_side = SIDE_TOP;
+
+      y -= line_width * 2 + offset;
 
       cairo_translate (cr, x + width, y + height);
       cairo_rotate (cr, G_PI);
@@ -714,9 +723,11 @@ unico_draw_tab (DRAW_ARGS,
       junction = GTK_JUNCTION_BOTTOM;
       hidden_side = SIDE_BOTTOM;
 
+      height += line_width * 2 + offset;
+
       cairo_translate (cr, x, y);
       break;
-    }
+  }
 
   if (gap_side == GTK_POS_TOP ||
       gap_side == GTK_POS_BOTTOM)
