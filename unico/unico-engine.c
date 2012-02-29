@@ -517,6 +517,12 @@ unico_engine_class_init (UnicoEngineClass *klass)
                                                             "Text shadow color",
                                                             "Text shadow color",
                                                             GDK_TYPE_RGBA, 0));
+
+  gtk_theming_engine_register_property (UNICO_NAMESPACE, NULL,
+                                        g_param_spec_int ("breadcrumb-arrow",
+                                                          "Breadcrumb arrow",
+                                                          "Breadcrumb arrow",
+                                                          0, G_MAXINT, 0, 0));
 }
 
 static void

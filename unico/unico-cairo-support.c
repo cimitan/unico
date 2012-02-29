@@ -478,6 +478,7 @@ unico_cairo_draw_background (GtkThemingEngine *engine,
                              guint             hidden_side,
                              GtkJunctionSides  junction)
 {
+  return;
   GtkBorder *outer_border;
   GtkStateFlags state;
 
@@ -1147,17 +1148,42 @@ unico_cairo_draw_frame (GtkThemingEngine *engine,
 {
   GtkBorder border;
   GtkBorder *outer_border;
+  int breadcrumb_arrow;
   GtkStateFlags state;
 
   state = gtk_theming_engine_get_state (engine);
 
   gtk_theming_engine_get (engine, state,
                           "-unico-outer-stroke-width", &outer_border,
+                          "-unico-breadcrumb-arrow", &breadcrumb_arrow,
                           NULL);
   gtk_theming_engine_get_border (engine, state, &border);
 
   hide_border_sides (&border, hidden_side);
   hide_border_sides (outer_border, hidden_side);
+
+  if (breadcrumb_arrow & 1)
+    {
+      /* Right arrow */
+      cairo_move_to (cr, 0, 0);
+      cairo_line_to (cr, width - height / 2, 0);
+      cairo_line_to (cr, width, height / 2);
+      cairo_line_to (cr, width - height / 2, height);
+      cairo_line_to (cr, 0, height);
+      cairo_clip (cr);
+      cairo_new_path (cr);
+    }
+  if (breadcrumb_arrow & 2)
+    {
+      /* Left arrow */
+      cairo_move_to (cr, 0, 0);
+      cairo_line_to (cr, height / 2, height / 2);
+      cairo_line_to (cr, 0, height);
+      cairo_line_to (cr, width, height);
+      cairo_line_to (cr, width, 0);
+      cairo_clip (cr);
+      cairo_new_path (cr);
+    }
 
   if (!unico_gtk_border_is_zero (outer_border))
     {
