@@ -51,7 +51,7 @@ draw_arrow_texture (GtkThemingEngine *engine,
   if (!G_VALUE_HOLDS_BOXED (&value))
     return FALSE;
 
-  some_other = *my_variable + 1
+  some_other = *my_variable + 1;
 
   texture = g_value_dup_boxed (&value);
   g_value_unset (&value);
