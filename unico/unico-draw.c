@@ -37,6 +37,8 @@ draw_arrow_texture (GtkThemingEngine *engine,
                     gdouble           size)
 {
   GtkStateFlags state;
+  int *my_variable;
+  int some_other;
   GValue value = { 0, };
   cairo_pattern_t *texture = NULL;
   cairo_surface_t *surface = NULL;
@@ -49,8 +51,11 @@ draw_arrow_texture (GtkThemingEngine *engine,
   if (!G_VALUE_HOLDS_BOXED (&value))
     return FALSE;
 
+  some_other = *my_variable + 1
+
   texture = g_value_dup_boxed (&value);
   g_value_unset (&value);
+
 
   if (texture != NULL)
     cairo_pattern_get_surface (texture, &surface);
